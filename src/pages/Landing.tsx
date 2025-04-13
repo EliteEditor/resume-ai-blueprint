@@ -1,3 +1,4 @@
+
 import React, { useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { FileText, Linkedin, Settings, ArrowRight, CheckCircle, Lock, Shield, ChevronRight } from 'lucide-react';
@@ -105,14 +106,22 @@ const Landing: React.FC = () => {
             </div>
           </div>
           <div className="hidden lg:block">
-            <div className="relative">
-              <div className="absolute inset-0 bg-primary/5 rounded-lg transform rotate-3"></div>
-              <img 
-                src="/lovable-uploads/e3b83f6b-8680-4aa9-a951-0d0c19b0d932.png" 
-                alt="Resume and LinkedIn Profile" 
-                className="w-full h-auto resume-shadow rounded-lg relative z-10"
-              />
-              <div className="absolute -bottom-4 -right-4 bg-white dark:bg-gray-800 p-3 rounded-lg shadow-lg z-20">
+            <div className="relative" style={{ height: '400px' }}>
+              {/* Background decorative elements */}
+              <div className="absolute inset-0 bg-primary/5 rounded-lg transform rotate-3" style={{ zIndex: 1 }}></div>
+              
+              {/* Main image */}
+              <div className="absolute inset-0" style={{ zIndex: 5 }}>
+                <img 
+                  src="/lovable-uploads/e3b83f6b-8680-4aa9-a951-0d0c19b0d932.png" 
+                  alt="Resume and LinkedIn Profile" 
+                  className="w-full h-full object-cover rounded-lg resume-shadow"
+                  style={{ objectFit: 'cover' }}
+                />
+              </div>
+              
+              {/* Badge overlay */}
+              <div className="absolute -bottom-4 -right-4 bg-white dark:bg-gray-800 p-3 rounded-lg shadow-lg" style={{ zIndex: 10 }}>
                 <div className="flex items-center gap-2">
                   <div className="h-3 w-3 bg-green-500 rounded-full animate-pulse"></div>
                   <span className="text-sm font-medium">AI-Powered</span>
@@ -246,14 +255,17 @@ const Landing: React.FC = () => {
               </Button>
             </div>
             <div className="hidden lg:flex justify-end">
-              <div className="relative w-full max-w-md">
-                <div className="absolute inset-0 bg-primary/20 rounded-lg transform rotate-3"></div>
-                <div className="absolute inset-0 bg-primary/10 rounded-lg transform -rotate-3"></div>
-                <div className="relative bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
+              <div className="relative w-full max-w-md" style={{ height: '400px' }}>
+                {/* Background decorative elements */}
+                <div className="absolute inset-0 bg-primary/20 rounded-lg transform rotate-3" style={{ zIndex: 1 }}></div>
+                <div className="absolute inset-0 bg-primary/10 rounded-lg transform -rotate-3" style={{ zIndex: 2 }}></div>
+                
+                {/* Main content container */}
+                <div className="absolute inset-0 bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg" style={{ zIndex: 5, margin: '10px' }}>
                   <img 
                     src="/lovable-uploads/bb38759b-fe5f-4a72-9f1e-7e63b88a572f.png" 
                     alt="Resume Document Sample" 
-                    className="w-full h-auto"
+                    className="w-full h-full object-contain"
                   />
                 </div>
               </div>
