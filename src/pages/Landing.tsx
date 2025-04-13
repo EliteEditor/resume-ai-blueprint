@@ -361,7 +361,7 @@ const Landing: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
+      </footer>
       
       {/* Mobile Sticky CTA */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 p-4 border-t border-gray-200 dark:border-gray-800 shadow-lg z-50">
