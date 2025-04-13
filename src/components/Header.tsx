@@ -1,6 +1,8 @@
 
 import React from 'react';
-import { FileText } from 'lucide-react';
+import { FileText, Home } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Button } from './ui/button';
 
 const Header: React.FC = () => {
   return (
@@ -10,13 +12,25 @@ const Header: React.FC = () => {
           <FileText className="h-6 w-6 text-primary" />
           <h1 className="text-xl font-bold text-gray-900 dark:text-white">AI Resume + LinkedIn Optimizer</h1>
         </div>
-        <div>
-          <a 
-            href="#" 
-            className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary"
+        <div className="flex items-center space-x-4">
+          <Link 
+            to="/" 
+            className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary flex items-center gap-1"
           >
-            Get Help
-          </a>
+            <Home className="h-4 w-4" />
+            <span className="hidden sm:inline">Home</span>
+          </Link>
+          <Button 
+            variant="outline" 
+            asChild
+          >
+            <a 
+              href="#" 
+              className="text-sm font-medium"
+            >
+              Get Help
+            </a>
+          </Button>
         </div>
       </div>
     </header>

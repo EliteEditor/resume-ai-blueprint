@@ -6,6 +6,7 @@ import { Card } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { CircleCheck, Sparkles, ClipboardCopy } from 'lucide-react';
+import { optimizeLinkedIn } from '@/utils/apiService';
 
 const LinkedInOptimizer: React.FC = () => {
   const [input, setInput] = useState('');
@@ -24,24 +25,21 @@ const LinkedInOptimizer: React.FC = () => {
 
     setOptimizing(true);
 
-    // In a real app, this would make an API call to the OpenAI backend
-    // For now, we'll simulate a response after a delay
-    setTimeout(() => {
-      // Mock response data
-      const mockResults = {
-        bio: "Results-driven Full Stack Developer with 5+ years of experience creating robust web applications using React, Node.js, and Python. Passionate about developing user-centric solutions that drive business growth. Proven track record of optimizing application performance and implementing best practices in cloud architecture with AWS and Google Cloud Platform.",
-        headlines: [
-          "Full Stack Developer | React & Node.js Expert | Cloud Solutions Architect",
-          "Software Engineer Creating Scalable Web Solutions | React, Python & AWS",
-          "Tech Problem Solver & Full Stack Developer | JavaScript, Python, Cloud"
-        ],
-        skills: ["React.js", "Node.js", "Python", "AWS", "RESTful APIs", "MongoDB", "Performance Optimization"]
-      };
+    try {
+      const response = await optimizeLinkedIn(input);
       
-      setResults(mockResults);
+      if (response.error) {
+        toast.error(response.error);
+      } else if (response.data) {
+        setResults(response.data);
+        toast.success("LinkedIn profile optimized successfully!");
+      }
+    } catch (error) {
+      toast.error("Failed to optimize LinkedIn content. Please try again.");
+      console.error("LinkedIn optimization error:", error);
+    } finally {
       setOptimizing(false);
-      toast.success("LinkedIn profile optimized successfully!");
-    }, 2000);
+    }
   };
 
   const copyToClipboard = (text: string) => {
