@@ -1,13 +1,17 @@
 import React, { useState, useRef } from 'react';
 import StandardTemplate from './resume-templates/StandardTemplate';
+import AnalystTemplate from './resume-templates/AnalystTemplate';
+import ScientistTemplate from './resume-templates/ScientistTemplate';
+import EngineerTemplate from './resume-templates/EngineerTemplate';
 import { ResumeData } from '../types/resume';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { Label } from './ui/label';
-import { ChevronRight, ChevronLeft, Plus, Trash2, Download } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Plus, Trash2, Download, FileText } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 
 const defaultResumeData: ResumeData = {
   personalInfo: {
@@ -16,7 +20,9 @@ const defaultResumeData: ResumeData = {
     phone: "",
     email: "",
     location: "",
-    website: ""
+    website: "",
+    linkedIn: "",
+    github: ""
   },
   summary: "",
   experience: [
@@ -43,7 +49,8 @@ const defaultResumeData: ResumeData = {
     }
   ],
   achievements: [],
-  references: []
+  references: [],
+  templateType: "standard"
 };
 
 const ResumeBuilder: React.FC = () => {
@@ -140,10 +147,10 @@ const ResumeBuilder: React.FC = () => {
   const handleEducationChange = (index: number, field: string, value: string) => {
     setResumeData(prev => {
       const newEducation = [...prev.education];
-    newEducation[index] = {
-      ...newEducation[index],
+      newEducation[index] = {
+        ...newEducation[index],
         [field]: value
-    };
+      };
       return { ...prev, education: newEducation };
     });
   };
@@ -171,8 +178,27 @@ const ResumeBuilder: React.FC = () => {
     }));
   };
 
+  const handleAchievementChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const achievements = e.target.value
+      .split('\n')
+      .map(a => a.trim())
+      .filter(a => a);
+    
+    setResumeData(prev => ({
+      ...prev,
+      achievements
+    }));
+  };
+
+  const handleTemplateChange = (value: "standard" | "analyst" | "scientist" | "engineer") => {
+    setResumeData(prev => ({
+      ...prev,
+      templateType: value
+    }));
+  };
+
   const handleNext = () => {
-    if (currentStep < 4) {
+    if (currentStep < 5) {
       setCurrentStep(prev => prev + 1);
     } else {
       setShowPreview(true);
@@ -227,6 +253,19 @@ const ResumeBuilder: React.FC = () => {
     }
   };
 
+  const renderResumeTemplate = () => {
+    switch (resumeData.templateType) {
+      case "analyst":
+        return <AnalystTemplate resumeData={resumeData} />;
+      case "scientist":
+        return <ScientistTemplate resumeData={resumeData} />;
+      case "engineer":
+        return <EngineerTemplate resumeData={resumeData} />;
+      default:
+        return <StandardTemplate resumeData={resumeData} />;
+    }
+  };
+
   if (showPreview) {
     return (
       <div className="w-full min-h-screen bg-gray-100 dark:bg-gray-900 p-6">
@@ -251,7 +290,7 @@ const ResumeBuilder: React.FC = () => {
           </Button>
         </div>
         <div ref={resumeRef}>
-          <StandardTemplate resumeData={resumeData} />
+          {renderResumeTemplate()}
         </div>
       </div>
     );
@@ -266,14 +305,15 @@ const ResumeBuilder: React.FC = () => {
               {currentStep === 1 && "Personal Information"}
               {currentStep === 2 && "Experience"}
               {currentStep === 3 && "Skills"}
-              {currentStep === 4 && "Education"}
+              {currentStep === 4 && "Education & Achievements"}
+              {currentStep === 5 && "Choose Template"}
             </h2>
-            <span className="text-sm text-gray-500 dark:text-gray-400">Step {currentStep} of 4</span>
+            <span className="text-sm text-gray-500 dark:text-gray-400">Step {currentStep} of 5</span>
           </div>
           <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full">
             <div
               className="h-full bg-blue-600 dark:bg-blue-500 rounded-full transition-all duration-300"
-              style={{ width: `${(currentStep / 4) * 100}%` }}
+              style={{ width: `${(currentStep / 5) * 100}%` }}
             />
           </div>
         </div>
@@ -284,7 +324,7 @@ const ResumeBuilder: React.FC = () => {
               <Label htmlFor="fullName" className="dark:text-gray-100">Full Name</Label>
               <Input
                 id="fullName"
-                  name="fullName"
+                name="fullName"
                 value={resumeData.personalInfo.fullName}
                 onChange={handlePersonalInfoChange}
                 placeholder="John Doe"
@@ -297,36 +337,36 @@ const ResumeBuilder: React.FC = () => {
                 id="jobTitle"
                 name="jobTitle"
                 value={resumeData.personalInfo.jobTitle}
-                  onChange={handlePersonalInfoChange}
+                onChange={handlePersonalInfoChange}
                 placeholder="Software Engineer"
-                />
-              </div>
+              />
+            </div>
             <div>
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
                 name="email"
-                  type="email"
+                type="email"
                 value={resumeData.personalInfo.email}
-                  onChange={handlePersonalInfoChange}
+                onChange={handlePersonalInfoChange}
                 placeholder="john@example.com"
-                />
-              </div>
+              />
+            </div>
             <div>
               <Label htmlFor="phone">Phone</Label>
               <Input
                 id="phone"
-                  name="phone"
+                name="phone"
                 value={resumeData.personalInfo.phone}
-                  onChange={handlePersonalInfoChange}
+                onChange={handlePersonalInfoChange}
                 placeholder="+1 234 567 8900"
-                />
-              </div>
+              />
+            </div>
             <div>
               <Label htmlFor="location">Location</Label>
               <Input
                 id="location"
-                  name="location"
+                name="location"
                 value={resumeData.personalInfo.location}
                 onChange={handlePersonalInfoChange}
                 placeholder="New York, NY"
@@ -338,10 +378,30 @@ const ResumeBuilder: React.FC = () => {
                 id="website"
                 name="website"
                 value={resumeData.personalInfo.website}
-                  onChange={handlePersonalInfoChange}
+                onChange={handlePersonalInfoChange}
                 placeholder="www.example.com"
-                />
-              </div>
+              />
+            </div>
+            <div>
+              <Label htmlFor="linkedIn">LinkedIn (Optional)</Label>
+              <Input
+                id="linkedIn"
+                name="linkedIn"
+                value={resumeData.personalInfo.linkedIn}
+                onChange={handlePersonalInfoChange}
+                placeholder="linkedin.com/in/johndoe"
+              />
+            </div>
+            <div>
+              <Label htmlFor="github">GitHub (Optional)</Label>
+              <Input
+                id="github"
+                name="github"
+                value={resumeData.personalInfo.github}
+                onChange={handlePersonalInfoChange}
+                placeholder="github.com/johndoe"
+              />
+            </div>
             <div>
               <Label htmlFor="summary">Professional Summary</Label>
               <Textarea
@@ -356,15 +416,15 @@ const ResumeBuilder: React.FC = () => {
         )}
 
         {currentStep === 2 && (
-            <div className="space-y-6">
+          <div className="space-y-6">
             {resumeData.experience.map((exp, index) => (
               <div key={index} className="p-4 border dark:border-gray-600 rounded-lg space-y-4 dark:bg-gray-700">
-              <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center">
                   <h3 className="font-semibold">Experience {index + 1}</h3>
                   {resumeData.experience.length > 1 && (
                     <Button
                       variant="ghost"
-                          size="sm"
+                      size="sm"
                       onClick={() => removeExperience(index)}
                       className="text-red-500 hover:text-red-700"
                     >
@@ -386,7 +446,7 @@ const ResumeBuilder: React.FC = () => {
                     <Input
                       value={exp.company}
                       onChange={(e) => handleExperienceChange(index, 'company', e.target.value)}
-                        placeholder="Company Name"
+                      placeholder="Company Name"
                     />
                   </div>
                   <div>
@@ -436,7 +496,7 @@ const ResumeBuilder: React.FC = () => {
         )}
 
         {currentStep === 3 && (
-            <div className="space-y-6">
+          <div className="space-y-6">
             {Object.entries(resumeData.skills).map(([category, skills]) => (
               <div key={category} className="space-y-4">
                 <h3 className="font-semibold dark:text-gray-100">{category}</h3>
@@ -452,10 +512,10 @@ const ResumeBuilder: React.FC = () => {
                         className="ml-2 text-blue-600 dark:text-blue-300 hover:text-blue-800 dark:hover:text-blue-100"
                       >
                         ×
-                    </button>
-                  </div>
-                ))}
-              </div>
+                      </button>
+                    </div>
+                  ))}
+                </div>
                 <div className="flex gap-2">
                   <Input
                     value={skillInput.category === category ? skillInput.skill : ''}
@@ -471,7 +531,7 @@ const ResumeBuilder: React.FC = () => {
                   />
                   <Button onClick={() => handleSkillAdd(category)} className="dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600">
                     Add
-                    </Button>
+                  </Button>
                 </div>
               </div>
             ))}
@@ -479,15 +539,15 @@ const ResumeBuilder: React.FC = () => {
         )}
 
         {currentStep === 4 && (
-            <div className="space-y-6">
+          <div className="space-y-6">
             {resumeData.education.map((edu, index) => (
               <div key={index} className="p-4 border dark:border-gray-600 rounded-lg space-y-4 dark:bg-gray-700">
-              <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center">
                   <h3 className="font-semibold">Education {index + 1}</h3>
                   {resumeData.education.length > 1 && (
                     <Button
                       variant="ghost"
-                          size="sm"
+                      size="sm"
                       onClick={() => removeEducation(index)}
                       className="text-red-500 hover:text-red-700"
                     >
@@ -539,29 +599,119 @@ const ResumeBuilder: React.FC = () => {
                 </div>
               </div>
             ))}
-            <Button onClick={addEducation} variant="outline" className="w-full dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600">
+            <Button onClick={addEducation} variant="outline" className="w-full dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600 mb-6">
               <Plus className="w-4 h-4 mr-2" />
               Add Another Education
             </Button>
+            
+            <div className="mt-8">
+              <Label htmlFor="achievements">Key Achievements (Optional)</Label>
+              <Textarea
+                id="achievements"
+                value={resumeData.achievements?.join('\n') || ''}
+                onChange={handleAchievementChange}
+                placeholder="• Led a cross-functional team to deliver project under budget&#10;• Increased department efficiency by 25%&#10;• Recognized with Employee of the Year award"
+                className="h-32"
+              />
+              <p className="text-sm text-gray-500 mt-1">
+                Add each achievement on a new line
+              </p>
+            </div>
+          </div>
+        )}
+
+        {currentStep === 5 && (
+          <div className="space-y-6">
+            <h3 className="font-semibold dark:text-gray-100 mb-4">Choose a Resume Template</h3>
+            
+            <RadioGroup 
+              value={resumeData.templateType} 
+              onValueChange={(value) => handleTemplateChange(value as "standard" | "analyst" | "scientist" | "engineer")}
+              className="grid grid-cols-1 md:grid-cols-2 gap-4"
+            >
+              <div className={`border rounded-lg p-4 cursor-pointer hover:border-blue-500 transition-all ${resumeData.templateType === 'standard' ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : ''}`}>
+                <div className="flex items-start">
+                  <RadioGroupItem value="standard" id="standard" className="mt-1" />
+                  <div className="ml-2">
+                    <Label htmlFor="standard" className="font-medium">Standard Template</Label>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">A clean, professional layout suitable for most industries</p>
+                    <div className="mt-2 h-32 border rounded bg-gray-50 flex items-center justify-center">
+                      <FileText className="h-10 w-10 text-gray-400" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className={`border rounded-lg p-4 cursor-pointer hover:border-blue-500 transition-all ${resumeData.templateType === 'analyst' ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : ''}`}>
+                <div className="flex items-start">
+                  <RadioGroupItem value="analyst" id="analyst" className="mt-1" />
+                  <div className="ml-2">
+                    <Label htmlFor="analyst" className="font-medium">Business Analyst</Label>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Perfect for data analysts and business professionals</p>
+                    <div className="mt-2 h-32 border rounded overflow-hidden">
+                      <img 
+                        src="/lovable-uploads/85a6511a-3129-4e8a-9134-6ca86b3af5a6.png" 
+                        alt="Analyst Template" 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className={`border rounded-lg p-4 cursor-pointer hover:border-blue-500 transition-all ${resumeData.templateType === 'scientist' ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : ''}`}>
+                <div className="flex items-start">
+                  <RadioGroupItem value="scientist" id="scientist" className="mt-1" />
+                  <div className="ml-2">
+                    <Label htmlFor="scientist" className="font-medium">Data Scientist</Label>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Ideal for technical roles and research positions</p>
+                    <div className="mt-2 h-32 border rounded overflow-hidden">
+                      <img 
+                        src="/lovable-uploads/6fe3dd91-389b-414e-9de5-e24ba30e9cc1.png" 
+                        alt="Scientist Template" 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className={`border rounded-lg p-4 cursor-pointer hover:border-blue-500 transition-all ${resumeData.templateType === 'engineer' ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : ''}`}>
+                <div className="flex items-start">
+                  <RadioGroupItem value="engineer" id="engineer" className="mt-1" />
+                  <div className="ml-2">
+                    <Label htmlFor="engineer" className="font-medium">Software Engineer</Label>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Modern layout for software developers and engineers</p>
+                    <div className="mt-2 h-32 border rounded overflow-hidden">
+                      <img 
+                        src="/lovable-uploads/79a60cbc-87d7-403d-a814-43dc48605414.png" 
+                        alt="Engineer Template" 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </RadioGroup>
           </div>
         )}
 
         <div className="flex justify-between mt-8">
           <Button
-              onClick={handleBack}
+            onClick={handleBack}
             variant="outline"
-              disabled={currentStep === 1}
+            disabled={currentStep === 1}
             className="dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600 disabled:dark:bg-gray-800 disabled:dark:text-gray-500"
           >
             <ChevronLeft className="w-4 h-4 mr-2" />
             Back
           </Button>
           <Button 
-              onClick={handleNext}
+            onClick={handleNext}
             className="dark:bg-blue-600 dark:text-white dark:hover:bg-blue-700"
-            >
-            {currentStep === 4 ? 'Preview Resume' : 'Next'}
-            {currentStep !== 4 && <ChevronRight className="w-4 h-4 ml-2" />}
+          >
+            {currentStep === 5 ? 'Preview Resume' : 'Next'}
+            {currentStep !== 5 && <ChevronRight className="w-4 h-4 ml-2" />}
           </Button>
         </div>
       </div>
