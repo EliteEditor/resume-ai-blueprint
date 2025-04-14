@@ -182,7 +182,7 @@ const ResumeBuilder: React.FC = () => {
     const achievements = e.target.value
       .split('\n')
       .map(a => a.trim())
-      .filter(a => a);
+      .filter(Boolean);
     
     setResumeData(prev => ({
       ...prev,
@@ -216,13 +216,11 @@ const ResumeBuilder: React.FC = () => {
     
     setIsDownloading(true);
     try {
-      // Wait for fonts to load
       await document.fonts.ready;
       
-      // Create a clone with proper dimensions for A4
       const clone = resumeRef.current.cloneNode(true) as HTMLElement;
-      clone.style.width = '794px'; // A4 width at 96 DPI
-      clone.style.height = '1123px'; // A4 height at 96 DPI
+      clone.style.width = '794px';
+      clone.style.height = '1123px';
       clone.style.position = 'absolute';
       clone.style.top = '-9999px';
       clone.style.left = '-9999px';
@@ -611,7 +609,7 @@ const ResumeBuilder: React.FC = () => {
                 value={resumeData.achievements?.join('\n') || ''}
                 onChange={handleAchievementChange}
                 placeholder="• Led a cross-functional team to deliver project under budget&#10;• Increased department efficiency by 25%&#10;• Recognized with Employee of the Year award"
-                className="h-32"
+                className="h-32 whitespace-pre-wrap"
               />
               <p className="text-sm text-gray-500 mt-1">
                 Add each achievement on a new line

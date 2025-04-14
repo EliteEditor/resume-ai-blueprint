@@ -109,3 +109,22 @@
     transform: translateY(0);
   }
 }
+
+/* Properly format the resume for print/PDF */
+@media print {
+  body {
+    margin: 0;
+    padding: 0;
+    background: #fff;
+  }
+  
+  .max-w-\[850px\] {
+    max-width: none !important;
+    width: 100% !important;
+  }
+}
+
+/* Fix for the textarea whitespace preservation */
+.whitespace-pre-wrap {
+  white-space: pre-wrap;
+}

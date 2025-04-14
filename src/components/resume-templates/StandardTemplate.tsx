@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { ResumeData } from '../../types/resume';
 
@@ -7,17 +8,35 @@ interface StandardTemplateProps {
 
 const StandardTemplate: React.FC<StandardTemplateProps> = ({ resumeData }) => {
   return (
-    <div className="p-8 max-w-[850px] mx-auto bg-white text-gray-800">
+    <div className="p-8 max-w-[850px] mx-auto bg-white text-gray-800 font-['Roboto',sans-serif] shadow-lg">
       {/* Header */}
       <header className="mb-6">
-        <h1 className="text-3xl font-bold mb-2">{resumeData.personalInfo.fullName}</h1>
-        <p className="text-emerald-500 font-medium mb-2">{resumeData.personalInfo.jobTitle}</p>
-        <div className="flex gap-4 text-sm">
-          <span>{resumeData.personalInfo.phone}</span>
-          <span>{resumeData.personalInfo.email}</span>
-          <span>{resumeData.personalInfo.location}</span>
+        <h1 className="text-3xl font-bold mb-2 text-emerald-700">{resumeData.personalInfo.fullName}</h1>
+        <p className="text-emerald-600 font-medium mb-2">{resumeData.personalInfo.jobTitle}</p>
+        <div className="flex flex-wrap gap-4 text-sm">
+          {resumeData.personalInfo.phone && (
+            <span className="flex items-center">
+              <span className="mr-1">📱</span>
+              {resumeData.personalInfo.phone}
+            </span>
+          )}
+          {resumeData.personalInfo.email && (
+            <span className="flex items-center">
+              <span className="mr-1">📧</span>
+              {resumeData.personalInfo.email}
+            </span>
+          )}
+          {resumeData.personalInfo.location && (
+            <span className="flex items-center">
+              <span className="mr-1">📍</span>
+              {resumeData.personalInfo.location}
+            </span>
+          )}
           {resumeData.personalInfo.website && (
-            <span>{resumeData.personalInfo.website}</span>
+            <span className="flex items-center">
+              <span className="mr-1">🔗</span>
+              {resumeData.personalInfo.website}
+            </span>
           )}
         </div>
       </header>
@@ -25,27 +44,27 @@ const StandardTemplate: React.FC<StandardTemplateProps> = ({ resumeData }) => {
       {/* Summary */}
       {resumeData.summary && (
         <section className="mb-6">
-          <h2 className="text-lg font-bold mb-2 uppercase">Summary</h2>
-          <p>{resumeData.summary}</p>
+          <h2 className="text-lg font-bold mb-2 uppercase border-b border-gray-300 pb-1">SUMMARY</h2>
+          <p className="mt-2">{resumeData.summary}</p>
         </section>
       )}
 
       {/* Professional Experience */}
       <section className="mb-6">
-        <h2 className="text-lg font-bold mb-3 uppercase">Professional Experience</h2>
+        <h2 className="text-lg font-bold mb-3 uppercase border-b border-gray-300 pb-1">PROFESSIONAL EXPERIENCE</h2>
         {resumeData.experience.map((exp, index) => (
           <div key={index} className="mb-4">
-            <div className="flex justify-between items-start mb-1">
+            <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-1">
               <div>
                 <h3 className="font-bold">{exp.title}</h3>
-                <p className="text-emerald-500">{exp.company}</p>
+                <p className="text-emerald-600">{exp.company}</p>
               </div>
               <div className="text-right">
                 <p>{exp.location}</p>
                 <p>{exp.startDate} - {exp.endDate}</p>
               </div>
             </div>
-            <ul className="list-disc ml-4">
+            <ul className="list-disc ml-5">
               {exp.highlights.map((highlight, i) => (
                 <li key={i} className="mb-1">{highlight}</li>
               ))}
@@ -56,8 +75,8 @@ const StandardTemplate: React.FC<StandardTemplateProps> = ({ resumeData }) => {
 
       {/* Skills */}
       <section className="mb-6">
-        <h2 className="text-lg font-bold mb-2 uppercase">Skills</h2>
-        <div className="grid grid-cols-2 gap-4">
+        <h2 className="text-lg font-bold mb-2 uppercase border-b border-gray-300 pb-1">SKILLS</h2>
+        <div className="grid grid-cols-2 gap-4 mt-2">
           {Object.entries(resumeData.skills).map(([category, skills]) => (
             <div key={category}>
               <h3 className="font-bold mb-1">{category}</h3>
@@ -69,10 +88,10 @@ const StandardTemplate: React.FC<StandardTemplateProps> = ({ resumeData }) => {
 
       {/* Education */}
       <section className="mb-6">
-        <h2 className="text-lg font-bold mb-3 uppercase">Education</h2>
+        <h2 className="text-lg font-bold mb-3 uppercase border-b border-gray-300 pb-1">EDUCATION</h2>
         {resumeData.education.map((edu, index) => (
           <div key={index} className="mb-3">
-            <div className="flex justify-between">
+            <div className="flex flex-col md:flex-row md:justify-between">
               <div>
                 <h3 className="font-bold">{edu.degree}</h3>
                 <p>{edu.school}</p>
@@ -89,10 +108,10 @@ const StandardTemplate: React.FC<StandardTemplateProps> = ({ resumeData }) => {
       {/* Achievements */}
       {resumeData.achievements && resumeData.achievements.length > 0 && (
         <section className="mb-6">
-          <h2 className="text-lg font-bold mb-2 uppercase">Achievements</h2>
-          <ul className="list-disc ml-4">
+          <h2 className="text-lg font-bold mb-2 uppercase border-b border-gray-300 pb-1">ACHIEVEMENTS</h2>
+          <ul className="list-disc ml-5 mt-2">
             {resumeData.achievements.map((achievement, index) => (
-              <li key={index} className="mb-1">{achievement}</li>
+              <li key={index} className="mb-1 break-words">{achievement}</li>
             ))}
           </ul>
         </section>
@@ -101,8 +120,8 @@ const StandardTemplate: React.FC<StandardTemplateProps> = ({ resumeData }) => {
       {/* References */}
       {resumeData.references && resumeData.references.length > 0 && (
         <section>
-          <h2 className="text-lg font-bold mb-2 uppercase">References</h2>
-          <div className="grid grid-cols-2 gap-4">
+          <h2 className="text-lg font-bold mb-2 uppercase border-b border-gray-300 pb-1">REFERENCES</h2>
+          <div className="grid grid-cols-2 gap-4 mt-2">
             {resumeData.references.map((ref, index) => (
               <div key={index}>
                 <p className="font-bold">{ref.name}</p>
@@ -117,4 +136,4 @@ const StandardTemplate: React.FC<StandardTemplateProps> = ({ resumeData }) => {
   );
 };
 
-export default StandardTemplate; 
+export default StandardTemplate;

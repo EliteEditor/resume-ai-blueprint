@@ -8,10 +8,10 @@ interface AnalystTemplateProps {
 
 const AnalystTemplate: React.FC<AnalystTemplateProps> = ({ resumeData }) => {
   return (
-    <div className="p-8 max-w-[850px] mx-auto bg-white text-gray-800 font-['Open_Sans',sans-serif]">
+    <div className="p-8 max-w-[850px] mx-auto bg-white text-gray-800 font-['Open_Sans',sans-serif] shadow-lg">
       <div className="grid grid-cols-12 gap-6">
         {/* Left sidebar */}
-        <div className="col-span-4 bg-emerald-700 text-white p-6">
+        <div className="col-span-4 bg-emerald-700 text-white p-6 rounded-l-lg">
           <div className="mb-8">
             <h1 className="text-2xl font-bold uppercase mb-2">{resumeData.personalInfo.fullName}</h1>
           </div>
@@ -22,7 +22,7 @@ const AnalystTemplate: React.FC<AnalystTemplateProps> = ({ resumeData }) => {
             {resumeData.achievements && resumeData.achievements.length > 0 && (
               <ul className="space-y-4">
                 {resumeData.achievements.map((achievement, index) => (
-                  <li key={index} className="text-sm">
+                  <li key={index} className="text-sm break-words">
                     {achievement}
                   </li>
                 ))}
@@ -60,11 +60,11 @@ const AnalystTemplate: React.FC<AnalystTemplateProps> = ({ resumeData }) => {
               <div key={index} className="mb-4">
                 <h3 className="text-sm font-semibold mb-1">{project.name}</h3>
                 <p className="text-xs">{project.startDate} - {project.endDate}</p>
-                <p className="text-sm mt-1">{project.description}</p>
+                <p className="text-sm mt-1 break-words">{project.description}</p>
                 {project.highlights && (
                   <ul className="list-disc ml-4 mt-1">
                     {project.highlights.map((highlight, i) => (
-                      <li key={i} className="text-xs">{highlight}</li>
+                      <li key={i} className="text-xs break-words">{highlight}</li>
                     ))}
                   </ul>
                 )}
@@ -76,7 +76,7 @@ const AnalystTemplate: React.FC<AnalystTemplateProps> = ({ resumeData }) => {
         {/* Right content area */}
         <div className="col-span-8 p-6">
           {/* Contact Info */}
-          <div className="flex items-center justify-between text-sm mb-4">
+          <div className="flex flex-wrap gap-4 text-sm mb-4">
             <div className="flex items-center">
               <span className="mr-1">📧</span>
               <span>{resumeData.personalInfo.email}</span>
@@ -89,6 +89,12 @@ const AnalystTemplate: React.FC<AnalystTemplateProps> = ({ resumeData }) => {
               <span className="mr-1">📍</span>
               <span>{resumeData.personalInfo.location}</span>
             </div>
+            {resumeData.personalInfo.phone && (
+              <div className="flex items-center">
+                <span className="mr-1">📱</span>
+                <span>{resumeData.personalInfo.phone}</span>
+              </div>
+            )}
           </div>
           
           {/* Job Title */}
@@ -107,7 +113,7 @@ const AnalystTemplate: React.FC<AnalystTemplateProps> = ({ resumeData }) => {
             <h2 className="uppercase text-lg font-bold border-b border-gray-300 pb-1 mb-3">EXPERIENCE</h2>
             {resumeData.experience.map((exp, index) => (
               <div key={index} className="mb-4">
-                <div className="flex justify-between items-start mb-1">
+                <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-1">
                   <div>
                     <h3 className="text-sm font-bold">{exp.title}</h3>
                     <p className="text-emerald-700 text-sm">{exp.company}</p>
@@ -117,9 +123,9 @@ const AnalystTemplate: React.FC<AnalystTemplateProps> = ({ resumeData }) => {
                     <p className="text-sm">{exp.location}</p>
                   </div>
                 </div>
-                <ul className="list-disc ml-4 mt-1">
+                <ul className="list-disc ml-4 mt-2">
                   {exp.highlights.map((highlight, i) => (
-                    <li key={i} className="text-sm mb-1">{highlight}</li>
+                    <li key={i} className="text-sm mb-1 break-words">{highlight}</li>
                   ))}
                 </ul>
               </div>
@@ -130,8 +136,8 @@ const AnalystTemplate: React.FC<AnalystTemplateProps> = ({ resumeData }) => {
           <div className="mb-6">
             <h2 className="uppercase text-lg font-bold border-b border-gray-300 pb-1 mb-3">EDUCATION</h2>
             {resumeData.education.map((edu, index) => (
-              <div key={index} className="mb-2">
-                <div className="flex justify-between">
+              <div key={index} className="mb-3">
+                <div className="flex flex-col md:flex-row md:justify-between">
                   <div>
                     <h3 className="text-sm font-bold">{edu.degree}</h3>
                     <p className="text-sm">{edu.school}</p>
