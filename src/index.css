@@ -112,19 +112,51 @@
 
 /* Properly format the resume for print/PDF */
 @media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+  
   body {
     margin: 0;
     padding: 0;
-    background: #fff;
+    background: #fff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
   
   .max-w-\[850px\] {
     max-width: none !important;
     width: 100% !important;
+    margin: 0 !important;
+    padding: 20mm 16mm !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+    page-break-inside: avoid !important;
+  }
+  
+  /* Hide UI elements during print */
+  button, .absolute {
+    display: none !important;
   }
 }
 
 /* Fix for the textarea whitespace preservation */
 .whitespace-pre-wrap {
   white-space: pre-wrap;
+}
+
+/* Typography improvements */
+.resume-heading {
+  letter-spacing: -0.02em;
+}
+
+.resume-body {
+  line-height: 1.6;
+}
+
+/* Resume content should break properly on print */
+.resume-content {
+  word-break: break-word;
+  overflow-wrap: break-word;
 }

@@ -8,21 +8,21 @@ interface AnalystTemplateProps {
 
 const AnalystTemplate: React.FC<AnalystTemplateProps> = ({ resumeData }) => {
   return (
-    <div className="p-8 max-w-[850px] mx-auto bg-white text-gray-800 font-['Open_Sans',sans-serif] shadow-lg">
+    <div className="p-8 max-w-[850px] mx-auto bg-white text-gray-800 font-['Open_Sans',sans-serif] shadow-lg resume-content">
       <div className="grid grid-cols-12 gap-6">
         {/* Left sidebar */}
         <div className="col-span-4 bg-emerald-700 text-white p-6 rounded-l-lg">
           <div className="mb-8">
-            <h1 className="text-2xl font-bold uppercase mb-2">{resumeData.personalInfo.fullName}</h1>
+            <h1 className="text-2xl font-bold uppercase mb-2 resume-heading">{resumeData.personalInfo.fullName}</h1>
           </div>
           
           {/* Achievements Section */}
           <div className="mb-8">
-            <h2 className="uppercase text-lg font-bold border-b border-white pb-1 mb-4">ACHIEVEMENTS</h2>
+            <h2 className="uppercase text-lg font-bold border-b border-white pb-1 mb-4 resume-heading">ACHIEVEMENTS</h2>
             {resumeData.achievements && resumeData.achievements.length > 0 && (
               <ul className="space-y-4">
                 {resumeData.achievements.map((achievement, index) => (
-                  <li key={index} className="text-sm break-words">
+                  <li key={index} className="text-sm break-words whitespace-pre-wrap resume-body">
                     {achievement}
                   </li>
                 ))}
@@ -32,18 +32,18 @@ const AnalystTemplate: React.FC<AnalystTemplateProps> = ({ resumeData }) => {
           
           {/* Skills Section */}
           <div className="mb-8">
-            <h2 className="uppercase text-lg font-bold border-b border-white pb-1 mb-4">SKILLS</h2>
+            <h2 className="uppercase text-lg font-bold border-b border-white pb-1 mb-4 resume-heading">SKILLS</h2>
             {Object.entries(resumeData.skills).map(([category, skills]) => (
               <div key={category} className="mb-4">
                 <p className="text-sm font-semibold mb-2">{category}</p>
-                <p className="text-sm">{skills.join(' • ')}</p>
+                <p className="text-sm resume-body">{skills.join(' • ')}</p>
               </div>
             ))}
           </div>
           
           {/* Certifications Section */}
           <div className="mb-8">
-            <h2 className="uppercase text-lg font-bold border-b border-white pb-1 mb-4">CERTIFICATION</h2>
+            <h2 className="uppercase text-lg font-bold border-b border-white pb-1 mb-4 resume-heading">CERTIFICATION</h2>
             {resumeData.certifications && resumeData.certifications.map((cert, index) => (
               <div key={index} className="mb-2">
                 <p className="text-sm font-semibold">{cert.name}</p>
@@ -55,16 +55,16 @@ const AnalystTemplate: React.FC<AnalystTemplateProps> = ({ resumeData }) => {
           
           {/* Projects Section */}
           <div className="mb-6">
-            <h2 className="uppercase text-lg font-bold border-b border-white pb-1 mb-4">PROJECTS</h2>
+            <h2 className="uppercase text-lg font-bold border-b border-white pb-1 mb-4 resume-heading">PROJECTS</h2>
             {resumeData.projects && resumeData.projects.map((project, index) => (
               <div key={index} className="mb-4">
                 <h3 className="text-sm font-semibold mb-1">{project.name}</h3>
                 <p className="text-xs">{project.startDate} - {project.endDate}</p>
-                <p className="text-sm mt-1 break-words">{project.description}</p>
+                <p className="text-sm mt-1 break-words whitespace-pre-wrap resume-body">{project.description}</p>
                 {project.highlights && (
                   <ul className="list-disc ml-4 mt-1">
                     {project.highlights.map((highlight, i) => (
-                      <li key={i} className="text-xs break-words">{highlight}</li>
+                      <li key={i} className="text-xs break-words whitespace-pre-wrap resume-body">{highlight}</li>
                     ))}
                   </ul>
                 )}
@@ -104,13 +104,13 @@ const AnalystTemplate: React.FC<AnalystTemplateProps> = ({ resumeData }) => {
           
           {/* Summary */}
           <div className="mb-6">
-            <h2 className="uppercase text-lg font-bold border-b border-gray-300 pb-1 mb-3">SUMMARY</h2>
-            <p className="text-sm">{resumeData.summary}</p>
+            <h2 className="uppercase text-lg font-bold border-b border-gray-300 pb-1 mb-3 resume-heading">SUMMARY</h2>
+            <p className="text-sm whitespace-pre-wrap resume-body">{resumeData.summary}</p>
           </div>
           
           {/* Experience */}
           <div className="mb-6">
-            <h2 className="uppercase text-lg font-bold border-b border-gray-300 pb-1 mb-3">EXPERIENCE</h2>
+            <h2 className="uppercase text-lg font-bold border-b border-gray-300 pb-1 mb-3 resume-heading">EXPERIENCE</h2>
             {resumeData.experience.map((exp, index) => (
               <div key={index} className="mb-4">
                 <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-1">
@@ -125,7 +125,7 @@ const AnalystTemplate: React.FC<AnalystTemplateProps> = ({ resumeData }) => {
                 </div>
                 <ul className="list-disc ml-4 mt-2">
                   {exp.highlights.map((highlight, i) => (
-                    <li key={i} className="text-sm mb-1 break-words">{highlight}</li>
+                    <li key={i} className="text-sm mb-1 break-words whitespace-pre-wrap resume-body">{highlight}</li>
                   ))}
                 </ul>
               </div>
@@ -134,7 +134,7 @@ const AnalystTemplate: React.FC<AnalystTemplateProps> = ({ resumeData }) => {
           
           {/* Education */}
           <div className="mb-6">
-            <h2 className="uppercase text-lg font-bold border-b border-gray-300 pb-1 mb-3">EDUCATION</h2>
+            <h2 className="uppercase text-lg font-bold border-b border-gray-300 pb-1 mb-3 resume-heading">EDUCATION</h2>
             {resumeData.education.map((edu, index) => (
               <div key={index} className="mb-3">
                 <div className="flex flex-col md:flex-row md:justify-between">
@@ -151,8 +151,8 @@ const AnalystTemplate: React.FC<AnalystTemplateProps> = ({ resumeData }) => {
             ))}
           </div>
           
-          {/* Display a green icon in the top right */}
-          <div className="absolute top-8 right-8 bg-emerald-500 rounded-full w-12 h-12 flex items-center justify-center shadow-lg">
+          {/* Don't display icons in print mode */}
+          <div className="absolute top-8 right-8 bg-emerald-500 rounded-full w-12 h-12 flex items-center justify-center shadow-lg print:hidden">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>

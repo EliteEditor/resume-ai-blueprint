@@ -181,7 +181,6 @@ const ResumeBuilder: React.FC = () => {
   const handleAchievementChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const achievements = e.target.value
       .split('\n')
-      .map(a => a.trim())
       .filter(Boolean);
     
     setResumeData(prev => ({
@@ -609,10 +608,10 @@ const ResumeBuilder: React.FC = () => {
                 value={resumeData.achievements?.join('\n') || ''}
                 onChange={handleAchievementChange}
                 placeholder="• Led a cross-functional team to deliver project under budget&#10;• Increased department efficiency by 25%&#10;• Recognized with Employee of the Year award"
-                className="h-32 whitespace-pre-wrap"
+                className="h-32 whitespace-pre-wrap" 
               />
               <p className="text-sm text-gray-500 mt-1">
-                Add each achievement on a new line
+                Add each achievement on a new line. Formatting will be preserved.
               </p>
             </div>
           </div>
