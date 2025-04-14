@@ -1,3 +1,11 @@
+
+// Add the missing type definition at the top of the file
+export interface OptimizationResponse {
+  bio: string;
+  headlines: string[];
+  skills: string[];
+}
+
 export const optimizeLinkedInWithMistral = async (content: string): Promise<OptimizationResponse> => {
   try {
     const response = await fetch('https://api.together.xyz/inference', {
