@@ -1,13 +1,31 @@
-
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { FileText, Linkedin, Settings, ArrowRight, CheckCircle, Lock, Shield, ChevronRight } from 'lucide-react';
+import { FileText, Linkedin, Settings, ArrowRight, CheckCircle, Lock, Shield, ChevronRight, Briefcase } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Separator } from '@/components/ui/separator';
 
 const Landing: React.FC = () => {
   const navigate = useNavigate();
   const featuresRef = useRef<HTMLDivElement>(null);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    // Initialize from localStorage or system preference
+    const saved = localStorage.getItem('darkMode');
+    if (saved !== null) {
+      return saved === 'true';
+    }
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  });
+
+  // Apply dark mode class on mount and when isDarkMode changes
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', isDarkMode);
+    localStorage.setItem('darkMode', String(isDarkMode));
+  }, [isDarkMode]);
+
+  // Ensure we're at the top of the page when landing page loads
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const features = [
     {
@@ -56,14 +74,10 @@ const Landing: React.FC = () => {
     }
   ];
 
-  const companyLogos = [
-    { name: "Google", logo: "/placeholder.svg" },
-    { name: "Microsoft", logo: "/placeholder.svg" },
-    { name: "Amazon", logo: "/placeholder.svg" },
-    { name: "IBM", logo: "/placeholder.svg" },
-    { name: "Meta", logo: "/placeholder.svg" }
-  ];
-  
+  const handleGetStarted = () => {
+    navigate('/app');
+  };
+
   const scrollToFeatures = () => {
     if (featuresRef.current) {
       featuresRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -71,7 +85,24 @@ const Landing: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950">
+    <div className={`min-h-screen transition-colors duration-200 ${isDarkMode ? 'dark' : ''}`}>
+      {/* Navigation */}
+      <nav className="container mx-auto px-6 py-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Briefcase className="h-7 w-7 text-primary" />
+            <span className="text-xl font-bold text-primary">Nexprofile</span>
+          </div>
+          <Button 
+            variant="ghost" 
+            onClick={() => navigate('/app')}
+            className="hover:bg-primary/10"
+          >
+            Go to App
+          </Button>
+        </div>
+      </nav>
+
       {/* Hero Section - Enhanced with stronger CTA */}
       <div className="container mx-auto px-6 py-16 md:py-24 animate-fade-in">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -89,8 +120,8 @@ const Landing: React.FC = () => {
             <div className="mt-8 flex flex-col sm:flex-row gap-4">
               <Button 
                 size="lg"
-                onClick={() => navigate('/app')}
-                className="flex items-center gap-2 shadow-lg hover-scale"
+                onClick={handleGetStarted}
+                className="flex items-center gap-2 shadow-lg hover:shadow-xl transition-all"
               >
                 Build My Resume with AI
                 <ArrowRight className="h-4 w-4" />
@@ -99,55 +130,29 @@ const Landing: React.FC = () => {
                 size="lg"
                 variant="outline"
                 onClick={scrollToFeatures}
-                className="hover-scale"
+                className="hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
               >
                 Learn More
               </Button>
             </div>
           </div>
           <div className="hidden lg:block">
-            <div className="relative" style={{ height: '400px' }}>
+            <div className="relative" style={{ height: '500px' }}>
               {/* Background decorative elements */}
               <div className="absolute inset-0 bg-primary/5 rounded-lg transform rotate-3" style={{ zIndex: 1 }}></div>
               
               {/* Main image */}
               <div className="absolute inset-0" style={{ zIndex: 5 }}>
-                <img 
-                  src="/lovable-uploads/e3b83f6b-8680-4aa9-a951-0d0c19b0d932.png" 
-                  alt="Resume and LinkedIn Profile" 
-                  className="w-full h-full object-cover rounded-lg resume-shadow"
-                  style={{ objectFit: 'cover' }}
-                />
-              </div>
-              
-              {/* Badge overlay */}
-              <div className="absolute -bottom-4 -right-4 bg-white dark:bg-gray-800 p-3 rounded-lg shadow-lg" style={{ zIndex: 10 }}>
-                <div className="flex items-center gap-2">
-                  <div className="h-3 w-3 bg-green-500 rounded-full animate-pulse"></div>
-                  <span className="text-sm font-medium">AI-Powered</span>
+                <div className="bg-white rounded-lg p-4 shadow-xl h-full">
+                  <img 
+                    src="/images/e4de7bab-6389-4afb-aa0a-71a12e9f904d.png" 
+                    alt="AI Resume Builder Interface" 
+                    className="w-full h-full object-contain rounded-lg"
+                    style={{ backgroundColor: 'rgb(248, 250, 252)' }}
+                  />
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-      
-      {/* Social Proof - Logo Carousel */}
-      <div className="bg-white dark:bg-gray-900 py-8 border-y border-gray-100 dark:border-gray-800">
-        <div className="container mx-auto px-6">
-          <p className="text-center text-sm font-medium text-gray-500 dark:text-gray-400 mb-6">
-            TRUSTED BY PROFESSIONALS FROM
-          </p>
-          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
-            {companyLogos.map((company, index) => (
-              <div key={index} className="grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all">
-                <img 
-                  src={company.logo} 
-                  alt={`${company.name} logo`} 
-                  className="h-8 md:h-10 w-auto"
-                />
-              </div>
-            ))}
           </div>
         </div>
       </div>
@@ -171,7 +176,7 @@ const Landing: React.FC = () => {
                 className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-sm hover:shadow-md transition-all relative overflow-hidden"
               >
                 <div className="text-4xl mb-4">{step.icon}</div>
-                <div className="absolute -top-2 -right-2 bg-primary/10 text-primary font-bold p-2 rounded-bl-lg">
+                <div className="absolute top-0 right-0 bg-primary/10 text-primary font-bold px-3 py-1.5 rounded-bl-lg">
                   Step {step.step}
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">

@@ -1,12 +1,11 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
-import { CircleCheck, Sparkles, ClipboardCopy } from 'lucide-react';
-import { optimizeLinkedIn } from '@/utils/apiService';
+import { CircleCheck, Sparkles, ClipboardCopy, Loader2 } from 'lucide-react';
+import { optimizeLinkedInWithMistral } from '@/utils/apiService';
 
 const LinkedInOptimizer: React.FC = () => {
   const [input, setInput] = useState('');
@@ -26,7 +25,7 @@ const LinkedInOptimizer: React.FC = () => {
     setOptimizing(true);
 
     try {
-      const response = await optimizeLinkedIn(input);
+      const response = await optimizeLinkedInWithMistral(input);
       
       if (response.error) {
         toast.error(response.error);
@@ -49,32 +48,43 @@ const LinkedInOptimizer: React.FC = () => {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">LinkedIn Profile Optimizer</h1>
+      <h1 className="text-2xl font-bold mb-6">LinkedIn Profile Optimizer (Powered by AI)</h1>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
           <Card className="p-6">
-            <Label htmlFor="linkedin-input" className="mb-2 block text-base font-medium">
-              Paste your current LinkedIn bio or job title
-            </Label>
-            <Textarea
-              id="linkedin-input"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="I am a web developer with experience in JavaScript and React..."
-              className="h-40 mb-4"
-            />
-            <Button 
-              onClick={handleOptimize} 
-              disabled={optimizing} 
-              className="w-full flex items-center justify-center gap-2"
-            >
-              <Sparkles className="h-4 w-4" />
-              {optimizing ? "Optimizing..." : "Optimize with AI"}
-            </Button>
+            <div className="space-y-4">
+              <Label htmlFor="linkedin-input" className="text-base font-medium">
+                Paste your current LinkedIn bio or job title
+              </Label>
+              <Textarea
+                id="linkedin-input"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="I am a web developer with experience in JavaScript and React..."
+                className="h-40"
+              />
+              <Button 
+                onClick={handleOptimize}
+                disabled={optimizing}
+                className="w-full"
+              >
+                {optimizing ? (
+                  <div className="flex items-center gap-2">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <span>Optimizing with AI...</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="h-4 w-4" />
+                    <span>Optimize with AI</span>
+                  </div>
+                )}
+              </Button>
+            </div>
           </Card>
           
-          <div className="mt-6">
+          <div className="mt-8">
             <h2 className="text-xl font-semibold mb-4">How it works:</h2>
             <ol className="space-y-3 text-gray-700 dark:text-gray-300">
               <li className="flex items-start gap-2">
@@ -87,11 +97,7 @@ const LinkedInOptimizer: React.FC = () => {
               </li>
               <li className="flex items-start gap-2">
                 <span className="flex-shrink-0 w-6 h-6 bg-primary/20 text-primary rounded-full flex items-center justify-center font-medium">3</span>
-                <span>Review the optimized content and copy what you like</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="flex-shrink-0 w-6 h-6 bg-primary/20 text-primary rounded-full flex items-center justify-center font-medium">4</span>
-                <span>Update your LinkedIn profile with the enhanced content</span>
+                <span>Review and copy the enhanced content to your LinkedIn profile</span>
               </li>
             </ol>
           </div>
@@ -112,7 +118,7 @@ const LinkedInOptimizer: React.FC = () => {
                 <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary mb-4"></div>
                 <h3 className="text-lg font-medium text-gray-900 dark:text-gray-200">Generating optimized content...</h3>
                 <p className="text-gray-600 dark:text-gray-400 text-center mt-2">
-                  Our AI is analyzing your content and creating keyword-rich suggestions
+                  AI is analyzing your content and creating keyword-rich suggestions
                 </p>
               </div>
             </div>
