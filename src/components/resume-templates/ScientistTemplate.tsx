@@ -26,7 +26,7 @@ const ScientistTemplate: React.FC<ScientistTemplateProps> = ({ resumeData }) => 
           </div>
           <div className="flex items-center">
             <span className="mr-1">🔗</span>
-            {resumeData.personalInfo.linkedIn || "www.linkedin.com"}
+            {resumeData.personalInfo.linkedin || "www.linkedin.com"}
           </div>
           <div className="flex items-center">
             <span className="mr-1">📍</span>

@@ -83,7 +83,7 @@ const AnalystTemplate: React.FC<AnalystTemplateProps> = ({ resumeData }) => {
             </div>
             <div className="flex items-center">
               <span className="mr-1">🔗</span>
-              <span>{resumeData.personalInfo.linkedIn || resumeData.personalInfo.website}</span>
+              <span>{resumeData.personalInfo.linkedin || resumeData.personalInfo.website}</span>
             </div>
             <div className="flex items-center">
               <span className="mr-1">📍</span>

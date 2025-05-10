@@ -21,6 +21,7 @@ const App = () => {
             <main className="min-h-[calc(100vh-4rem)]">
               <Routes>
                 <Route path="/" element={<Index />} />
+                {/* Add more routes as needed */}
               </Routes>
             </main>
             <footer className="bg-gray-50 border-t border-gray-200">

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { 
   NavigationMenu,
@@ -18,7 +18,7 @@ const Navigation = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           <div className="flex items-center">
-            <Link href="/" className="flex items-center">
+            <Link to="/" className="flex items-center">
               <span className="text-2xl font-bold text-blue-600 font-heading">ResumeAI</span>
             </Link>
             
@@ -31,7 +31,7 @@ const Navigation = () => {
                       <li className="row-span-3">
                         <NavigationMenuLink asChild>
                           <Link
-                            href="/templates"
+                            to="/templates"
                             className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-blue-50 to-blue-100 p-6 no-underline outline-none focus:shadow-md"
                           >
                             <div className="mt-4 mb-2 text-lg font-medium">
@@ -45,7 +45,7 @@ const Navigation = () => {
                       </li>
                       <li>
                         <Link
-                          href="/templates?category=professional"
+                          to="/templates?category=professional"
                           className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900"
                         >
                           <div className="text-sm font-medium leading-none">Professional</div>
@@ -56,7 +56,7 @@ const Navigation = () => {
                       </li>
                       <li>
                         <Link
-                          href="/templates?category=creative"
+                          to="/templates?category=creative"
                           className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900"
                         >
                           <div className="text-sm font-medium leading-none">Creative</div>
@@ -70,18 +70,14 @@ const Navigation = () => {
                 </NavigationMenuItem>
                 
                 <NavigationMenuItem>
-                  <Link href="/dashboard" legacyBehavior passHref>
-                    <NavigationMenuLink className="h-10 px-4 py-2 group inline-flex items-center rounded-md text-sm font-medium text-gray-600 hover:text-gray-900">
-                      Dashboard
-                    </NavigationMenuLink>
+                  <Link to="/dashboard" className="h-10 px-4 py-2 group inline-flex items-center rounded-md text-sm font-medium text-gray-600 hover:text-gray-900">
+                    Dashboard
                   </Link>
                 </NavigationMenuItem>
                 
                 <NavigationMenuItem>
-                  <Link href="#" legacyBehavior passHref>
-                    <NavigationMenuLink className="h-10 px-4 py-2 group inline-flex items-center rounded-md text-sm font-medium text-gray-600 hover:text-gray-900">
-                      Pricing
-                    </NavigationMenuLink>
+                  <Link to="#" className="h-10 px-4 py-2 group inline-flex items-center rounded-md text-sm font-medium text-gray-600 hover:text-gray-900">
+                    Pricing
                   </Link>
                 </NavigationMenuItem>
               </NavigationMenuList>

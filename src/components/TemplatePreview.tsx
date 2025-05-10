@@ -1,5 +1,6 @@
+
 import React from 'react';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 
 interface TemplatePreviewProps {
   title: string;
@@ -17,7 +18,7 @@ const TemplatePreview: React.FC<TemplatePreviewProps> = ({
   accentColor,
 }) => {
   return (
-    <Link href={`/editor/${templateId}`}>
+    <Link to={`/editor/${templateId}`}>
       <div
         className={`relative rounded-lg overflow-hidden border-2 transition-all duration-200 hover:shadow-lg cursor-pointer ${
           selected ? `border-${accentColor}-500` : 'border-gray-200'
@@ -49,4 +50,4 @@ const TemplatePreview: React.FC<TemplatePreviewProps> = ({
   );
 };
 
-export default TemplatePreview; 
+export default TemplatePreview;

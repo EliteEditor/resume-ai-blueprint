@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { ResumeData } from '../../types/resume';
 
@@ -108,8 +109,15 @@ const MasonTurnerTemplate: React.FC<MasonTurnerTemplateProps> = ({ resumeData })
               {resumeData.projects.map((project, index) => (
                 <div key={index}>
                   <h4 className="text-base font-medium text-gray-900">{project.name}</h4>
-                  <p className="text-indigo-600 mb-2">{project.technologies.join(' • ')}</p>
-                  <p className="text-gray-700">{project.description}</p>
+                  {/* Display project description instead of non-existent technologies */}
+                  <p className="text-indigo-600 mb-2">{project.description}</p>
+                  {project.highlights && project.highlights.length > 0 && (
+                    <ul className="list-disc list-inside text-gray-700 space-y-1 ml-4">
+                      {project.highlights.map((highlight, i) => (
+                        <li key={i}>{highlight}</li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               ))}
             </div>
@@ -144,4 +152,4 @@ const MasonTurnerTemplate: React.FC<MasonTurnerTemplateProps> = ({ resumeData })
   );
 };
 
-export default MasonTurnerTemplate; 
+export default MasonTurnerTemplate;
