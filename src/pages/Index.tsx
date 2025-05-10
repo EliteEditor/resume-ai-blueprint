@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import ResumeBuilder from '@/components/ResumeBuilder';
 import LinkedInOptimizer from '@/components/LinkedInOptimizer';
@@ -5,6 +6,7 @@ import Settings from '@/components/Settings';
 import Sidebar from '@/components/Sidebar';
 import MobileNav from '@/components/MobileNav';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { motion } from 'framer-motion';
 
 const Index: React.FC = () => {
   const [activeTab, setActiveTab] = useState('resume');
@@ -64,19 +66,41 @@ const Index: React.FC = () => {
   const renderContent = () => {
     switch (activeTab) {
       case 'resume':
-        return <ResumeBuilder />;
+        return (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <ResumeBuilder />
+          </motion.div>
+        );
       case 'linkedin':
-        return <LinkedInOptimizer />;
+        return (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <LinkedInOptimizer />
+          </motion.div>
+        );
       case 'settings':
         return (
-          <Settings 
-            isDarkMode={isDarkMode} 
-            toggleDarkMode={toggleDarkMode}
-            fontSize={fontSize}
-            onFontSizeChange={handleFontSizeChange}
-            language={language}
-            onLanguageChange={handleLanguageChange}
-          />
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Settings 
+              isDarkMode={isDarkMode} 
+              toggleDarkMode={toggleDarkMode}
+              fontSize={fontSize}
+              onFontSizeChange={handleFontSizeChange}
+              language={language}
+              onLanguageChange={handleLanguageChange}
+            />
+          </motion.div>
         );
       default:
         return <ResumeBuilder />;
@@ -84,7 +108,7 @@ const Index: React.FC = () => {
   };
 
   return (
-    <div className={`min-h-screen transition-colors duration-200 ${isDarkMode ? 'dark bg-gray-900' : 'bg-white'}`}>
+    <div className={`min-h-screen transition-colors duration-200 ${isDarkMode ? 'dark bg-gray-900' : 'bg-gray-50'}`}>
       <div className="hidden md:block">
         <Sidebar 
           activeTab={activeTab} 
@@ -92,7 +116,7 @@ const Index: React.FC = () => {
           isDarkMode={isDarkMode}
           toggleDarkMode={toggleDarkMode}
         />
-          </div>
+      </div>
       <div className="md:hidden">
         <MobileNav 
           activeTab={activeTab} 
@@ -101,8 +125,10 @@ const Index: React.FC = () => {
           toggleDarkMode={toggleDarkMode}
         />
       </div>
-      <main className={`min-h-screen transition-colors duration-200 ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'} md:pl-[280px]`}>
-        {renderContent()}
+      <main className={`min-h-screen transition-colors duration-200 ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'} md:pl-[280px] p-4 md:p-8`}>
+        <div className="max-w-5xl mx-auto">
+          {renderContent()}
+        </div>
       </main>
     </div>
   );
