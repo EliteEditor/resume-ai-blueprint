@@ -116,7 +116,6 @@ body {
   }
 }
 
-<<<<<<< HEAD
 /* Animation Classes */
 .animate-float {
   animation: float 6s ease-in-out infinite;
@@ -210,7 +209,8 @@ body {
   animation: shimmer 2s infinite linear;
   background: linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%);
   background-size: 1000px 100%;
-=======
+}
+
 /* Properly format the resume for print/PDF */
 @media print {
   @page {
@@ -260,5 +260,4 @@ body {
 .resume-content {
   word-break: break-word;
   overflow-wrap: break-word;
->>>>>>> c357b2bd0947de87665cb81cb48ab30105c118a4
 }
