@@ -116,6 +116,7 @@ body {
   }
 }
 
+<<<<<<< HEAD
 /* Animation Classes */
 .animate-float {
   animation: float 6s ease-in-out infinite;
@@ -209,4 +210,55 @@ body {
   animation: shimmer 2s infinite linear;
   background: linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%);
   background-size: 1000px 100%;
+=======
+/* Properly format the resume for print/PDF */
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    background: #fff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  .max-w-\[850px\] {
+    max-width: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 20mm 16mm !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+    page-break-inside: avoid !important;
+  }
+  
+  /* Hide UI elements during print */
+  button, .absolute {
+    display: none !important;
+  }
+}
+
+/* Fix for the textarea whitespace preservation */
+.whitespace-pre-wrap {
+  white-space: pre-wrap;
+}
+
+/* Typography improvements */
+.resume-heading {
+  letter-spacing: -0.02em;
+}
+
+.resume-body {
+  line-height: 1.6;
+}
+
+/* Resume content should break properly on print */
+.resume-content {
+  word-break: break-word;
+  overflow-wrap: break-word;
+>>>>>>> c357b2bd0947de87665cb81cb48ab30105c118a4
 }

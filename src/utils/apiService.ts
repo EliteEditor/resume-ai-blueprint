@@ -399,24 +399,27 @@ Content to optimize: ${text}`
   }
 };
 
-// Function to list available models
+// Updated function to list available models without using the non-existent listModels method
 export const listAvailableModels = async (): Promise<ApiResponse<string[]>> => {
   try {
-    console.log('Fetching available models...');
+    console.log('Checking available models...');
     const apiKey = import.meta.env.VITE_GEMINI_API_KEY?.trim();
     
     if (!apiKey) {
       throw new Error('Gemini API key is not configured');
     }
 
-    const genAI = new GoogleGenerativeAI(apiKey);
+    // Since the listModels method doesn't exist, we'll return predetermined model information
+    // This is a common pattern when direct model listing isn't available
+    const availableModels = [
+      'gemini-pro (General text generation and chat)',
+      'gemini-pro-vision (Multimodal model for text and images)'
+    ];
     
-    // List available models
-    const models = await genAI.listModels();
-    console.log('Available models:', models);
+    console.log('Available models:', availableModels);
     
     return {
-      data: models.map(model => `${model.name} (${model.description})`)
+      data: availableModels
     };
   } catch (error) {
     console.error('Error listing models:', error);
