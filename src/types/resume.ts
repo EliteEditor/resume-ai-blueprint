@@ -7,12 +7,8 @@ export interface ResumeData {
     phone: string;
     location: string;
     website?: string;
-<<<<<<< HEAD
     linkedin?: string;
-=======
-    linkedIn?: string;
     github?: string;
->>>>>>> c357b2bd0947de87665cb81cb48ab30105c118a4
   };
   summary: string;
   experience: {
@@ -57,9 +53,5 @@ export interface ResumeData {
     title: string;
     contact: string;
   }[];
-<<<<<<< HEAD
-}
-=======
   templateType?: "standard" | "analyst" | "scientist" | "engineer";
 }
->>>>>>> c357b2bd0947de87665cb81cb48ab30105c118a4
