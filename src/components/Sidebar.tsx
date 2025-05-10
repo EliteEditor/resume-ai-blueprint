@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { FileText, Linkedin, Settings, Sun, Moon, User, HelpCircle, ChevronLeft, ChevronRight, Home, Briefcase } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -32,16 +33,16 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, isDarkMode, 
         {/* Logo and Brand */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
-            <Briefcase className="h-6 w-6 text-primary" />
+            <Briefcase className="h-6 w-6 text-primary dark:text-blue-400" />
             <AnimatePresence>
               {!isCollapsed && (
                 <motion.span
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="font-bold text-lg text-primary"
+                  className="font-bold text-lg text-primary dark:text-blue-400"
                 >
-                  Nexprofile
+                  ResumeAI
                 </motion.span>
               )}
             </AnimatePresence>
@@ -86,7 +87,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, isDarkMode, 
             whileHover={{ scale: 1.05 }}
             className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center"
           >
-            <User className="h-5 w-5 text-primary" />
+            <User className="h-5 w-5 text-primary dark:text-blue-400" />
           </motion.div>
           <AnimatePresence>
             {!isCollapsed && (
@@ -111,14 +112,14 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, isDarkMode, 
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                onClick={() => setActiveTab(tab.id)}
+                    onClick={() => setActiveTab(tab.id)}
                     className={`w-full flex items-center space-x-3 px-3 py-3 rounded-lg text-left transition-all duration-200 ${
-                  activeTab === tab.id
-                        ? "bg-primary/10 text-primary"
-                    : "text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
-                }`}
-              >
-                <tab.icon className="h-5 w-5" />
+                      activeTab === tab.id
+                        ? "bg-primary/10 text-primary dark:text-blue-400"
+                        : "text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+                    }`}
+                  >
+                    <tab.icon className="h-5 w-5" />
                     <AnimatePresence>
                       {!isCollapsed && (
                         <motion.span

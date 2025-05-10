@@ -17,11 +17,11 @@ const queryClient = new QueryClient();
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider defaultTheme="system" storageKey="resumeai-theme">
+      <ThemeProvider defaultTheme="system" storageKey="resumeai-theme" attribute="class">
         <TooltipProvider>
           <Router>
             <Header />
-            <main className="min-h-[calc(100vh-4rem)]">
+            <main className="min-h-[calc(100vh-4rem)] bg-background dark:bg-gray-900">
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/app" element={<Index />} />

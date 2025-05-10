@@ -14,10 +14,10 @@ export default function RootLayout({
   children,
 }: RootLayoutProps) {
   return (
-    <div className="scroll-smooth">
-      <ThemeProvider defaultTheme="system" storageKey="resumeai-theme">
+    <div className="scroll-smooth antialiased">
+      <ThemeProvider defaultTheme="system" storageKey="resumeai-theme" attribute="class">
         <Navigation />
-        <main className="min-h-[calc(100vh-4rem)]">
+        <main className="min-h-[calc(100vh-4rem)] bg-background dark:bg-gray-900">
           {children}
         </main>
         <footer className="bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">

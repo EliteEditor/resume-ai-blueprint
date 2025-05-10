@@ -38,7 +38,7 @@ const MobileNav: React.FC<MobileNavProps> = ({
           <Home className="h-5 w-5 text-gray-600 dark:text-gray-300" />
         </Button>
         <div className="flex items-center gap-2 mr-4">
-          <Briefcase className="h-5 w-5 text-primary" />
+          <Briefcase className="h-5 w-5 text-primary dark:text-blue-400" />
           <span className="font-bold text-primary dark:text-blue-400">ResumeAI</span>
         </div>
         <Sheet>
