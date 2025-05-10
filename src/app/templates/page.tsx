@@ -1,10 +1,9 @@
-
 import React from 'react';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
-const TemplatesPage = () => {
+const TemplatesPage: React.FC = () => {
   const categories = [
     { id: 'all', name: 'All Templates' },
     { id: 'professional', name: 'Professional' },
@@ -93,7 +92,7 @@ const TemplatesPage = () => {
           {templates.map((template) => (
             <Link
               key={template.id}
-              href={`/editor/${template.id}`}
+              to={`/editor/${template.id}`}
               className="group"
             >
               <div className={`overflow-hidden rounded-2xl border border-gray-200 hover:border-blue-400 transition-all duration-300 shadow-sm hover:shadow-lg`}>

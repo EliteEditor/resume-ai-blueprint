@@ -2,6 +2,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Index from '@/pages/Index';
+import HomePage from '@/app/page';
+import TemplatesPage from '@/app/templates/page';
+import EditorPage from '@/app/editor/[templateId]/page';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -20,8 +23,10 @@ const App = () => {
             <Header />
             <main className="min-h-[calc(100vh-4rem)]">
               <Routes>
-                <Route path="/" element={<Index />} />
-                {/* Add more routes as needed */}
+                <Route path="/" element={<HomePage />} />
+                <Route path="/app" element={<Index />} />
+                <Route path="/templates" element={<TemplatesPage />} />
+                <Route path="/editor/:templateId" element={<EditorPage />} />
               </Routes>
             </main>
             <footer className="bg-gray-50 border-t border-gray-200">

@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 
-const Navigation = () => {
+const Navigation: React.FC = () => {
   return (
     <header className="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

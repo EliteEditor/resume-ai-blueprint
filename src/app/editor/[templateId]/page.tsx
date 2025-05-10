@@ -1,24 +1,20 @@
 
 import React from 'react';
-import Link from 'next/link';
+import { Link, useParams } from 'react-router-dom';
 import DirectEditTemplate from '@/components/DirectEditTemplate';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 
-interface EditorPageProps {
-  params: {
-    templateId: string;
-  };
-}
-
-const EditorPage: React.FC<EditorPageProps> = ({ params }) => {
+const EditorPage: React.FC = () => {
+  const { templateId } = useParams();
+  
   return (
     <div className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto p-6 sm:p-8">
         {/* Back button */}
         <div className="mb-6">
-          <Link href="/templates">
+          <Link to="/templates">
             <Button variant="ghost" className="pl-0 text-gray-600 hover:text-gray-900">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Templates

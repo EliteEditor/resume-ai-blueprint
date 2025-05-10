@@ -1,6 +1,5 @@
-
 import React from 'react';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 
 const templates = [
@@ -27,7 +26,7 @@ const templates = [
   }
 ];
 
-export default function Home() {
+const HomePage: React.FC = () => {
   return (
     <div className="bg-white">
       {/* Hero Section */}
@@ -41,16 +40,16 @@ export default function Home() {
               Our AI-powered builder creates tailored resumes that stand out to hiring managers and pass through ATS systems.
             </p>
             <div className="mt-10 flex justify-center gap-4">
-              <Link href="/templates">
+              <Link to="/templates">
                 <Button className="bg-blue-600 hover:bg-blue-700 text-base py-6 px-8 rounded-xl">
                   Create My Resume
                 </Button>
               </Link>
-              <Link href="#templates">
+              <a href="#templates">
                 <Button variant="outline" className="text-base py-6 px-8 rounded-xl">
                   View Templates
                 </Button>
-              </Link>
+              </a>
             </div>
           </div>
           
@@ -118,7 +117,7 @@ export default function Home() {
           {templates.map((template) => (
             <Link 
               key={template.id} 
-              href={`/editor/${template.id}`}
+              to={`/editor/${template.id}`}
               className="group"
             >
               <div className={`overflow-hidden rounded-2xl border ${template.selected ? 'ring-2 ring-blue-500 border-blue-500' : 'border-gray-200 hover:border-blue-400'} transition-all duration-300 shadow-sm hover:shadow-lg`}>
@@ -159,7 +158,7 @@ export default function Home() {
         </div>
         
         <div className="mt-12 text-center">
-          <Link href="/templates">
+          <Link to="/templates">
             <Button variant="outline" className="text-base px-6 py-5 rounded-xl">
               View All Templates
             </Button>
@@ -232,7 +231,7 @@ export default function Home() {
                 Create a professional resume in minutes with our AI-powered platform that gives you the competitive edge.
               </p>
               <div className="mt-8">
-                <Link href="/templates">
+                <Link to="/templates">
                   <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50 text-base py-6 px-8 rounded-xl">
                     Create My Resume Now
                   </Button>
@@ -261,4 +260,6 @@ export default function Home() {
       </div>
     </div>
   );
-}
+};
+
+export default HomePage;

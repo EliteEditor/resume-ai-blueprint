@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Image from 'next/image';
 
 interface ResumeData {
   personalInfo: {
@@ -567,4 +566,4 @@ const ResumeEditor: React.FC = () => {
   );
 };
 
-export default ResumeEditor; 
+export default ResumeEditor;
