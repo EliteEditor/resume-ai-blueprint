@@ -2,12 +2,13 @@ export interface ResumeData {
   personalInfo: {
     fullName: string;
     jobTitle: string;
-    phone: string;
     email: string;
+    phone: string;
     location: string;
     website?: string;
+    linkedin?: string;
   };
-  summary?: string;
+  summary: string;
   experience: {
     title: string;
     company: string;
@@ -32,4 +33,4 @@ export interface ResumeData {
     title: string;
     contact: string;
   }[];
-} 
+}
