@@ -50,19 +50,19 @@ const EditorPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background dark:bg-gray-900">
       <div className="max-w-7xl mx-auto p-6 sm:p-8">
         {/* Header with back button and download button */}
         <div className="flex justify-between items-center mb-8">
           <div>
             <Link to="/templates">
-              <Button variant="ghost" className="pl-0 text-gray-600 hover:text-gray-900">
+              <Button variant="ghost" className="pl-0 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Back to Templates
               </Button>
             </Link>
-            <h1 className="text-2xl font-bold text-gray-900 mt-4">Edit Your Resume</h1>
-            <p className="text-gray-600">Customize your resume to match your experience and job requirements</p>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-4">Edit Your Resume</h1>
+            <p className="text-gray-600 dark:text-gray-400">Customize your resume to match your experience and job requirements</p>
           </div>
           <Button 
             onClick={handleDownload} 
@@ -74,7 +74,7 @@ const EditorPage: React.FC = () => {
         </div>
 
         {/* Template editing interface */}
-        <div className="bg-gray-50 rounded-xl p-6 shadow-sm">
+        <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 shadow-sm">
           <DirectEditTemplate />
         </div>
       </div>

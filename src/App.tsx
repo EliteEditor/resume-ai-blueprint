@@ -17,7 +17,7 @@ const queryClient = new QueryClient();
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider defaultTheme="light" storageKey="resumeai-theme">
+      <ThemeProvider defaultTheme="system" storageKey="resumeai-theme">
         <TooltipProvider>
           <Router>
             <Header />
@@ -29,44 +29,44 @@ const App = () => {
                 <Route path="/editor/:templateId" element={<EditorPage />} />
               </Routes>
             </main>
-            <footer className="bg-gray-50 border-t border-gray-200">
+            <footer className="bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
               <div className="container mx-auto py-12 px-4">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                   <div>
-                    <h3 className="text-sm font-semibold text-gray-500 tracking-wider uppercase">Product</h3>
+                    <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 tracking-wider uppercase">Product</h3>
                     <ul className="mt-4 space-y-2">
-                      <li><a href="#" className="text-base text-gray-600 hover:text-gray-900">Features</a></li>
-                      <li><a href="#" className="text-base text-gray-600 hover:text-gray-900">Templates</a></li>
-                      <li><a href="#" className="text-base text-gray-600 hover:text-gray-900">Pricing</a></li>
+                      <li><a href="#" className="text-base text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Features</a></li>
+                      <li><a href="#" className="text-base text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Templates</a></li>
+                      <li><a href="#" className="text-base text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Pricing</a></li>
                     </ul>
                   </div>
                   <div>
-                    <h3 className="text-sm font-semibold text-gray-500 tracking-wider uppercase">Resources</h3>
+                    <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 tracking-wider uppercase">Resources</h3>
                     <ul className="mt-4 space-y-2">
-                      <li><a href="#" className="text-base text-gray-600 hover:text-gray-900">Blog</a></li>
-                      <li><a href="#" className="text-base text-gray-600 hover:text-gray-900">Help Center</a></li>
-                      <li><a href="#" className="text-base text-gray-600 hover:text-gray-900">Resume Tips</a></li>
+                      <li><a href="#" className="text-base text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Blog</a></li>
+                      <li><a href="#" className="text-base text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Help Center</a></li>
+                      <li><a href="#" className="text-base text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Resume Tips</a></li>
                     </ul>
                   </div>
                   <div>
-                    <h3 className="text-sm font-semibold text-gray-500 tracking-wider uppercase">Company</h3>
+                    <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 tracking-wider uppercase">Company</h3>
                     <ul className="mt-4 space-y-2">
-                      <li><a href="#" className="text-base text-gray-600 hover:text-gray-900">About</a></li>
-                      <li><a href="#" className="text-base text-gray-600 hover:text-gray-900">Careers</a></li>
-                      <li><a href="#" className="text-base text-gray-600 hover:text-gray-900">Contact</a></li>
+                      <li><a href="#" className="text-base text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">About</a></li>
+                      <li><a href="#" className="text-base text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Careers</a></li>
+                      <li><a href="#" className="text-base text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Contact</a></li>
                     </ul>
                   </div>
                   <div>
-                    <h3 className="text-sm font-semibold text-gray-500 tracking-wider uppercase">Legal</h3>
+                    <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 tracking-wider uppercase">Legal</h3>
                     <ul className="mt-4 space-y-2">
-                      <li><a href="#" className="text-base text-gray-600 hover:text-gray-900">Privacy</a></li>
-                      <li><a href="#" className="text-base text-gray-600 hover:text-gray-900">Terms</a></li>
-                      <li><a href="#" className="text-base text-gray-600 hover:text-gray-900">Cookies</a></li>
+                      <li><a href="#" className="text-base text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Privacy</a></li>
+                      <li><a href="#" className="text-base text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Terms</a></li>
+                      <li><a href="#" className="text-base text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Cookies</a></li>
                     </ul>
                   </div>
                 </div>
-                <div className="mt-12 border-t border-gray-200 pt-8">
-                  <p className="text-base text-gray-500 text-center">&copy; {new Date().getFullYear()} ResumeAI. All rights reserved.</p>
+                <div className="mt-12 border-t border-gray-200 dark:border-gray-800 pt-8">
+                  <p className="text-base text-gray-500 dark:text-gray-400 text-center">&copy; {new Date().getFullYear()} ResumeAI. All rights reserved.</p>
                 </div>
               </div>
             </footer>

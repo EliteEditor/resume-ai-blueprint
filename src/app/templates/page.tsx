@@ -61,11 +61,11 @@ const TemplatesPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background dark:bg-gray-900">
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Choose Your Resume Template</h1>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Choose Your Resume Template</h1>
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
             Select from our professionally designed templates and start editing immediately
           </p>
         </div>
@@ -96,38 +96,38 @@ const TemplatesPage: React.FC = () => {
               to={`/editor/${template.id}`}
               className="group"
             >
-              <div className={`overflow-hidden rounded-2xl border border-gray-200 hover:border-blue-400 transition-all duration-300 shadow-sm hover:shadow-lg`}>
-                <div className="relative bg-white p-6">
+              <div className={`overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 transition-all duration-300 shadow-sm hover:shadow-lg bg-white dark:bg-gray-800`}>
+                <div className="relative p-6">
                   {template.popular && (
                     <div className="absolute top-4 right-4 bg-blue-500 text-white text-xs font-medium px-3 py-1 rounded-full">
                       Popular
                     </div>
                   )}
                   {/* Template preview */}
-                  <div className="w-full h-[320px] bg-gray-50 rounded-lg shadow-sm mb-4 overflow-hidden">
+                  <div className="w-full h-[320px] bg-gray-50 dark:bg-gray-700 rounded-lg shadow-sm mb-4 overflow-hidden">
                     <div className="p-4 h-full">
                       <div className="w-full h-full flex flex-col">
-                        <div className="w-1/3 h-6 bg-gray-200 rounded mb-3"></div>
-                        <div className="w-2/3 h-4 bg-gray-100 rounded mb-2"></div>
-                        <div className="w-full h-[1px] bg-gray-200 my-3"></div>
-                        <div className="w-2/3 h-4 bg-gray-200 rounded mb-2"></div>
+                        <div className="w-1/3 h-6 bg-gray-200 dark:bg-gray-600 rounded mb-3"></div>
+                        <div className="w-2/3 h-4 bg-gray-100 dark:bg-gray-500 rounded mb-2"></div>
+                        <div className="w-full h-[1px] bg-gray-200 dark:bg-gray-600 my-3"></div>
+                        <div className="w-2/3 h-4 bg-gray-200 dark:bg-gray-600 rounded mb-2"></div>
                         <div className="flex-1 grid grid-cols-6 gap-2">
                           <div className="col-span-2">
-                            <div className="w-full h-4 bg-gray-100 rounded mb-2"></div>
-                            <div className="w-3/4 h-3 bg-gray-100 rounded"></div>
+                            <div className="w-full h-4 bg-gray-100 dark:bg-gray-500 rounded mb-2"></div>
+                            <div className="w-3/4 h-3 bg-gray-100 dark:bg-gray-500 rounded"></div>
                           </div>
                           <div className="col-span-4">
-                            <div className="w-full h-4 bg-gray-100 rounded mb-2"></div>
-                            <div className="w-5/6 h-3 bg-gray-100 rounded mb-1"></div>
-                            <div className="w-3/4 h-3 bg-gray-100 rounded"></div>
+                            <div className="w-full h-4 bg-gray-100 dark:bg-gray-500 rounded mb-2"></div>
+                            <div className="w-5/6 h-3 bg-gray-100 dark:bg-gray-500 rounded mb-1"></div>
+                            <div className="w-3/4 h-3 bg-gray-100 dark:bg-gray-500 rounded"></div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                   
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors">{template.title}</h3>
-                  <p className="text-gray-600 text-sm">{template.description}</p>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{template.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-300 text-sm">{template.description}</p>
                   
                   <div className="mt-4">
                     <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">

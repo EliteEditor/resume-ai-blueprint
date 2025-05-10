@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Menu, Sun, Moon, Home, Briefcase } from 'lucide-react';
@@ -38,7 +39,7 @@ const MobileNav: React.FC<MobileNavProps> = ({
         </Button>
         <div className="flex items-center gap-2 mr-4">
           <Briefcase className="h-5 w-5 text-primary" />
-          <span className="font-bold text-primary">Nexprofile</span>
+          <span className="font-bold text-primary dark:text-blue-400">ResumeAI</span>
         </div>
         <Sheet>
           <SheetTrigger asChild>
@@ -49,8 +50,8 @@ const MobileNav: React.FC<MobileNavProps> = ({
           <SheetContent side="left" className="w-[280px] dark:bg-gray-900 dark:text-white">
             <SheetHeader>
               <div className="flex items-center gap-2">
-                <Briefcase className="h-6 w-6 text-primary" />
-                <SheetTitle className="text-left text-primary">Nexprofile</SheetTitle>
+                <Briefcase className="h-6 w-6 text-primary dark:text-blue-400" />
+                <SheetTitle className="text-left text-primary dark:text-blue-400">ResumeAI</SheetTitle>
               </div>
             </SheetHeader>
             <div className="mt-4 space-y-2">

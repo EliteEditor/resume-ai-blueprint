@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -7,7 +8,6 @@ import { toast } from 'sonner';
 import { 
   SunMoon,
   Languages,
-  Type,
   Save
 } from 'lucide-react';
 
@@ -33,19 +33,19 @@ const Settings: React.FC<SettingsProps> = ({
   };
 
   return (
-    <div className="p-6 transition-colors duration-200">
-      <h1 className="text-2xl font-bold mb-6 dark:text-white">Settings</h1>
+    <div className="p-6 transition-colors duration-200 dark:text-white">
+      <h1 className="text-2xl font-bold mb-6">Settings</h1>
       
       <div className="space-y-6">
         <Card className="p-6 dark:bg-gray-800 dark:border-gray-700">
           <div className="flex items-center space-x-3 mb-6">
             <SunMoon className="h-6 w-6 text-primary" />
-            <h2 className="text-xl font-semibold dark:text-white">Appearance</h2>
+            <h2 className="text-xl font-semibold">Appearance</h2>
           </div>
           
           <div className="space-y-4">
             <div>
-              <Label className="mb-2 block dark:text-gray-200">Theme</Label>
+              <Label className="mb-2 block">Theme</Label>
               <RadioGroup 
                 value={isDarkMode ? "dark" : "light"} 
                 onValueChange={(value) => {
@@ -59,17 +59,17 @@ const Settings: React.FC<SettingsProps> = ({
               >
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="light" id="theme-light" />
-                  <Label htmlFor="theme-light" className="dark:text-gray-300">Light</Label>
+                  <Label htmlFor="theme-light">Light</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="dark" id="theme-dark" />
-                  <Label htmlFor="theme-dark" className="dark:text-gray-300">Dark</Label>
+                  <Label htmlFor="theme-dark">Dark</Label>
                 </div>
               </RadioGroup>
           </div>
           
             <div>
-              <Label className="mb-2 block dark:text-gray-200">Font Size</Label>
+              <Label className="mb-2 block">Font Size</Label>
               <RadioGroup 
                 value={fontSize} 
                 onValueChange={onFontSizeChange} 
@@ -77,15 +77,15 @@ const Settings: React.FC<SettingsProps> = ({
               >
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="small" id="font-small" />
-                  <Label htmlFor="font-small" className="dark:text-gray-300">Small</Label>
+                  <Label htmlFor="font-small">Small</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="medium" id="font-medium" />
-                  <Label htmlFor="font-medium" className="dark:text-gray-300">Medium</Label>
+                  <Label htmlFor="font-medium">Medium</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="large" id="font-large" />
-                  <Label htmlFor="font-large" className="dark:text-gray-300">Large</Label>
+                  <Label htmlFor="font-large">Large</Label>
                 </div>
               </RadioGroup>
             </div>
@@ -95,12 +95,12 @@ const Settings: React.FC<SettingsProps> = ({
         <Card className="p-6 dark:bg-gray-800 dark:border-gray-700">
           <div className="flex items-center space-x-3 mb-6">
             <Languages className="h-6 w-6 text-primary" />
-            <h2 className="text-xl font-semibold dark:text-white">Language</h2>
+            <h2 className="text-xl font-semibold">Language</h2>
           </div>
           
           <div className="space-y-4">
             <div>
-              <Label className="mb-2 block dark:text-gray-200">Interface Language</Label>
+              <Label className="mb-2 block">Interface Language</Label>
               <RadioGroup 
                 value={language} 
                 onValueChange={onLanguageChange} 
@@ -108,15 +108,15 @@ const Settings: React.FC<SettingsProps> = ({
               >
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="english" id="lang-english" />
-                  <Label htmlFor="lang-english" className="dark:text-gray-300">English</Label>
+                  <Label htmlFor="lang-english">English</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="spanish" id="lang-spanish" />
-                  <Label htmlFor="lang-spanish" className="dark:text-gray-300">Spanish</Label>
+                  <Label htmlFor="lang-spanish">Spanish</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="french" id="lang-french" />
-                  <Label htmlFor="lang-french" className="dark:text-gray-300">French</Label>
+                  <Label htmlFor="lang-french">French</Label>
                 </div>
               </RadioGroup>
             </div>
@@ -127,7 +127,7 @@ const Settings: React.FC<SettingsProps> = ({
       <div className="mt-6 flex justify-end">
           <Button 
             onClick={handleSaveSettings}
-          className="flex items-center gap-2 dark:bg-primary dark:text-white dark:hover:bg-primary/90"
+            className="flex items-center gap-2"
           >
             <Save className="h-4 w-4" />
             Save Settings
