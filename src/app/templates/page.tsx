@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -65,7 +66,7 @@ const TemplatesPage: React.FC = () => {
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Choose Your Resume Template</h1>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Select from our professionally designed templates to create your perfect resume
+            Select from our professionally designed templates and start editing immediately
           </p>
         </div>
 
@@ -129,8 +130,8 @@ const TemplatesPage: React.FC = () => {
                   <p className="text-gray-600 text-sm">{template.description}</p>
                   
                   <div className="mt-4">
-                    <Button className="w-full bg-gray-100 hover:bg-gray-200 text-gray-800">
-                      Use This Template
+                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                      Edit This Template
                     </Button>
                   </div>
                 </div>

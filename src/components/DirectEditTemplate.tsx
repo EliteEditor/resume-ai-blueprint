@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 
 interface ResumeData {
@@ -47,7 +48,7 @@ const DirectEditTemplate: React.FC = () => {
   };
 
   return (
-    <div className="w-[210mm] min-h-[297mm] bg-white mx-auto p-12 shadow-lg">
+    <div className="w-[210mm] min-h-[297mm] bg-white mx-auto p-12 shadow-lg resume-content">
       {/* Header Section */}
       <div className="mb-8">
         <input
@@ -233,4 +234,4 @@ const DirectEditTemplate: React.FC = () => {
   );
 };
 
-export default DirectEditTemplate; 
+export default DirectEditTemplate;
