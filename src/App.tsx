@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Landing from '@/pages/Landing';
 import Index from '@/pages/Index';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -17,8 +16,7 @@ const App = () => {
         <TooltipProvider>
           <Router>
             <Routes>
-              <Route path="/" element={<Landing />} />
-              <Route path="/app" element={<Index />} />
+              <Route path="/" element={<Index />} />
             </Routes>
             <Toaster />
             <Sonner />
