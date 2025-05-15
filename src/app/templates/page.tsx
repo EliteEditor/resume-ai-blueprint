@@ -1,10 +1,12 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 const TemplatesPage: React.FC = () => {
+  const [activeCategory, setActiveCategory] = useState('all');
+
   const categories = [
     { id: 'all', name: 'All Templates' },
     { id: 'professional', name: 'Professional' },
@@ -33,9 +35,14 @@ const TemplatesPage: React.FC = () => {
       title: 'Minimal Tech',
       description: 'Clean minimal design for technical roles',
       accentColor: 'gray',
-      category: 'simple',
+      category: 'modern',
     },
   ];
+
+  // Filter templates based on active category
+  const filteredTemplates = activeCategory === 'all' 
+    ? templates 
+    : templates.filter(template => template.category === activeCategory);
 
   return (
     <div className="min-h-screen bg-background dark:bg-gray-900">
@@ -53,11 +60,12 @@ const TemplatesPage: React.FC = () => {
             {categories.map((category) => (
               <Button
                 key={category.id}
-                variant={category.id === 'all' ? 'default' : 'outline'}
+                variant={category.id === activeCategory ? 'default' : 'outline'}
                 className={cn(
                   "rounded-full px-6", 
-                  category.id === 'all' ? 'bg-blue-600 hover:bg-blue-700' : ''
+                  category.id === activeCategory ? 'bg-blue-600 hover:bg-blue-700' : ''
                 )}
+                onClick={() => setActiveCategory(category.id)}
               >
                 {category.name}
               </Button>
@@ -67,7 +75,7 @@ const TemplatesPage: React.FC = () => {
 
         {/* Templates grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {templates.map((template) => (
+          {filteredTemplates.map((template) => (
             <Link
               key={template.id}
               to={`/editor/${template.id}`}

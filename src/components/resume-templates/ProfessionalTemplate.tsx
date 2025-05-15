@@ -11,6 +11,10 @@ interface ResumeData {
   location: string;
   skills: string[];
   summary: string;
+  industryExpertise?: {
+    field: string;
+    level: number;
+  };
 }
 
 interface ProfessionalTemplateProps {
@@ -22,7 +26,7 @@ const ProfessionalTemplate: React.FC<ProfessionalTemplateProps> = ({ resumeData 
   const isDark = theme === 'dark';
 
   return (
-    <div className="w-[210mm] min-h-[297mm] bg-white dark:bg-gray-800 mx-auto shadow-lg">
+    <div className="w-[210mm] min-h-[297mm] bg-white dark:bg-gray-800 mx-auto shadow-lg resume-document">
       {/* Header with name and title */}
       <div className="bg-blue-600 dark:bg-blue-800 text-white px-8 py-6">
         <h1 className="text-3xl font-bold">{resumeData.fullName}</h1>
@@ -54,10 +58,13 @@ const ProfessionalTemplate: React.FC<ProfessionalTemplateProps> = ({ resumeData 
           
           <div>
             <h3 className="text-lg font-semibold text-blue-600 dark:text-blue-400 mb-3 uppercase border-b border-gray-200 dark:border-gray-700 pb-1">Industry Expertise</h3>
-            <div className="relative h-2 bg-gray-200 dark:bg-gray-700 rounded-full">
-              <div className="absolute left-0 top-0 h-full w-1/3 bg-blue-500 rounded-full"></div>
+            <div className="relative h-2 bg-gray-200 dark:bg-gray-700 rounded-full mb-2 print:bg-gray-200">
+              <div 
+                className="absolute left-0 top-0 h-full bg-blue-500 dark:bg-blue-500 rounded-full print:bg-blue-500" 
+                style={{ width: `${resumeData.industryExpertise?.level || 33}%` }}
+              ></div>
             </div>
-            <div className="text-sm text-gray-600 dark:text-gray-400 mt-2">Field or industry</div>
+            <div className="text-sm text-gray-600 dark:text-gray-400 mt-2">{resumeData.industryExpertise?.field || 'Field or industry'}</div>
           </div>
         </div>
         

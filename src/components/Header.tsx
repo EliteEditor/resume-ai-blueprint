@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Home, Settings, MessageCircle, User, Linkedin } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 import { Button } from './ui/button';
@@ -15,10 +15,20 @@ import {
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import { useTheme } from 'next-themes';
+import { toast } from '@/hooks/use-toast';
 
 const Header: React.FC = () => {
   const { theme } = useTheme();
+  const navigate = useNavigate();
   const isDarkTheme = theme === 'dark';
+
+  const handleLinkedInOptimizerClick = () => {
+    navigate('/linkedin-optimizer');
+    toast({
+      title: "LinkedIn Optimizer",
+      description: "Now you can optimize your LinkedIn profile",
+    });
+  };
 
   return (
     <motion.header 
@@ -47,10 +57,14 @@ const Header: React.FC = () => {
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <Link to="/linkedin-optimizer" className="h-10 px-4 py-2 group inline-flex items-center rounded-md text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
+                <Button 
+                  variant="ghost" 
+                  className="h-10 px-4 py-2 group inline-flex items-center rounded-md text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                  onClick={handleLinkedInOptimizerClick}
+                >
                   <Linkedin className="mr-2 h-4 w-4" />
                   LinkedIn Optimizer
-                </Link>
+                </Button>
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
