@@ -7,26 +7,20 @@ import Sidebar from '@/components/Sidebar';
 import MobileNav from '@/components/MobileNav';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { motion } from 'framer-motion';
+import { useTheme } from 'next-themes';
 
 const Index: React.FC = () => {
   const [activeTab, setActiveTab] = useState('resume');
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    // Initialize from localStorage or system preference
-    const saved = localStorage.getItem('darkMode');
-    if (saved !== null) {
-      return saved === 'true';
-    }
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
-  });
+  const { theme, setTheme } = useTheme();
+  const isDarkMode = theme === 'dark';
   const [fontSize, setFontSize] = useState('medium');
   const [language, setLanguage] = useState('english');
   const isMobile = useIsMobile();
 
-  // Apply dark mode class on mount and when isDarkMode changes
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', isDarkMode);
-    localStorage.setItem('darkMode', String(isDarkMode));
-  }, [isDarkMode]);
+  // Toggle dark mode function
+  const toggleDarkMode = () => {
+    setTheme(isDarkMode ? 'light' : 'dark');
+  };
 
   // Load other settings from localStorage on mount
   useEffect(() => {
@@ -43,10 +37,6 @@ const Index: React.FC = () => {
       large: '18px'
     }[savedFontSize] || '16px';
   }, []);
-
-  const toggleDarkMode = () => {
-    setIsDarkMode(prev => !prev);
-  };
 
   const handleFontSizeChange = (size: string) => {
     setFontSize(size);
@@ -108,7 +98,7 @@ const Index: React.FC = () => {
   };
 
   return (
-    <div className={`min-h-screen transition-colors duration-200 ${isDarkMode ? 'dark bg-gray-900' : 'bg-gray-50'}`}>
+    <div className="min-h-screen transition-colors duration-200 bg-gray-50 dark:bg-gray-900">
       <div className="hidden md:block">
         <Sidebar 
           activeTab={activeTab} 
@@ -125,7 +115,7 @@ const Index: React.FC = () => {
           toggleDarkMode={toggleDarkMode}
         />
       </div>
-      <main className={`min-h-screen transition-colors duration-200 ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'} md:pl-[280px] p-4 md:p-8`}>
+      <main className="transition-colors duration-200 text-gray-900 dark:text-white md:pl-[256px] p-4 md:p-8">
         <div className="max-w-5xl mx-auto">
           {renderContent()}
         </div>

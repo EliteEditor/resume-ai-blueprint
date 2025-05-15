@@ -15,7 +15,7 @@ export default function RootLayout({
 }: RootLayoutProps) {
   return (
     <div className="scroll-smooth antialiased">
-      <ThemeProvider defaultTheme="system" storageKey="resumeai-theme" attribute="class">
+      <ThemeProvider defaultTheme="dark" storageKey="resumeai-theme" attribute="class">
         <Navigation />
         <main className="min-h-[calc(100vh-4rem)] bg-background dark:bg-gray-900">
           {children}

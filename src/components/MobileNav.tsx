@@ -27,15 +27,15 @@ const MobileNav: React.FC<MobileNavProps> = ({
   const navigate = useNavigate();
 
   return (
-    <div className="flex items-center justify-between p-4 border-b dark:border-gray-800">
+    <div className="flex items-center justify-between p-4 border-b dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm">
       <div className="flex items-center gap-2">
         <Button
           variant="ghost"
           size="icon"
           onClick={() => navigate('/')}
-          className="hover:bg-gray-100 dark:hover:bg-gray-800"
+          className="hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300"
         >
-          <Home className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+          <Home className="h-5 w-5" />
         </Button>
         <div className="flex items-center gap-2 mr-4">
           <Briefcase className="h-5 w-5 text-primary dark:text-blue-400" />
@@ -43,11 +43,11 @@ const MobileNav: React.FC<MobileNavProps> = ({
         </div>
         <Sheet>
           <SheetTrigger asChild>
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" className="text-gray-600 dark:text-gray-300">
               <Menu className="h-6 w-6" />
             </Button>
           </SheetTrigger>
-          <SheetContent side="left" className="w-[280px] dark:bg-gray-900 dark:text-white">
+          <SheetContent side="left" className="w-[280px] dark:bg-gray-900 dark:text-white border-gray-200 dark:border-gray-800">
             <SheetHeader>
               <div className="flex items-center gap-2">
                 <Briefcase className="h-6 w-6 text-primary dark:text-blue-400" />
@@ -85,7 +85,7 @@ const MobileNav: React.FC<MobileNavProps> = ({
         variant="ghost" 
         size="icon"
         onClick={toggleDarkMode}
-        className="ml-auto"
+        className="ml-auto text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
       >
         {isDarkMode ? (
           <Sun className="h-6 w-6" />

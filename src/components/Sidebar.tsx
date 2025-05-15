@@ -27,11 +27,11 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, isDarkMode, 
     <motion.div 
       initial={{ width: 256 }}
       animate={{ width: isCollapsed ? 80 : 256 }}
-      className="fixed left-0 top-0 h-full bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 shadow-lg z-50"
+      className="fixed left-0 top-0 h-full bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 shadow-lg z-30"
     >
       <div className="p-4 h-full flex flex-col">
         {/* Logo and Brand */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-6 mt-2">
           <div className="flex items-center gap-2">
             <Briefcase className="h-6 w-6 text-primary dark:text-blue-400" />
             <AnimatePresence>
@@ -51,9 +51,9 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, isDarkMode, 
             variant="ghost"
             size="icon"
             onClick={() => setIsCollapsed(!isCollapsed)}
-            className="h-8 w-8"
+            className="h-8 w-8 hover:bg-gray-100 dark:hover:bg-gray-800"
           >
-            {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+            {isCollapsed ? <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-400" /> : <ChevronLeft className="h-4 w-4 text-gray-500 dark:text-gray-400" />}
           </Button>
         </div>
 
@@ -63,20 +63,20 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, isDarkMode, 
             variant="ghost"
             size="icon"
             onClick={() => navigate('/')}
-            className="hover:bg-gray-100 dark:hover:bg-gray-800"
+            className="hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300"
           >
-            <Home className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+            <Home className="h-5 w-5" />
           </Button>
           <Button
             variant="ghost"
             size="icon"
             onClick={toggleDarkMode}
-            className="hover:bg-gray-100 dark:hover:bg-gray-800"
+            className="hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300"
           >
             {isDarkMode ? (
-              <Sun className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+              <Sun className="h-5 w-5" />
             ) : (
-              <Moon className="h-5 w-5 text-gray-600" />
+              <Moon className="h-5 w-5" />
             )}
           </Button>
         </div>
@@ -85,7 +85,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, isDarkMode, 
         <div className="flex items-center space-x-3 mb-8">
           <motion.div
             whileHover={{ scale: 1.05 }}
-            className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center"
+            className="w-10 h-10 rounded-full bg-primary/10 dark:bg-blue-900/30 flex items-center justify-center"
           >
             <User className="h-5 w-5 text-primary dark:text-blue-400" />
           </motion.div>
@@ -115,7 +115,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, isDarkMode, 
                     onClick={() => setActiveTab(tab.id)}
                     className={`w-full flex items-center space-x-3 px-3 py-3 rounded-lg text-left transition-all duration-200 ${
                       activeTab === tab.id
-                        ? "bg-primary/10 text-primary dark:text-blue-400"
+                        ? "bg-primary/10 text-primary dark:bg-blue-900/30 dark:text-blue-400"
                         : "text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
                     }`}
                   >
