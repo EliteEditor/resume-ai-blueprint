@@ -1,15 +1,39 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import DirectEditTemplate from '@/components/DirectEditTemplate';
+import ProfessionalTemplate from '@/components/resume-templates/ProfessionalTemplate';
+import CreativeTemplate from '@/components/resume-templates/CreativeTemplate';
+import MinimalTechTemplate from '@/components/resume-templates/MinimalTechTemplate';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Download } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { toast } from 'sonner';
 
+interface ResumeData {
+  fullName: string;
+  jobTitle: string;
+  phone: string;
+  email: string;
+  linkedin: string;
+  location: string;
+  skills: string[];
+  summary: string;
+}
+
 const EditorPage: React.FC = () => {
   const { templateId } = useParams();
+  const [resumeData, setResumeData] = useState<ResumeData>({
+    fullName: 'YOUR NAME',
+    jobTitle: 'The role you are applying for?',
+    phone: '',
+    email: '',
+    linkedin: '',
+    location: '',
+    skills: ['Your Skill'],
+    summary: 'Brief overview of your professional background and career objectives...',
+  });
   
   const handleDownload = async () => {
     try {
@@ -34,6 +58,7 @@ const EditorPage: React.FC = () => {
       // Clone the element to avoid modifying the original
       const clone = resumeElement.cloneNode(true) as HTMLElement;
       clone.style.width = '210mm';
+      clone.style.height = '297mm';
       clone.style.background = 'white';
       clone.style.position = 'absolute';
       clone.style.top = '-9999px';
@@ -86,13 +111,28 @@ const EditorPage: React.FC = () => {
     }
   };
 
+  // Render appropriate template based on templateId
+  const renderTemplate = () => {
+    if (templateId === 'professional-erp') {
+      return <div className="resume-content"><ProfessionalTemplate resumeData={resumeData} /></div>;
+    }
+    if (templateId === 'creative-design') {
+      return <div className="resume-content"><CreativeTemplate resumeData={resumeData} /></div>;
+    }
+    if (templateId === 'minimal-tech') {
+      return <div className="resume-content"><MinimalTechTemplate resumeData={resumeData} /></div>;
+    }
+    // Default to DirectEditTemplate
+    return <DirectEditTemplate />;
+  };
+
   return (
     <div className="min-h-screen bg-background dark:bg-gray-900">
       <div className="max-w-7xl mx-auto p-6 sm:p-8">
         {/* Header with back button and download button */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <Link to="/app">
+            <Link to="/templates">
               <Button variant="ghost" className="pl-0 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Back to Templates
@@ -111,8 +151,8 @@ const EditorPage: React.FC = () => {
         </div>
 
         {/* Template editing interface */}
-        <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 shadow-sm">
-          <DirectEditTemplate />
+        <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 shadow-sm overflow-auto">
+          {renderTemplate()}
         </div>
       </div>
     </div>
