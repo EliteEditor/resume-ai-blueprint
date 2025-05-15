@@ -1,8 +1,7 @@
 
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Index from '@/pages/Index';
-import HomePage from '@/app/page';
 import TemplatesPage from '@/app/templates/page';
 import EditorPage from '@/app/editor/[templateId]/page';
 import { Toaster } from "@/components/ui/toaster";
@@ -24,51 +23,16 @@ const App = () => {
               <Header />
               <main className="flex-1 bg-background dark:bg-gray-900">
                 <Routes>
-                  <Route path="/" element={<HomePage />} />
+                  {/* Redirect from landing page to app dashboard */}
+                  <Route path="/" element={<Navigate to="/app" replace />} />
                   <Route path="/app" element={<Index />} />
                   <Route path="/templates" element={<TemplatesPage />} />
                   <Route path="/editor/:templateId" element={<EditorPage />} />
                 </Routes>
               </main>
               <footer className="bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
-                <div className="container mx-auto py-12 px-4">
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                    <div>
-                      <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 tracking-wider uppercase">Product</h3>
-                      <ul className="mt-4 space-y-2">
-                        <li><a href="#" className="text-base text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Features</a></li>
-                        <li><a href="#" className="text-base text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Templates</a></li>
-                        <li><a href="#" className="text-base text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Pricing</a></li>
-                      </ul>
-                    </div>
-                    <div>
-                      <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 tracking-wider uppercase">Resources</h3>
-                      <ul className="mt-4 space-y-2">
-                        <li><a href="#" className="text-base text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Blog</a></li>
-                        <li><a href="#" className="text-base text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Help Center</a></li>
-                        <li><a href="#" className="text-base text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Resume Tips</a></li>
-                      </ul>
-                    </div>
-                    <div>
-                      <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 tracking-wider uppercase">Company</h3>
-                      <ul className="mt-4 space-y-2">
-                        <li><a href="#" className="text-base text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">About</a></li>
-                        <li><a href="#" className="text-base text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Careers</a></li>
-                        <li><a href="#" className="text-base text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Contact</a></li>
-                      </ul>
-                    </div>
-                    <div>
-                      <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 tracking-wider uppercase">Legal</h3>
-                      <ul className="mt-4 space-y-2">
-                        <li><a href="#" className="text-base text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Privacy</a></li>
-                        <li><a href="#" className="text-base text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Terms</a></li>
-                        <li><a href="#" className="text-base text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Cookies</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div className="mt-12 border-t border-gray-200 dark:border-gray-800 pt-8">
-                    <p className="text-base text-gray-500 dark:text-gray-400 text-center">&copy; {new Date().getFullYear()} ResumeAI. All rights reserved.</p>
-                  </div>
+                <div className="container mx-auto py-8 px-4">
+                  <p className="text-base text-gray-500 dark:text-gray-400 text-center">&copy; {new Date().getFullYear()} ResumeAI. All rights reserved.</p>
                 </div>
               </footer>
               <Toaster />

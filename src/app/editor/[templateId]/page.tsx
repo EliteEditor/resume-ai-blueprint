@@ -22,26 +22,63 @@ const EditorPage: React.FC = () => {
 
       toast.info("Preparing your resume for download...");
       
-      const canvas = await html2canvas(resumeElement, {
-        scale: 2, // Higher scale for better quality
-        useCORS: true,
-        logging: false,
-        backgroundColor: '#ffffff'
-      });
-      
-      const imgData = canvas.toDataURL('image/png');
+      // Set A4 dimensions
+      const a4Width = 210; // mm
+      const a4Height = 297; // mm
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
         format: 'a4'
       });
       
-      const imgWidth = 210; // A4 width in mm
+      // Clone the element to avoid modifying the original
+      const clone = resumeElement.cloneNode(true) as HTMLElement;
+      clone.style.width = '210mm';
+      clone.style.background = 'white';
+      clone.style.position = 'absolute';
+      clone.style.top = '-9999px';
+      clone.style.left = '-9999px';
+      document.body.appendChild(clone);
+      
+      // Use higher scale for better quality
+      const canvas = await html2canvas(clone, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#ffffff',
+        // Set canvas size to match A4 proportions
+        width: clone.offsetWidth,
+        height: clone.offsetHeight,
+        // Ensure we capture all of the content
+        windowWidth: clone.scrollWidth,
+        windowHeight: clone.scrollHeight
+      });
+      
+      // Remove the clone after capturing
+      document.body.removeChild(clone);
+      
+      // Calculate scaling to fit A4 proportions
+      const imgData = canvas.toDataURL('image/jpeg', 1.0);
+      const imgWidth = a4Width;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
       
-      pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-      pdf.save(`resume-${templateId}.pdf`);
+      // Add image to PDF, properly scaled
+      pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, Math.min(imgHeight, a4Height));
       
+      // If content exceeds one page, create additional pages
+      if (imgHeight > a4Height) {
+        let heightLeft = imgHeight - a4Height;
+        let position = -a4Height;
+        
+        while (heightLeft > 0) {
+          position = position - a4Height;
+          pdf.addPage();
+          pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+          heightLeft -= a4Height;
+        }
+      }
+      
+      pdf.save(`resume-${templateId}.pdf`);
       toast.success("Resume downloaded successfully!");
     } catch (error) {
       console.error('Download failed:', error);
@@ -55,7 +92,7 @@ const EditorPage: React.FC = () => {
         {/* Header with back button and download button */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <Link to="/templates">
+            <Link to="/app">
               <Button variant="ghost" className="pl-0 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Back to Templates
