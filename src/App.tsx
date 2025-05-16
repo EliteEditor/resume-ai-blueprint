@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Index from '@/pages/Index';
 import TemplatesPage from '@/app/templates/page';
 import EditorPage from '@/app/editor/[templateId]/page';
+import LinkedInOptimizerPage from '@/app/linkedin-optimizer/page';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -28,6 +29,7 @@ const App = () => {
                   <Route path="/app" element={<Index />} />
                   <Route path="/templates" element={<TemplatesPage />} />
                   <Route path="/editor/:templateId" element={<EditorPage />} />
+                  <Route path="/linkedin-optimizer" element={<LinkedInOptimizerPage />} />
                 </Routes>
               </main>
               <footer className="bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">

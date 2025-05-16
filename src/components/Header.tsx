@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Home, Settings, MessageCircle, User, Linkedin } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -57,14 +56,13 @@ const Header: React.FC = () => {
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <Button 
-                  variant="ghost" 
+                <Link 
+                  to="/linkedin-optimizer" 
                   className="h-10 px-4 py-2 group inline-flex items-center rounded-md text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-                  onClick={handleLinkedInOptimizerClick}
                 >
                   <Linkedin className="mr-2 h-4 w-4" />
                   LinkedIn Optimizer
-                </Button>
+                </Link>
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
