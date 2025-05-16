@@ -1,5 +1,7 @@
 
-import React from 'react';
+import React, { useState } from 'react';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Input } from '@/components/ui/input';
 
 interface ResumeData {
   fullName: string;
@@ -10,12 +12,13 @@ interface ResumeData {
   location: string;
   skills: string[];
   summary: string;
+  profileImage?: string;
 }
 
 interface CreativeTemplateProps {
   resumeData: ResumeData;
   isEditable?: boolean;
-  onChangeData?: (field: string, value: string) => void;
+  onChangeData?: (field: string, value: string | undefined) => void;
   onChangeSkill?: (index: number, value: string) => void;
   onAddSkill?: () => void;
   onRemoveSkill?: (index: number) => void;
@@ -29,6 +32,8 @@ const CreativeTemplate: React.FC<CreativeTemplateProps> = ({
   onAddSkill = () => {},
   onRemoveSkill = () => {}
 }) => {
+  const [imageFile, setImageFile] = useState<File | null>(null);
+
   // Handle field click for initial selection
   const handleFieldFocus = (field: string) => {
     if (field === 'fullName' && resumeData.fullName === 'YOUR NAME') {
@@ -47,38 +52,89 @@ const CreativeTemplate: React.FC<CreativeTemplateProps> = ({
     }
   };
 
+  // Handle profile image upload
+  const handleProfileImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setImageFile(file);
+      
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        onChangeData('profileImage', reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <div className="w-[210mm] min-h-[297mm] bg-white dark:bg-gray-800 mx-auto shadow-lg resume-content print:shadow-none print:border-0 overflow-hidden">
       {/* Header Section with Accent Color */}
-      <div className="bg-purple-600 dark:bg-purple-800 p-8 text-white print:bg-purple-700 print:text-white">
-        {isEditable ? (
-          <input
-            type="text"
-            value={resumeData.fullName}
-            onChange={(e) => onChangeData('fullName', e.target.value)}
-            onFocus={() => handleFieldFocus('fullName')}
-            className="text-4xl font-bold w-full border-none focus:outline-none focus:ring-0 mb-3 bg-transparent text-white print:text-white"
-            placeholder="YOUR NAME"
-          />
-        ) : (
-          <h1 className="text-4xl font-bold mb-3 text-white print:text-white">{resumeData.fullName}</h1>
-        )}
-        
-        {isEditable ? (
-          <input
-            type="text"
-            value={resumeData.jobTitle}
-            onChange={(e) => onChangeData('jobTitle', e.target.value)}
-            onFocus={() => handleFieldFocus('jobTitle')}
-            className="text-xl w-full border-none focus:outline-none focus:ring-0 mb-6 bg-transparent text-purple-100 dark:text-purple-100 print:text-purple-100"
-            placeholder="The role you are applying for?"
-          />
-        ) : (
-          <p className="text-xl mb-6 text-purple-100 dark:text-purple-100 print:text-purple-100">{resumeData.jobTitle}</p>
-        )}
+      <div className="bg-purple-600 dark:bg-purple-800 p-8 text-white print:bg-purple-700 print:text-white relative">
+        <div className="flex items-center space-x-6">
+          {/* Profile Image */}
+          <div className="relative min-w-[100px]">
+            <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-purple-300 dark:border-purple-500 print:border-purple-300 bg-white flex items-center justify-center">
+              {resumeData.profileImage ? (
+                <img 
+                  src={resumeData.profileImage} 
+                  alt="Profile" 
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="text-purple-300 text-4xl">
+                  {resumeData.fullName?.charAt(0) || "?"}
+                </div>
+              )}
+            </div>
+            {isEditable && (
+              <label 
+                htmlFor="profile-upload" 
+                className="absolute bottom-0 right-0 bg-purple-800 hover:bg-purple-900 rounded-full w-8 h-8 flex items-center justify-center cursor-pointer print:hidden"
+              >
+                +
+                <input 
+                  id="profile-upload" 
+                  type="file" 
+                  accept="image/*" 
+                  className="hidden"
+                  onChange={handleProfileImageChange} 
+                />
+              </label>
+            )}
+          </div>
+          
+          {/* Name and Title */}
+          <div className="flex-1">
+            {isEditable ? (
+              <input
+                type="text"
+                value={resumeData.fullName}
+                onChange={(e) => onChangeData('fullName', e.target.value)}
+                onFocus={() => handleFieldFocus('fullName')}
+                className="text-4xl font-bold w-full border-none focus:outline-none focus:ring-0 mb-2 bg-transparent text-white print:text-white"
+                placeholder="YOUR NAME"
+              />
+            ) : (
+              <h1 className="text-4xl font-bold mb-2 text-white print:text-white">{resumeData.fullName}</h1>
+            )}
+            
+            {isEditable ? (
+              <input
+                type="text"
+                value={resumeData.jobTitle}
+                onChange={(e) => onChangeData('jobTitle', e.target.value)}
+                onFocus={() => handleFieldFocus('jobTitle')}
+                className="text-xl w-full border-none focus:outline-none focus:ring-0 mb-6 bg-transparent text-purple-100 dark:text-purple-100 print:text-purple-100"
+                placeholder="The role you are applying for?"
+              />
+            ) : (
+              <p className="text-xl mb-6 text-purple-100 dark:text-purple-100 print:text-purple-100">{resumeData.jobTitle}</p>
+            )}
+          </div>
+        </div>
         
         {/* Contact Information Row */}
-        <div className="flex flex-wrap gap-4 text-sm text-purple-100 dark:text-purple-100 print:text-purple-100">
+        <div className="flex flex-wrap gap-4 text-sm text-purple-100 dark:text-purple-100 print:text-purple-100 mt-4">
           <div className="flex items-center gap-2">
             <span className="text-purple-200 dark:text-purple-200 print:text-purple-200">📞</span>
             {isEditable ? (
@@ -315,6 +371,42 @@ const CreativeTemplate: React.FC<CreativeTemplateProps> = ({
           </div>
         </div>
       </div>
+      <style dangerouslySetInnerHTML={{ __html: `
+        @media print {
+          .resume-content {
+            padding: 0;
+            margin: 0;
+            box-shadow: none;
+            border: none;
+          }
+          .resume-content .bg-purple-600,
+          .resume-content .bg-purple-800 {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+            background-color: #9333ea !important;
+          }
+          .resume-content .text-white {
+            color: white !important;
+          }
+          .resume-content .text-purple-100 {
+            color: #f3e8ff !important;
+          }
+          button, .print-hidden {
+            display: none !important;
+          }
+          input, textarea {
+            border: none !important;
+            padding: 0 !important;
+          }
+          h1, h2, h3, h4 {
+            margin-bottom: 0.5em !important;
+          }
+          .resume-content h1 {
+            font-size: 28px !important;
+          }
+        }
+      `}} />
     </div>
   );
 };

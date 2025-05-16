@@ -32,7 +32,8 @@ const EditorPage: React.FC = () => {
     linkedin: '',
     location: '',
     skills: ['Your Skill'],
-    summary: 'Brief overview of your professional background and career objectives...'
+    summary: 'Brief overview of your professional background and career objectives...',
+    profileImage: undefined as string | undefined
   });
   
   const handleExpertiseChange = (field: string, value: string | number) => {
@@ -131,8 +132,6 @@ const EditorPage: React.FC = () => {
       clone.style.top = '-9999px';
       clone.style.left = '-9999px';
       clone.style.padding = '20mm';
-      clone.style.backgroundColor = 'white';
-      clone.style.color = 'black';
       document.body.appendChild(clone);
       
       // Remove print class from original
@@ -319,15 +318,15 @@ const EditorPage: React.FC = () => {
             margin: 0;
             box-shadow: none;
             border: none;
-            background-color: white !important;
           }
           .for-print button, 
           .for-print .edit-control {
             display: none !important;
           }
           .for-print * {
-            color: black !important;
-            background-color: white !important;
+            color-adjust: exact !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
           }
         }
       `}} />
