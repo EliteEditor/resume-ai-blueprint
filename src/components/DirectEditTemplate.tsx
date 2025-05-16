@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { toast } from '@/hooks/use-toast';
 
@@ -283,7 +282,7 @@ const DirectEditTemplate: React.FC = () => {
         </div>
       </div>
 
-      <style jsx global>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         @media print {
           .resume-content {
             padding: 0;
@@ -306,7 +305,7 @@ const DirectEditTemplate: React.FC = () => {
             display: none !important;
           }
         }
-      `}</style>
+      `}} />
     </div>
   );
 };

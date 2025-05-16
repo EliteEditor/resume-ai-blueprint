@@ -237,7 +237,7 @@ const EditorPage: React.FC = () => {
         </div>
       </div>
 
-      <style jsx global>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         @media print {
           .resume-content {
             padding: 0;
@@ -251,7 +251,7 @@ const EditorPage: React.FC = () => {
             display: none !important;
           }
         }
-      `}</style>
+      `}} />
     </div>
   );
 };
