@@ -1,111 +1,32 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import DirectEditTemplate from '@/components/DirectEditTemplate';
 import ProfessionalTemplate from '@/components/resume-templates/ProfessionalTemplate';
 import CreativeTemplate from '@/components/resume-templates/CreativeTemplate';
 import MinimalTechTemplate from '@/components/resume-templates/MinimalTechTemplate';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Download, Plus, Edit, X } from 'lucide-react';
+import { ArrowLeft, Download } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { toast } from '@/hooks/use-toast';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
-import { Label } from '@/components/ui/label';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-
-interface ResumeData {
-  fullName: string;
-  jobTitle: string;
-  phone: string;
-  email: string;
-  linkedin: string;
-  location: string;
-  skills: string[];
-  summary: string;
-  industryExpertise?: {
-    field: string;
-    level: number;
-  };
-}
 
 const EditorPage: React.FC = () => {
   const { templateId } = useParams();
-  const [resumeData, setResumeData] = useState<ResumeData>({
-    fullName: 'YOUR NAME',
-    jobTitle: 'The role you are applying for?',
-    phone: '',
-    email: '',
-    linkedin: '',
-    location: '',
-    skills: ['Your Skill'],
-    summary: 'Brief overview of your professional background and career objectives...',
-    industryExpertise: {
-      field: 'Field or industry',
-      level: 33
-    }
+  const [isExpertiseDialogOpen, setIsExpertiseDialogOpen] = useState(false);
+  const [industryExpertise, setIndustryExpertise] = useState({
+    field: 'Field or industry',
+    level: 33
   });
   
-  const [fieldBeingEdited, setFieldBeingEdited] = useState<string | null>(null);
-  const [tempFieldValue, setTempFieldValue] = useState('');
-  const [isExpertiseDialogOpen, setIsExpertiseDialogOpen] = useState(false);
-  
   const handleExpertiseChange = (field: string, value: string | number) => {
-    setResumeData(prev => ({
+    setIndustryExpertise(prev => ({
       ...prev,
-      industryExpertise: {
-        ...prev.industryExpertise!,
-        [field]: value
-      }
-    }));
-  };
-  
-  const handleFieldClick = (field: keyof ResumeData, value: any) => {
-    // Don't handle clicks on complex objects
-    if (typeof value === 'object' && value !== null) return;
-    
-    setFieldBeingEdited(field);
-    setTempFieldValue(value);
-  };
-  
-  const handleFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTempFieldValue(e.target.value);
-  };
-  
-  const handleFieldSave = () => {
-    if (!fieldBeingEdited) return;
-    
-    setResumeData(prev => ({
-      ...prev,
-      [fieldBeingEdited]: tempFieldValue
-    }));
-    
-    setFieldBeingEdited(null);
-  };
-  
-  const handleSkillAdd = () => {
-    setResumeData(prev => ({
-      ...prev,
-      skills: [...prev.skills, 'New Skill']
-    }));
-  };
-  
-  const handleSkillChange = (index: number, value: string) => {
-    setResumeData(prev => {
-      const newSkills = [...prev.skills];
-      newSkills[index] = value;
-      return {
-        ...prev,
-        skills: newSkills
-      };
-    });
-  };
-  
-  const handleSkillRemove = (index: number) => {
-    setResumeData(prev => ({
-      ...prev,
-      skills: prev.skills.filter((_, i) => i !== index)
+      [field]: value
     }));
   };
   
@@ -127,40 +48,43 @@ const EditorPage: React.FC = () => {
         description: "Preparing your resume for download..."
       });
       
-      // Clone the element to avoid modifying the original
+      // Add print class to hide edit controls
+      resumeElement.classList.add('for-print');
+      
+      // Create a clone for PDF export
       const clone = resumeElement.cloneNode(true) as HTMLElement;
       
-      // Remove any edit controls or unnecessary elements for the PDF
-      const editControls = clone.querySelectorAll('.edit-control');
-      editControls.forEach(control => control.remove());
+      // Remove any buttons or edit controls from the clone
+      const buttonsToRemove = clone.querySelectorAll('button');
+      buttonsToRemove.forEach(button => button.remove());
       
-      // Add special class for print styling
-      clone.classList.add('for-pdf-export');
-      
-      // Set A4 dimensions and position off-screen
+      // Set up for PDF export
       clone.style.width = '210mm';
-      clone.style.height = '297mm';
       clone.style.position = 'absolute';
       clone.style.top = '-9999px';
       clone.style.left = '-9999px';
-      clone.style.background = 'white';
+      clone.style.padding = '20mm';
+      clone.style.backgroundColor = 'white';
+      clone.style.color = 'black';
       document.body.appendChild(clone);
       
-      // Use higher scale for better quality
+      // Remove print class from original
+      resumeElement.classList.remove('for-print');
+      
+      // Use html2canvas with higher quality settings
       const canvas = await html2canvas(clone, {
-        scale: 2,
+        scale: 3,
         useCORS: true,
         allowTaint: true,
         backgroundColor: '#ffffff',
-        width: clone.offsetWidth,
-        height: clone.offsetHeight,
-        windowWidth: clone.scrollWidth,
-        windowHeight: clone.scrollHeight
+        logging: false,
+        removeContainer: true
       });
       
       // Remove the clone after capturing
       document.body.removeChild(clone);
       
+      // Create PDF
       const imgData = canvas.toDataURL('image/jpeg', 1.0);
       const pdf = new jsPDF({
         orientation: 'portrait',
@@ -168,23 +92,22 @@ const EditorPage: React.FC = () => {
         format: 'a4'
       });
       
-      // Calculate correct dimensions to maintain aspect ratio
-      const imgWidth = 210; // A4 width in mm
-      const ratio = canvas.width / canvas.height;
-      const imgHeight = imgWidth / ratio;
+      const imgWidth = 210;
+      const pageHeight = 297;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
       
       pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight);
       
-      // If content exceeds one page, create additional pages as needed
-      if (imgHeight > 297) { // 297mm is A4 height
-        let heightLeft = imgHeight - 297;
-        let position = -297;
+      // Add more pages if content exceeds one page
+      if (imgHeight > pageHeight) {
+        let heightLeft = imgHeight - pageHeight;
+        let position = -pageHeight;
         
         while (heightLeft > 0) {
           pdf.addPage();
           pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
-          heightLeft -= 297;
-          position -= 297;
+          heightLeft -= pageHeight;
+          position -= pageHeight;
         }
       }
       
@@ -205,40 +128,44 @@ const EditorPage: React.FC = () => {
 
   // Render appropriate template based on templateId
   const renderTemplate = () => {
-    if (templateId === 'professional-erp') {
-      return (
-        <div className="resume-content relative" onClick={(e) => e.target === e.currentTarget && setFieldBeingEdited(null)}>
-          <ProfessionalTemplate resumeData={resumeData} />
-          
-          {/* Field editing interface */}
-          {fieldBeingEdited && (
-            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl max-w-md w-full" onClick={e => e.stopPropagation()}>
-                <h3 className="text-lg font-semibold mb-4">Edit {fieldBeingEdited}</h3>
-                <Input 
-                  value={tempFieldValue} 
-                  onChange={handleFieldChange} 
-                  autoFocus
-                  className="mb-4"
-                />
-                <div className="flex justify-end gap-2">
-                  <Button variant="outline" onClick={() => setFieldBeingEdited(null)}>Cancel</Button>
-                  <Button onClick={handleFieldSave}>Save</Button>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      );
+    switch(templateId) {
+      case 'professional-erp':
+        return <ProfessionalTemplate resumeData={{
+          fullName: 'YOUR NAME',
+          jobTitle: 'The role you are applying for?',
+          phone: '',
+          email: '',
+          linkedin: '',
+          location: '',
+          skills: ['Your Skill'],
+          summary: 'Brief overview of your professional background and career objectives...',
+          industryExpertise: industryExpertise
+        }} />;
+      case 'creative-design':
+        return <CreativeTemplate resumeData={{
+          fullName: 'YOUR NAME',
+          jobTitle: 'The role you are applying for?',
+          phone: '',
+          email: '',
+          linkedin: '',
+          location: '',
+          skills: ['Your Skill'],
+          summary: 'Brief overview of your professional background and career objectives...'
+        }} />;
+      case 'minimal-tech':
+        return <MinimalTechTemplate resumeData={{
+          fullName: 'YOUR NAME',
+          jobTitle: 'The role you are applying for?',
+          phone: '',
+          email: '',
+          linkedin: '',
+          location: '',
+          skills: ['Your Skill'],
+          summary: 'Brief overview of your professional background and career objectives...'
+        }} />;
+      default:
+        return <DirectEditTemplate />;
     }
-    if (templateId === 'creative-design') {
-      return <div className="resume-content"><CreativeTemplate resumeData={resumeData} /></div>;
-    }
-    if (templateId === 'minimal-tech') {
-      return <div className="resume-content"><MinimalTechTemplate resumeData={resumeData} /></div>;
-    }
-    // Default to DirectEditTemplate
-    return <DirectEditTemplate />;
   };
 
   return (
@@ -254,7 +181,7 @@ const EditorPage: React.FC = () => {
               </Button>
             </Link>
             <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-4">Edit Your Resume</h1>
-            <p className="text-gray-600 dark:text-gray-400">Customize your resume to match your experience and job requirements</p>
+            <p className="text-gray-600 dark:text-gray-400">Customize your resume directly by clicking on any section you want to edit</p>
           </div>
           <div className="flex items-center gap-3">
             <Dialog open={isExpertiseDialogOpen} onOpenChange={setIsExpertiseDialogOpen}>
@@ -272,14 +199,14 @@ const EditorPage: React.FC = () => {
                     <Label htmlFor="field">Industry Field</Label>
                     <Input 
                       id="field" 
-                      value={resumeData.industryExpertise?.field || ''} 
+                      value={industryExpertise.field} 
                       onChange={(e) => handleExpertiseChange('field', e.target.value)}
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label>Expertise Level: {resumeData.industryExpertise?.level || 0}%</Label>
+                    <Label>Expertise Level: {industryExpertise.level}%</Label>
                     <Slider 
-                      value={[resumeData.industryExpertise?.level || 0]} 
+                      value={[industryExpertise.level]} 
                       onValueChange={(value) => handleExpertiseChange('level', value[0])} 
                       max={100} 
                       step={1}
@@ -302,44 +229,29 @@ const EditorPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Skills editor */}
-        <div className="mb-6 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
-          <h2 className="text-lg font-semibold mb-3">Skills</h2>
-          <div className="flex flex-wrap gap-2">
-            {resumeData.skills.map((skill, index) => (
-              <div key={index} className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-full">
-                <Input
-                  value={skill}
-                  onChange={(e) => handleSkillChange(index, e.target.value)}
-                  className="w-auto h-6 min-w-[100px] bg-transparent border-0 p-0 focus-visible:ring-0 focus-visible:ring-offset-0"
-                />
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  className="h-5 w-5 rounded-full" 
-                  onClick={() => handleSkillRemove(index)}
-                >
-                  <X className="h-3 w-3" />
-                </Button>
-              </div>
-            ))}
-            <Button variant="outline" size="sm" className="rounded-full" onClick={handleSkillAdd}>
-              <Plus className="h-4 w-4 mr-1" /> Add Skill
-            </Button>
-          </div>
-        </div>
-
         {/* Resume content */}
         <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 shadow-sm overflow-auto">
-          <div className="relative" onClick={(e) => {
-            if (fieldBeingEdited) {
-              setFieldBeingEdited(null);
-            }
-          }}>
+          <div className="resume-content">
             {renderTemplate()}
           </div>
         </div>
       </div>
+
+      <style jsx global>{`
+        @media print {
+          .resume-content {
+            padding: 0;
+            margin: 0;
+            box-shadow: none;
+            border: none;
+            background-color: white !important;
+          }
+          .for-print button, 
+          .for-print .edit-control {
+            display: none !important;
+          }
+        }
+      `}</style>
     </div>
   );
 };
