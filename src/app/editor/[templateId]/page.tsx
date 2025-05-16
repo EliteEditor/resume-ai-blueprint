@@ -10,18 +10,9 @@ import { ArrowLeft, Download } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { toast } from '@/hooks/use-toast';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Slider } from '@/components/ui/slider';
 
 const EditorPage: React.FC = () => {
   const { templateId } = useParams();
-  const [isExpertiseDialogOpen, setIsExpertiseDialogOpen] = useState(false);
-  const [industryExpertise, setIndustryExpertise] = useState({
-    field: 'Field or industry',
-    level: 33
-  });
   
   // Add resume data state that will be editable
   const [resumeData, setResumeData] = useState({
@@ -35,13 +26,6 @@ const EditorPage: React.FC = () => {
     summary: 'Brief overview of your professional background and career objectives...',
     profileImage: undefined as string | undefined
   });
-  
-  const handleExpertiseChange = (field: string, value: string | number) => {
-    setIndustryExpertise(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  };
   
   // Add handler for resume data changes
   const handleResumeDataChange = (field: string, value: any) => {
@@ -119,7 +103,7 @@ const EditorPage: React.FC = () => {
       inputsToReplace.forEach(input => {
         const span = document.createElement('span');
         span.textContent = (input as HTMLInputElement).value;
-        span.style.color = 'black';
+        span.style.color = window.getComputedStyle(input).color;
         span.style.fontFamily = window.getComputedStyle(input).fontFamily;
         span.style.fontSize = window.getComputedStyle(input).fontSize;
         span.style.fontWeight = window.getComputedStyle(input).fontWeight;
@@ -131,7 +115,6 @@ const EditorPage: React.FC = () => {
       clone.style.position = 'absolute';
       clone.style.top = '-9999px';
       clone.style.left = '-9999px';
-      clone.style.padding = '20mm';
       document.body.appendChild(clone);
       
       // Remove print class from original
@@ -139,12 +122,23 @@ const EditorPage: React.FC = () => {
       
       // Use html2canvas with higher quality settings
       const canvas = await html2canvas(clone, {
-        scale: 3,
+        scale: 5,
         useCORS: true,
         allowTaint: true,
         backgroundColor: '#ffffff',
         logging: false,
-        removeContainer: true
+        removeContainer: true,
+        onclone: (document, element) => {
+          // Make sure styles are preserved in the clone
+          element.querySelectorAll('.bg-purple-600, .bg-purple-800').forEach((el) => {
+            (el as HTMLElement).style.backgroundColor = '#9333ea';
+            (el as HTMLElement).style.color = 'white';
+          });
+          
+          element.querySelectorAll('.text-white, .text-purple-100').forEach((el) => {
+            (el as HTMLElement).style.color = 'white';
+          });
+        }
       });
       
       // Remove the clone after capturing
@@ -207,10 +201,7 @@ const EditorPage: React.FC = () => {
     switch(templateId) {
       case 'professional-erp':
         return <ProfessionalTemplate 
-          resumeData={{
-            ...resumeData,
-            industryExpertise
-          }}
+          resumeData={resumeData}
           isEditable={true}
           onChangeData={handleResumeDataChange}
           onChangeSkill={handleSkillChange}
@@ -256,43 +247,6 @@ const EditorPage: React.FC = () => {
             <p className="text-gray-600 dark:text-gray-400">Customize your resume directly by clicking on any section you want to edit</p>
           </div>
           <div className="flex items-center gap-3">
-            {templateId === 'professional-erp' && (
-              <Dialog open={isExpertiseDialogOpen} onOpenChange={setIsExpertiseDialogOpen}>
-                <DialogTrigger asChild>
-                  <Button variant="outline">
-                    Edit Industry Expertise
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Industry Expertise</DialogTitle>
-                  </DialogHeader>
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="field">Industry Field</Label>
-                      <Input 
-                        id="field" 
-                        value={industryExpertise.field} 
-                        onChange={(e) => handleExpertiseChange('field', e.target.value)}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Expertise Level: {industryExpertise.level}%</Label>
-                      <Slider 
-                        value={[industryExpertise.level]} 
-                        onValueChange={(value) => handleExpertiseChange('level', value[0])} 
-                        max={100} 
-                        step={1}
-                      />
-                    </div>
-                    <Button onClick={() => setIsExpertiseDialogOpen(false)} className="w-full">
-                      Save
-                    </Button>
-                  </div>
-                </DialogContent>
-              </Dialog>
-            )}
-            
             <Button 
               onClick={handleDownload} 
               className="bg-blue-600 hover:bg-blue-700 text-white"

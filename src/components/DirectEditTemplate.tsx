@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { toast } from '@/hooks/use-toast';
 
@@ -10,6 +11,7 @@ interface ResumeData {
   location: string;
   skills: string[];
   summary: string;
+  profileImage?: string;
 }
 
 const DirectEditTemplate: React.FC = () => {
@@ -22,11 +24,13 @@ const DirectEditTemplate: React.FC = () => {
     location: '',
     skills: ['Your Skill'],
     summary: 'Brief overview of your professional background and career objectives...',
+    profileImage: undefined
   });
 
   const [fieldClicked, setFieldClicked] = useState<{ [key: string]: boolean }>({});
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
-  const handleChange = (field: keyof ResumeData, value: string) => {
+  const handleChange = (field: keyof ResumeData, value: string | undefined) => {
     setResumeData(prev => ({
       ...prev,
       [field]: value,
@@ -86,26 +90,72 @@ const DirectEditTemplate: React.FC = () => {
     }
   };
 
+  // Handle profile image upload
+  const handleProfileImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setImageFile(file);
+      
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        handleChange('profileImage', reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <div className="w-[210mm] min-h-[297mm] bg-white dark:bg-gray-800 mx-auto p-12 shadow-lg resume-content print:shadow-none print:border-0">
       {/* Header Section */}
-      <div className="mb-8">
-        <input
-          type="text"
-          value={resumeData.fullName}
-          onChange={(e) => handleChange('fullName', e.target.value)}
-          onFocus={() => handleFieldFocus('fullName')}
-          className="text-4xl font-light text-gray-800 dark:text-gray-100 w-full border-none focus:outline-none focus:ring-0 mb-2 bg-transparent print:text-black"
-          placeholder="YOUR NAME"
-        />
-        <input
-          type="text"
-          value={resumeData.jobTitle}
-          onChange={(e) => handleChange('jobTitle', e.target.value)}
-          onFocus={() => handleFieldFocus('jobTitle')}
-          className="text-xl text-gray-600 dark:text-gray-300 w-full border-none focus:outline-none focus:ring-0 bg-transparent print:text-gray-700"
-          placeholder="The role you are applying for?"
-        />
+      <div className="mb-8 flex items-center gap-6">
+        {/* Profile Image */}
+        <div className="relative">
+          <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center bg-gray-100 dark:bg-gray-700">
+            {resumeData.profileImage ? (
+              <img 
+                src={resumeData.profileImage} 
+                alt="Profile" 
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="text-gray-400 dark:text-gray-500 text-4xl">
+                {resumeData.fullName?.charAt(0) || "?"}
+              </div>
+            )}
+          </div>
+          <label 
+            htmlFor="profile-upload-direct" 
+            className="absolute bottom-0 right-0 bg-gray-600 hover:bg-gray-700 rounded-full w-8 h-8 flex items-center justify-center cursor-pointer text-white print:hidden"
+          >
+            +
+            <input 
+              id="profile-upload-direct" 
+              type="file" 
+              accept="image/*" 
+              className="hidden"
+              onChange={handleProfileImageChange} 
+            />
+          </label>
+        </div>
+
+        <div>
+          <input
+            type="text"
+            value={resumeData.fullName}
+            onChange={(e) => handleChange('fullName', e.target.value)}
+            onFocus={() => handleFieldFocus('fullName')}
+            className="text-4xl font-light text-gray-800 dark:text-gray-100 w-full border-none focus:outline-none focus:ring-0 mb-2 bg-transparent print:text-black"
+            placeholder="YOUR NAME"
+          />
+          <input
+            type="text"
+            value={resumeData.jobTitle}
+            onChange={(e) => handleChange('jobTitle', e.target.value)}
+            onFocus={() => handleFieldFocus('jobTitle')}
+            className="text-xl text-gray-600 dark:text-gray-300 w-full border-none focus:outline-none focus:ring-0 bg-transparent print:text-gray-700"
+            placeholder="The role you are applying for?"
+          />
+        </div>
       </div>
 
       {/* Contact Info */}
@@ -186,14 +236,6 @@ const DirectEditTemplate: React.FC = () => {
                 + Add Skill
               </button>
             </div>
-          </div>
-
-          <div>
-            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4 uppercase print:text-black">INDUSTRY EXPERTISE</h2>
-            <div className="relative h-1 bg-gray-200 dark:bg-gray-700 rounded print:bg-gray-300">
-              <div className="absolute left-0 top-0 h-full w-1/3 bg-blue-500 rounded print:bg-blue-700"></div>
-            </div>
-            <div className="text-sm text-gray-600 dark:text-gray-400 mt-2 print:text-gray-700">Field or industry</div>
           </div>
         </div>
 
