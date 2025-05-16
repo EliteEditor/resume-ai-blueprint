@@ -23,11 +23,66 @@ const EditorPage: React.FC = () => {
     level: 33
   });
   
+  // Add resume data state that will be editable
+  const [resumeData, setResumeData] = useState({
+    fullName: 'YOUR NAME',
+    jobTitle: 'The role you are applying for?',
+    phone: '',
+    email: '',
+    linkedin: '',
+    location: '',
+    skills: ['Your Skill'],
+    summary: 'Brief overview of your professional background and career objectives...'
+  });
+  
   const handleExpertiseChange = (field: string, value: string | number) => {
     setIndustryExpertise(prev => ({
       ...prev,
       [field]: value
     }));
+  };
+  
+  // Add handler for resume data changes
+  const handleResumeDataChange = (field: string, value: any) => {
+    setResumeData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+  
+  // Add handler for skill changes
+  const handleSkillChange = (index: number, value: string) => {
+    const newSkills = [...resumeData.skills];
+    newSkills[index] = value;
+    setResumeData(prev => ({
+      ...prev,
+      skills: newSkills
+    }));
+  };
+  
+  // Add/remove skill handlers
+  const addSkill = () => {
+    setResumeData(prev => ({
+      ...prev,
+      skills: [...prev.skills, 'New Skill']
+    }));
+  };
+  
+  const removeSkill = (index: number) => {
+    if (resumeData.skills.length > 1) {
+      const newSkills = [...resumeData.skills];
+      newSkills.splice(index, 1);
+      setResumeData(prev => ({
+        ...prev,
+        skills: newSkills
+      }));
+    } else {
+      toast({
+        title: "Cannot Remove",
+        description: "You must have at least one skill listed.",
+        variant: "destructive"
+      });
+    }
   };
   
   const handleDownload = async () => {
@@ -57,6 +112,18 @@ const EditorPage: React.FC = () => {
       // Remove any buttons or edit controls from the clone
       const buttonsToRemove = clone.querySelectorAll('button');
       buttonsToRemove.forEach(button => button.remove());
+      
+      // Also remove any input fields and replace them with their values
+      const inputsToReplace = clone.querySelectorAll('input, textarea');
+      inputsToReplace.forEach(input => {
+        const span = document.createElement('span');
+        span.textContent = (input as HTMLInputElement).value;
+        span.style.color = 'black';
+        span.style.fontFamily = window.getComputedStyle(input).fontFamily;
+        span.style.fontSize = window.getComputedStyle(input).fontSize;
+        span.style.fontWeight = window.getComputedStyle(input).fontWeight;
+        input.parentNode?.replaceChild(span, input);
+      });
       
       // Set up for PDF export
       clone.style.width = '210mm';
@@ -126,43 +193,49 @@ const EditorPage: React.FC = () => {
     }
   };
 
-  // Render appropriate template based on templateId
+  // Render appropriate template with editable functionality
   const renderTemplate = () => {
+    // Common props for all templates to make them editable
+    const editableProps = {
+      resumeData,
+      onChangeData: handleResumeDataChange,
+      onChangeSkill: handleSkillChange,
+      onAddSkill: addSkill,
+      onRemoveSkill: removeSkill,
+      isEditing: true
+    };
+
     switch(templateId) {
       case 'professional-erp':
-        return <ProfessionalTemplate resumeData={{
-          fullName: 'YOUR NAME',
-          jobTitle: 'The role you are applying for?',
-          phone: '',
-          email: '',
-          linkedin: '',
-          location: '',
-          skills: ['Your Skill'],
-          summary: 'Brief overview of your professional background and career objectives...',
-          industryExpertise: industryExpertise
-        }} />;
+        return <ProfessionalTemplate 
+          resumeData={{
+            ...resumeData,
+            industryExpertise
+          }}
+          isEditable={true}
+          onChangeData={handleResumeDataChange}
+          onChangeSkill={handleSkillChange}
+          onAddSkill={addSkill}
+          onRemoveSkill={removeSkill}
+        />;
       case 'creative-design':
-        return <CreativeTemplate resumeData={{
-          fullName: 'YOUR NAME',
-          jobTitle: 'The role you are applying for?',
-          phone: '',
-          email: '',
-          linkedin: '',
-          location: '',
-          skills: ['Your Skill'],
-          summary: 'Brief overview of your professional background and career objectives...'
-        }} />;
+        return <CreativeTemplate 
+          resumeData={resumeData}
+          isEditable={true}
+          onChangeData={handleResumeDataChange}
+          onChangeSkill={handleSkillChange}
+          onAddSkill={addSkill}
+          onRemoveSkill={removeSkill}
+        />;
       case 'minimal-tech':
-        return <MinimalTechTemplate resumeData={{
-          fullName: 'YOUR NAME',
-          jobTitle: 'The role you are applying for?',
-          phone: '',
-          email: '',
-          linkedin: '',
-          location: '',
-          skills: ['Your Skill'],
-          summary: 'Brief overview of your professional background and career objectives...'
-        }} />;
+        return <MinimalTechTemplate 
+          resumeData={resumeData}
+          isEditable={true}
+          onChangeData={handleResumeDataChange}
+          onChangeSkill={handleSkillChange}
+          onAddSkill={addSkill}
+          onRemoveSkill={removeSkill}
+        />;
       default:
         return <DirectEditTemplate />;
     }
@@ -184,40 +257,42 @@ const EditorPage: React.FC = () => {
             <p className="text-gray-600 dark:text-gray-400">Customize your resume directly by clicking on any section you want to edit</p>
           </div>
           <div className="flex items-center gap-3">
-            <Dialog open={isExpertiseDialogOpen} onOpenChange={setIsExpertiseDialogOpen}>
-              <DialogTrigger asChild>
-                <Button variant="outline">
-                  Edit Industry Expertise
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Industry Expertise</DialogTitle>
-                </DialogHeader>
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="field">Industry Field</Label>
-                    <Input 
-                      id="field" 
-                      value={industryExpertise.field} 
-                      onChange={(e) => handleExpertiseChange('field', e.target.value)}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Expertise Level: {industryExpertise.level}%</Label>
-                    <Slider 
-                      value={[industryExpertise.level]} 
-                      onValueChange={(value) => handleExpertiseChange('level', value[0])} 
-                      max={100} 
-                      step={1}
-                    />
-                  </div>
-                  <Button onClick={() => setIsExpertiseDialogOpen(false)} className="w-full">
-                    Save
+            {templateId === 'professional-erp' && (
+              <Dialog open={isExpertiseDialogOpen} onOpenChange={setIsExpertiseDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button variant="outline">
+                    Edit Industry Expertise
                   </Button>
-                </div>
-              </DialogContent>
-            </Dialog>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Industry Expertise</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="field">Industry Field</Label>
+                      <Input 
+                        id="field" 
+                        value={industryExpertise.field} 
+                        onChange={(e) => handleExpertiseChange('field', e.target.value)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Expertise Level: {industryExpertise.level}%</Label>
+                      <Slider 
+                        value={[industryExpertise.level]} 
+                        onValueChange={(value) => handleExpertiseChange('level', value[0])} 
+                        max={100} 
+                        step={1}
+                      />
+                    </div>
+                    <Button onClick={() => setIsExpertiseDialogOpen(false)} className="w-full">
+                      Save
+                    </Button>
+                  </div>
+                </DialogContent>
+              </Dialog>
+            )}
             
             <Button 
               onClick={handleDownload} 
@@ -249,6 +324,10 @@ const EditorPage: React.FC = () => {
           .for-print button, 
           .for-print .edit-control {
             display: none !important;
+          }
+          .for-print * {
+            color: black !important;
+            background-color: white !important;
           }
         }
       `}} />
