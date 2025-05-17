@@ -155,8 +155,8 @@ const Landing: React.FC = () => {
                 <div className="absolute -left-4 -top-4 w-72 h-72 bg-indigo-500/10 rounded-full filter blur-3xl"></div>
                 <div className="absolute -right-4 -bottom-4 w-72 h-72 bg-purple-500/10 rounded-full filter blur-3xl"></div>
                 <img 
-                  src="/lovable-uploads/85a6511a-3129-4e8a-9134-6ca86b3af5a6.png" 
-                  alt="AI Resume Builder Interface" 
+                  src="/lovable-uploads/bb38759b-fe5f-4a72-9f1e-7e63b88a572f.png" 
+                  alt="Resume Builder Dashboard" 
                   className="relative z-10 rounded-lg shadow-2xl shadow-indigo-900/20 border border-gray-800"
                 />
               </div>
