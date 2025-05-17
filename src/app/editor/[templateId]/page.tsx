@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import DirectEditTemplate from '@/components/DirectEditTemplate';
 import ProfessionalTemplate from '@/components/resume-templates/ProfessionalTemplate';
 import CreativeTemplate from '@/components/resume-templates/CreativeTemplate';
@@ -13,6 +13,7 @@ import { toast } from '@/hooks/use-toast';
 
 const EditorPage: React.FC = () => {
   const { templateId } = useParams();
+  const navigate = useNavigate();
   
   // Add resume data state that will be editable
   const [resumeData, setResumeData] = useState({
@@ -24,7 +25,31 @@ const EditorPage: React.FC = () => {
     location: '',
     skills: ['Your Skill'],
     summary: 'Brief overview of your professional background and career objectives...',
-    profileImage: undefined as string | undefined
+    profileImage: undefined as string | undefined,
+    education: [
+      {
+        degree: 'Degree and Field of Study',
+        school: 'School or University',
+        period: 'Date Period'
+      }
+    ],
+    experience: [
+      {
+        title: 'Job Title',
+        company: 'Company Name',
+        location: 'Location',
+        period: 'Date Period',
+        highlights: ['Add your accomplishment...']
+      }
+    ],
+    projects: [
+      {
+        name: 'Project Name',
+        period: 'Date Period',
+        description: 'Project description...',
+        highlights: ['Add project highlight...']
+      }
+    ]
   });
   
   // Add handler for resume data changes
@@ -69,6 +94,199 @@ const EditorPage: React.FC = () => {
       });
     }
   };
+
+  // Education handlers
+  const addEducation = () => {
+    setResumeData(prev => ({
+      ...prev,
+      education: [
+        ...prev.education,
+        {
+          degree: 'Degree and Field of Study',
+          school: 'School or University',
+          period: 'Date Period'
+        }
+      ]
+    }));
+  };
+
+  const updateEducation = (index: number, field: string, value: string) => {
+    const newEducation = [...resumeData.education];
+    newEducation[index] = {
+      ...newEducation[index],
+      [field]: value
+    };
+    setResumeData(prev => ({
+      ...prev,
+      education: newEducation
+    }));
+  };
+
+  const removeEducation = (index: number) => {
+    if (resumeData.education.length > 1) {
+      const newEducation = [...resumeData.education];
+      newEducation.splice(index, 1);
+      setResumeData(prev => ({
+        ...prev,
+        education: newEducation
+      }));
+    } else {
+      toast({
+        title: "Cannot Remove",
+        description: "You must have at least one education entry.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  // Experience handlers
+  const addExperience = () => {
+    setResumeData(prev => ({
+      ...prev,
+      experience: [
+        ...prev.experience,
+        {
+          title: 'Job Title',
+          company: 'Company Name',
+          location: 'Location',
+          period: 'Date Period',
+          highlights: ['Add your accomplishment...']
+        }
+      ]
+    }));
+  };
+
+  const updateExperience = (index: number, field: string, value: any) => {
+    const newExperience = [...resumeData.experience];
+    newExperience[index] = {
+      ...newExperience[index],
+      [field]: value
+    };
+    setResumeData(prev => ({
+      ...prev,
+      experience: newExperience
+    }));
+  };
+
+  const updateExperienceHighlight = (expIndex: number, highlightIndex: number, value: string) => {
+    const newExperience = [...resumeData.experience];
+    newExperience[expIndex].highlights[highlightIndex] = value;
+    setResumeData(prev => ({
+      ...prev,
+      experience: newExperience
+    }));
+  };
+
+  const addExperienceHighlight = (expIndex: number) => {
+    const newExperience = [...resumeData.experience];
+    newExperience[expIndex].highlights.push('Add your accomplishment...');
+    setResumeData(prev => ({
+      ...prev,
+      experience: newExperience
+    }));
+  };
+
+  const removeExperienceHighlight = (expIndex: number, highlightIndex: number) => {
+    if (resumeData.experience[expIndex].highlights.length > 1) {
+      const newExperience = [...resumeData.experience];
+      newExperience[expIndex].highlights.splice(highlightIndex, 1);
+      setResumeData(prev => ({
+        ...prev,
+        experience: newExperience
+      }));
+    }
+  };
+
+  const removeExperience = (index: number) => {
+    if (resumeData.experience.length > 1) {
+      const newExperience = [...resumeData.experience];
+      newExperience.splice(index, 1);
+      setResumeData(prev => ({
+        ...prev,
+        experience: newExperience
+      }));
+    } else {
+      toast({
+        title: "Cannot Remove",
+        description: "You must have at least one experience entry.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  // Projects handlers
+  const addProject = () => {
+    setResumeData(prev => ({
+      ...prev,
+      projects: [
+        ...prev.projects,
+        {
+          name: 'Project Name',
+          period: 'Date Period',
+          description: 'Project description...',
+          highlights: ['Add project highlight...']
+        }
+      ]
+    }));
+  };
+
+  const updateProject = (index: number, field: string, value: any) => {
+    const newProjects = [...resumeData.projects];
+    newProjects[index] = {
+      ...newProjects[index],
+      [field]: value
+    };
+    setResumeData(prev => ({
+      ...prev,
+      projects: newProjects
+    }));
+  };
+
+  const updateProjectHighlight = (projectIndex: number, highlightIndex: number, value: string) => {
+    const newProjects = [...resumeData.projects];
+    newProjects[projectIndex].highlights[highlightIndex] = value;
+    setResumeData(prev => ({
+      ...prev,
+      projects: newProjects
+    }));
+  };
+
+  const addProjectHighlight = (projectIndex: number) => {
+    const newProjects = [...resumeData.projects];
+    newProjects[projectIndex].highlights.push('Add project highlight...');
+    setResumeData(prev => ({
+      ...prev,
+      projects: newProjects
+    }));
+  };
+
+  const removeProjectHighlight = (projectIndex: number, highlightIndex: number) => {
+    if (resumeData.projects[projectIndex].highlights.length > 1) {
+      const newProjects = [...resumeData.projects];
+      newProjects[projectIndex].highlights.splice(highlightIndex, 1);
+      setResumeData(prev => ({
+        ...prev,
+        projects: newProjects
+      }));
+    }
+  };
+
+  const removeProject = (index: number) => {
+    if (resumeData.projects.length > 1) {
+      const newProjects = [...resumeData.projects];
+      newProjects.splice(index, 1);
+      setResumeData(prev => ({
+        ...prev,
+        projects: newProjects
+      }));
+    } else {
+      toast({
+        title: "Cannot Remove",
+        description: "You must have at least one project entry.",
+        variant: "destructive"
+      });
+    }
+  };
   
   const handleDownload = async () => {
     try {
@@ -91,68 +309,44 @@ const EditorPage: React.FC = () => {
       // Add print class to hide edit controls
       resumeElement.classList.add('for-print');
       
+      // Set fixed dimensions for A4 paper
+      const a4Width = 210; // mm
+      const a4Height = 297; // mm
+      const scaleFactor = 1.5; // Higher scale factor for better quality
+      
       // Create a clone for PDF export with enhanced styling
       const clone = resumeElement.cloneNode(true) as HTMLElement;
       
       // Remove any buttons or edit controls from the clone
-      const buttonsToRemove = clone.querySelectorAll('button');
-      buttonsToRemove.forEach(button => button.remove());
+      const elementsToRemove = clone.querySelectorAll('button, .edit-control, [type="file"], label[for="profile-upload"]');
+      elementsToRemove.forEach(el => el.remove());
       
-      // Replace input fields with properly styled spans to prevent overlapping
+      // Replace input fields with properly styled spans
       const inputsToReplace = clone.querySelectorAll('input, textarea');
       inputsToReplace.forEach(input => {
         const span = document.createElement('span');
-        span.textContent = (input as HTMLInputElement).value;
+        span.textContent = (input as HTMLInputElement).value || (input as HTMLInputElement).placeholder;
         span.style.color = window.getComputedStyle(input).color;
         span.style.fontFamily = window.getComputedStyle(input).fontFamily;
         span.style.fontSize = window.getComputedStyle(input).fontSize;
         span.style.fontWeight = window.getComputedStyle(input).fontWeight;
-        span.style.lineHeight = "1.5"; // Add proper line height to prevent overlapping
-        span.style.display = "block"; // Make each text block its own line
-        span.style.margin = "0 0 0.25rem 0"; // Add small margin between text blocks
+        span.style.lineHeight = "1.4"; 
+        span.style.display = "block";
+        span.style.margin = "0 0 0.2rem 0";
+        span.style.wordBreak = "break-word";
         input.parentNode?.replaceChild(span, input);
       });
       
-      // Fix spacing in the PDF layout
-      const contentSections = clone.querySelectorAll('.col-span-1, .col-span-2, .space-y-2, .space-y-4, .space-y-6');
-      contentSections.forEach(section => {
-        (section as HTMLElement).style.pageBreakInside = "avoid";
-        (section as HTMLElement).style.padding = "4px";
-        (section as HTMLElement).style.marginBottom = "0.75rem"; // Add consistent margin to sections
-      });
-      
-      // Improve readability for all text elements
-      const textElements = clone.querySelectorAll('h1, h2, h3, h4, p, span, div');
-      textElements.forEach(element => {
-        (element as HTMLElement).style.lineHeight = "1.5";
-        (element as HTMLElement).style.maxWidth = "100%";
-        (element as HTMLElement).style.overflow = "visible";
-        (element as HTMLElement).style.wordWrap = "break-word";
-      });
-      
-      // Special handling for bullet points to ensure proper spacing
-      const bulletPoints = clone.querySelectorAll('li, .list-item, [class*="bullet"]');
-      bulletPoints.forEach(point => {
-        (point as HTMLElement).style.marginBottom = "0.5rem";
-        (point as HTMLElement).style.paddingLeft = "0.5rem";
-      });
-      
-      // Fix headings to ensure they stand out properly
-      const headings = clone.querySelectorAll('h1, h2, h3, h4, .text-lg, .text-xl, .text-2xl, .font-bold, .font-semibold');
-      headings.forEach(heading => {
-        (heading as HTMLElement).style.marginTop = "1rem";
-        (heading as HTMLElement).style.marginBottom = "0.75rem";
-      });
-      
-      // Enhance styling for print
-      clone.style.width = '210mm';
-      clone.style.minHeight = '297mm';
-      clone.style.padding = '15mm'; // Adjusted padding to ensure content fits
-      clone.style.position = 'absolute';
+      // Enhance document for print
+      clone.style.width = `${a4Width}mm`;
+      clone.style.height = `${a4Height}mm`;
+      clone.style.position = 'fixed';
       clone.style.top = '-9999px';
       clone.style.left = '-9999px';
       clone.style.backgroundColor = '#ffffff';
-      clone.style.color = '#000000';
+      clone.style.overflow = 'hidden';
+      clone.style.fontSize = '9pt'; // Smaller font size to fit more content
+      
       document.body.appendChild(clone);
       
       // Remove print class from original
@@ -160,48 +354,56 @@ const EditorPage: React.FC = () => {
       
       // Use html2canvas with higher quality settings
       const canvas = await html2canvas(clone, {
-        scale: 5,
+        scale: scaleFactor,
         useCORS: true,
         allowTaint: true,
         backgroundColor: '#ffffff',
         logging: false,
-        removeContainer: true,
-        onclone: (document, element) => {
-          // Enhanced styling preservation for PDF generation
-          element.querySelectorAll('[class*="bg-"]').forEach((el) => {
-            const computedStyle = window.getComputedStyle(el as HTMLElement);
-            (el as HTMLElement).style.backgroundColor = computedStyle.backgroundColor;
-          });
+        onclone: (clonedDoc, element) => {
+          // Apply print-specific styling
+          const style = clonedDoc.createElement('style');
+          style.innerHTML = `
+            * {
+              box-sizing: border-box !important;
+            }
+            h1, h2, h3, h4, h5, h6 {
+              margin-top: 0.4em !important;
+              margin-bottom: 0.4em !important;
+              page-break-after: avoid !important;
+            }
+            p, li, div, span {
+              line-height: 1.4 !important;
+              margin-bottom: 0.2em !important;
+            }
+            .col-span-1, .col-span-2, .col-span-3 {
+              overflow: hidden !important;
+            }
+          `;
+          clonedDoc.head.appendChild(style);
           
-          element.querySelectorAll('[class*="text-"]').forEach((el) => {
-            const computedStyle = window.getComputedStyle(el as HTMLElement);
-            (el as HTMLElement).style.color = computedStyle.color;
-          });
-          
-          // Fix any spacing issues
-          element.querySelectorAll('.space-y-2, .space-y-4, .space-y-6').forEach((el) => {
-            const children = el.children;
-            for (let i = 0; i < children.length; i++) {
-              (children[i] as HTMLElement).style.marginBottom = '0.75rem';
-              (children[i] as HTMLElement).style.lineHeight = '1.5';
+          // Enforce text color for all text elements
+          element.querySelectorAll('*').forEach((el) => {
+            if (el.textContent && el.textContent.trim()) {
+              const computedStyle = window.getComputedStyle(el as HTMLElement);
+              if (computedStyle.color === 'rgba(0, 0, 0, 0)' || computedStyle.color === 'transparent') {
+                (el as HTMLElement).style.color = '#000000';
+              }
             }
           });
           
-          // Ensure text is black in PDF
-          element.querySelectorAll('input, textarea, p, h1, h2, h3, h4, span, div').forEach((el) => {
-            if (!(el as HTMLElement).style.color || 
-                (el as HTMLElement).style.color === 'rgba(0, 0, 0, 0)' || 
-                (el as HTMLElement).style.color === 'transparent') {
-              (el as HTMLElement).style.color = '#000000';
-            }
-          });
+          // Scale down if content is too large
+          const sections = element.querySelectorAll('section, div[class*="col-span"]');
+          if (sections.length > 8) {
+            element.style.transform = 'scale(0.95)';
+            element.style.transformOrigin = 'top left';
+          }
         }
       });
       
       // Remove the clone after capturing
       document.body.removeChild(clone);
       
-      // Create PDF with improved settings
+      // Create PDF with improved settings for single page
       const imgData = canvas.toDataURL('image/jpeg', 1.0);
       const pdf = new jsPDF({
         orientation: 'portrait',
@@ -210,23 +412,21 @@ const EditorPage: React.FC = () => {
         compress: true
       });
       
+      // Calculate dimensions to fit content to a single page
       const imgWidth = 210;
-      const pageHeight = 297;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let imgHeight = (canvas.height * imgWidth) / canvas.width;
+      const maxHeight = 297; // A4 height
       
-      pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight, undefined, 'FAST');
-      
-      // Handle multi-page resumes with proper scaling
-      if (imgHeight > pageHeight) {
-        let heightLeft = imgHeight - pageHeight;
-        let position = -pageHeight;
+      // If content is taller than page, scale it down to fit
+      if (imgHeight > maxHeight) {
+        const scaleFactor = maxHeight / imgHeight;
+        imgHeight = maxHeight;
         
-        while (heightLeft > 0) {
-          pdf.addPage();
-          pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
-          heightLeft -= pageHeight;
-          position -= pageHeight;
-        }
+        // Add compressed version to fit on single page
+        pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth * scaleFactor, imgHeight, undefined, 'FAST');
+      } else {
+        // Add image normally if it fits
+        pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight, undefined, 'FAST');
       }
       
       pdf.save(`resume-${templateId}.pdf`);
@@ -253,7 +453,25 @@ const EditorPage: React.FC = () => {
       onChangeSkill: handleSkillChange,
       onAddSkill: addSkill,
       onRemoveSkill: removeSkill,
-      isEditing: true
+      isEditing: true,
+      // Education handlers
+      onAddEducation: addEducation,
+      onUpdateEducation: updateEducation,
+      onRemoveEducation: removeEducation,
+      // Experience handlers
+      onAddExperience: addExperience,
+      onUpdateExperience: updateExperience,
+      onUpdateExperienceHighlight: updateExperienceHighlight,
+      onAddExperienceHighlight: addExperienceHighlight,
+      onRemoveExperienceHighlight: removeExperienceHighlight,
+      onRemoveExperience: removeExperience,
+      // Project handlers
+      onAddProject: addProject,
+      onUpdateProject: updateProject,
+      onUpdateProjectHighlight: updateProjectHighlight,
+      onAddProjectHighlight: addProjectHighlight,
+      onRemoveProjectHighlight: removeProjectHighlight,
+      onRemoveProject: removeProject
     };
 
     switch(templateId) {
@@ -265,6 +483,21 @@ const EditorPage: React.FC = () => {
           onChangeSkill={handleSkillChange}
           onAddSkill={addSkill}
           onRemoveSkill={removeSkill}
+          onAddEducation={addEducation}
+          onUpdateEducation={updateEducation}
+          onRemoveEducation={removeEducation}
+          onAddExperience={addExperience}
+          onUpdateExperience={updateExperience}
+          onUpdateExperienceHighlight={updateExperienceHighlight}
+          onAddExperienceHighlight={addExperienceHighlight}
+          onRemoveExperienceHighlight={removeExperienceHighlight}
+          onRemoveExperience={removeExperience}
+          onAddProject={addProject}
+          onUpdateProject={updateProject}
+          onUpdateProjectHighlight={updateProjectHighlight}
+          onAddProjectHighlight={addProjectHighlight}
+          onRemoveProjectHighlight={removeProjectHighlight}
+          onRemoveProject={removeProject}
         />;
       case 'creative-design':
         return <CreativeTemplate 
@@ -274,6 +507,21 @@ const EditorPage: React.FC = () => {
           onChangeSkill={handleSkillChange}
           onAddSkill={addSkill}
           onRemoveSkill={removeSkill}
+          onAddEducation={addEducation}
+          onUpdateEducation={updateEducation}
+          onRemoveEducation={removeEducation}
+          onAddExperience={addExperience}
+          onUpdateExperience={updateExperience}
+          onUpdateExperienceHighlight={updateExperienceHighlight}
+          onAddExperienceHighlight={addExperienceHighlight}
+          onRemoveExperienceHighlight={removeExperienceHighlight}
+          onRemoveExperience={removeExperience}
+          onAddProject={addProject}
+          onUpdateProject={updateProject}
+          onUpdateProjectHighlight={updateProjectHighlight}
+          onAddProjectHighlight={addProjectHighlight}
+          onRemoveProjectHighlight={removeProjectHighlight}
+          onRemoveProject={removeProject}
         />;
       case 'minimal-tech':
         return <MinimalTechTemplate 
@@ -283,6 +531,21 @@ const EditorPage: React.FC = () => {
           onChangeSkill={handleSkillChange}
           onAddSkill={addSkill}
           onRemoveSkill={removeSkill}
+          onAddEducation={addEducation}
+          onUpdateEducation={updateEducation}
+          onRemoveEducation={removeEducation}
+          onAddExperience={addExperience}
+          onUpdateExperience={updateExperience}
+          onUpdateExperienceHighlight={updateExperienceHighlight}
+          onAddExperienceHighlight={addExperienceHighlight}
+          onRemoveExperienceHighlight={removeExperienceHighlight}
+          onRemoveExperience={removeExperience}
+          onAddProject={addProject}
+          onUpdateProject={updateProject}
+          onUpdateProjectHighlight={updateProjectHighlight}
+          onAddProjectHighlight={addProjectHighlight}
+          onRemoveProjectHighlight={removeProjectHighlight}
+          onRemoveProject={removeProject}
         />;
       default:
         return <DirectEditTemplate />;
@@ -332,7 +595,9 @@ const EditorPage: React.FC = () => {
             border: none;
           }
           .for-print button, 
-          .for-print .edit-control {
+          .for-print .edit-control,
+          .for-print [type="file"],
+          .for-print label[for="profile-upload"] {
             display: none !important;
           }
           .for-print * {
@@ -340,35 +605,28 @@ const EditorPage: React.FC = () => {
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
           }
-          /* Additional styles to prevent text overlapping */
           .for-print input, 
           .for-print textarea {
-            display: inline-block;
-            width: auto;
-            overflow: visible;
-            text-overflow: clip;
-            white-space: normal;
-            line-height: 1.5 !important;
+            border: none !important;
+            padding: 0 !important;
+            line-height: 1.4 !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            white-space: normal !important;
+            word-break: break-word !important;
+            max-width: 100% !important;
           }
-          .for-print .space-y-2 > * {
-            margin-top: 0.5rem !important;
-            margin-bottom: 0.5rem !important;
+          .for-print h1 {
+            font-size: 24px !important;
           }
-          .for-print .space-y-4 > * {
-            margin-top: 1rem !important;
-            margin-bottom: 1rem !important;
+          .for-print h2 {
+            font-size: 18px !important;
           }
-          .for-print .space-y-6 > * {
-            margin-top: 1.5rem !important;
-            margin-bottom: 1.5rem !important;
+          .for-print h3, .for-print h4 {
+            font-size: 14px !important;
           }
-          .for-print h1, .for-print h2, .for-print h3, .for-print h4 {
-            margin-bottom: 0.75rem !important;
-            page-break-after: avoid !important;
-          }
-          .for-print p, .for-print span, .for-print div {
-            line-height: 1.5 !important;
-            margin-bottom: 0.25rem !important;
+          .for-print p, .for-print span, .for-print div, .for-print li {
+            font-size: 9pt !important;
           }
         }
       `}} />

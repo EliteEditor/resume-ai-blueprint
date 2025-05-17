@@ -35,7 +35,7 @@ const Header: React.FC = () => {
     navigate('/app', { state: { activeTab: 'settings' } });
     toast({
       title: "Settings",
-      description: "Adjust your application settings",
+      description: "Adjusting your application settings",
     });
   };
 
