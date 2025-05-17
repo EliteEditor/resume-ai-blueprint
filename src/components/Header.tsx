@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Home, Settings, MessageCircle, User, Linkedin } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -26,6 +27,15 @@ const Header: React.FC = () => {
     toast({
       title: "LinkedIn Optimizer",
       description: "Now you can optimize your LinkedIn profile",
+    });
+  };
+  
+  const handleSettingsClick = () => {
+    // Navigate to the app page with settings tab active
+    navigate('/app', { state: { activeTab: 'settings' } });
+    toast({
+      title: "Settings",
+      description: "Adjust your application settings",
     });
   };
 
@@ -81,9 +91,13 @@ const Header: React.FC = () => {
 
             <Tooltip>
               <TooltipTrigger asChild>
-                <Link to="/app" className="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                <Button 
+                  onClick={handleSettingsClick}
+                  variant="ghost"
+                  className="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                >
                   <Settings className="h-5 w-5" />
-                </Link>
+                </Button>
               </TooltipTrigger>
               <TooltipContent>Settings</TooltipContent>
             </Tooltip>

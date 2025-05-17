@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import DirectEditTemplate from '@/components/DirectEditTemplate';
@@ -113,10 +114,34 @@ const EditorPage: React.FC = () => {
       });
       
       // Fix spacing in the PDF layout
-      const contentSections = clone.querySelectorAll('.col-span-1, .col-span-2');
+      const contentSections = clone.querySelectorAll('.col-span-1, .col-span-2, .space-y-2, .space-y-4, .space-y-6');
       contentSections.forEach(section => {
         (section as HTMLElement).style.pageBreakInside = "avoid";
         (section as HTMLElement).style.padding = "4px";
+        (section as HTMLElement).style.marginBottom = "0.75rem"; // Add consistent margin to sections
+      });
+      
+      // Improve readability for all text elements
+      const textElements = clone.querySelectorAll('h1, h2, h3, h4, p, span, div');
+      textElements.forEach(element => {
+        (element as HTMLElement).style.lineHeight = "1.5";
+        (element as HTMLElement).style.maxWidth = "100%";
+        (element as HTMLElement).style.overflow = "visible";
+        (element as HTMLElement).style.wordWrap = "break-word";
+      });
+      
+      // Special handling for bullet points to ensure proper spacing
+      const bulletPoints = clone.querySelectorAll('li, .list-item, [class*="bullet"]');
+      bulletPoints.forEach(point => {
+        (point as HTMLElement).style.marginBottom = "0.5rem";
+        (point as HTMLElement).style.paddingLeft = "0.5rem";
+      });
+      
+      // Fix headings to ensure they stand out properly
+      const headings = clone.querySelectorAll('h1, h2, h3, h4, .text-lg, .text-xl, .text-2xl, .font-bold, .font-semibold');
+      headings.forEach(heading => {
+        (heading as HTMLElement).style.marginTop = "1rem";
+        (heading as HTMLElement).style.marginBottom = "0.75rem";
       });
       
       // Enhance styling for print
@@ -127,6 +152,7 @@ const EditorPage: React.FC = () => {
       clone.style.top = '-9999px';
       clone.style.left = '-9999px';
       clone.style.backgroundColor = '#ffffff';
+      clone.style.color = '#000000';
       document.body.appendChild(clone);
       
       // Remove print class from original
@@ -157,6 +183,16 @@ const EditorPage: React.FC = () => {
             const children = el.children;
             for (let i = 0; i < children.length; i++) {
               (children[i] as HTMLElement).style.marginBottom = '0.75rem';
+              (children[i] as HTMLElement).style.lineHeight = '1.5';
+            }
+          });
+          
+          // Ensure text is black in PDF
+          element.querySelectorAll('input, textarea, p, h1, h2, h3, h4, span, div').forEach((el) => {
+            if (!(el as HTMLElement).style.color || 
+                (el as HTMLElement).style.color === 'rgba(0, 0, 0, 0)' || 
+                (el as HTMLElement).style.color === 'transparent') {
+              (el as HTMLElement).style.color = '#000000';
             }
           });
         }
@@ -178,7 +214,7 @@ const EditorPage: React.FC = () => {
       const pageHeight = 297;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
       
-      pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight);
+      pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight, undefined, 'FAST');
       
       // Handle multi-page resumes with proper scaling
       if (imgHeight > pageHeight) {
@@ -187,7 +223,7 @@ const EditorPage: React.FC = () => {
         
         while (heightLeft > 0) {
           pdf.addPage();
-          pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+          pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
           heightLeft -= pageHeight;
           position -= pageHeight;
         }
@@ -312,18 +348,27 @@ const EditorPage: React.FC = () => {
             overflow: visible;
             text-overflow: clip;
             white-space: normal;
+            line-height: 1.5 !important;
           }
           .for-print .space-y-2 > * {
-            margin-top: 0.5rem;
-            margin-bottom: 0.5rem;
+            margin-top: 0.5rem !important;
+            margin-bottom: 0.5rem !important;
           }
           .for-print .space-y-4 > * {
-            margin-top: 1rem;
-            margin-bottom: 1rem;
+            margin-top: 1rem !important;
+            margin-bottom: 1rem !important;
           }
           .for-print .space-y-6 > * {
-            margin-top: 1.5rem;
-            margin-bottom: 1.5rem;
+            margin-top: 1.5rem !important;
+            margin-bottom: 1.5rem !important;
+          }
+          .for-print h1, .for-print h2, .for-print h3, .for-print h4 {
+            margin-bottom: 0.75rem !important;
+            page-break-after: avoid !important;
+          }
+          .for-print p, .for-print span, .for-print div {
+            line-height: 1.5 !important;
+            margin-bottom: 0.25rem !important;
           }
         }
       `}} />
