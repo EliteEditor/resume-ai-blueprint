@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import DirectEditTemplate from '@/components/DirectEditTemplate';
@@ -91,14 +90,14 @@ const EditorPage: React.FC = () => {
       // Add print class to hide edit controls
       resumeElement.classList.add('for-print');
       
-      // Create a clone for PDF export
+      // Create a clone for PDF export with enhanced styling
       const clone = resumeElement.cloneNode(true) as HTMLElement;
       
       // Remove any buttons or edit controls from the clone
       const buttonsToRemove = clone.querySelectorAll('button');
       buttonsToRemove.forEach(button => button.remove());
       
-      // Also remove any input fields and replace them with their values
+      // Replace input fields with properly styled spans to prevent overlapping
       const inputsToReplace = clone.querySelectorAll('input, textarea');
       inputsToReplace.forEach(input => {
         const span = document.createElement('span');
@@ -107,14 +106,27 @@ const EditorPage: React.FC = () => {
         span.style.fontFamily = window.getComputedStyle(input).fontFamily;
         span.style.fontSize = window.getComputedStyle(input).fontSize;
         span.style.fontWeight = window.getComputedStyle(input).fontWeight;
+        span.style.lineHeight = "1.5"; // Add proper line height to prevent overlapping
+        span.style.display = "block"; // Make each text block its own line
+        span.style.margin = "0 0 0.25rem 0"; // Add small margin between text blocks
         input.parentNode?.replaceChild(span, input);
       });
       
-      // Set up for PDF export
+      // Fix spacing in the PDF layout
+      const contentSections = clone.querySelectorAll('.col-span-1, .col-span-2');
+      contentSections.forEach(section => {
+        (section as HTMLElement).style.pageBreakInside = "avoid";
+        (section as HTMLElement).style.padding = "4px";
+      });
+      
+      // Enhance styling for print
       clone.style.width = '210mm';
+      clone.style.minHeight = '297mm';
+      clone.style.padding = '15mm'; // Adjusted padding to ensure content fits
       clone.style.position = 'absolute';
       clone.style.top = '-9999px';
       clone.style.left = '-9999px';
+      clone.style.backgroundColor = '#ffffff';
       document.body.appendChild(clone);
       
       // Remove print class from original
@@ -129,14 +141,23 @@ const EditorPage: React.FC = () => {
         logging: false,
         removeContainer: true,
         onclone: (document, element) => {
-          // Make sure styles are preserved in the clone
-          element.querySelectorAll('.bg-purple-600, .bg-purple-800').forEach((el) => {
-            (el as HTMLElement).style.backgroundColor = '#9333ea';
-            (el as HTMLElement).style.color = 'white';
+          // Enhanced styling preservation for PDF generation
+          element.querySelectorAll('[class*="bg-"]').forEach((el) => {
+            const computedStyle = window.getComputedStyle(el as HTMLElement);
+            (el as HTMLElement).style.backgroundColor = computedStyle.backgroundColor;
           });
           
-          element.querySelectorAll('.text-white, .text-purple-100').forEach((el) => {
-            (el as HTMLElement).style.color = 'white';
+          element.querySelectorAll('[class*="text-"]').forEach((el) => {
+            const computedStyle = window.getComputedStyle(el as HTMLElement);
+            (el as HTMLElement).style.color = computedStyle.color;
+          });
+          
+          // Fix any spacing issues
+          element.querySelectorAll('.space-y-2, .space-y-4, .space-y-6').forEach((el) => {
+            const children = el.children;
+            for (let i = 0; i < children.length; i++) {
+              (children[i] as HTMLElement).style.marginBottom = '0.75rem';
+            }
           });
         }
       });
@@ -144,12 +165,13 @@ const EditorPage: React.FC = () => {
       // Remove the clone after capturing
       document.body.removeChild(clone);
       
-      // Create PDF
+      // Create PDF with improved settings
       const imgData = canvas.toDataURL('image/jpeg', 1.0);
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
-        format: 'a4'
+        format: 'a4',
+        compress: true
       });
       
       const imgWidth = 210;
@@ -158,7 +180,7 @@ const EditorPage: React.FC = () => {
       
       pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight);
       
-      // Add more pages if content exceeds one page
+      // Handle multi-page resumes with proper scaling
       if (imgHeight > pageHeight) {
         let heightLeft = imgHeight - pageHeight;
         let position = -pageHeight;
@@ -281,6 +303,27 @@ const EditorPage: React.FC = () => {
             color-adjust: exact !important;
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
+          }
+          /* Additional styles to prevent text overlapping */
+          .for-print input, 
+          .for-print textarea {
+            display: inline-block;
+            width: auto;
+            overflow: visible;
+            text-overflow: clip;
+            white-space: normal;
+          }
+          .for-print .space-y-2 > * {
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+          }
+          .for-print .space-y-4 > * {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+          }
+          .for-print .space-y-6 > * {
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
           }
         }
       `}} />

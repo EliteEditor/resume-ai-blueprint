@@ -1,11 +1,6 @@
 
 import React from 'react';
 
-interface IndustryExpertise {
-  field: string;
-  level: number;
-}
-
 interface ResumeData {
   fullName: string;
   jobTitle: string;
@@ -15,7 +10,6 @@ interface ResumeData {
   location: string;
   skills: string[];
   summary: string;
-  industryExpertise?: IndustryExpertise;
 }
 
 interface ProfessionalTemplateProps {
@@ -187,19 +181,8 @@ const ProfessionalTemplate: React.FC<ProfessionalTemplateProps> = ({
               )}
             </div>
           </div>
-
-          <div>
-            <h2 className="text-lg font-semibold text-blue-700 dark:text-blue-300 mb-4 uppercase print:text-blue-700">INDUSTRY EXPERTISE</h2>
-            <div className="relative h-1 bg-gray-200 dark:bg-gray-700 rounded print:bg-gray-300">
-              <div 
-                className="absolute left-0 top-0 h-full bg-blue-500 rounded print:bg-blue-700" 
-                style={{ width: `${resumeData.industryExpertise?.level || 33}%` }}
-              ></div>
-            </div>
-            <div className="text-sm text-gray-600 dark:text-gray-400 mt-2 print:text-gray-700">
-              {resumeData.industryExpertise?.field || "Field or industry"}
-            </div>
-          </div>
+          
+          {/* Industry Expertise section removed */}
         </div>
 
         {/* Right Column */}
