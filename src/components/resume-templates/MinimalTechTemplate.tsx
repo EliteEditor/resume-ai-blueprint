@@ -278,7 +278,7 @@ const MinimalTechTemplate: React.FC<MinimalTechTemplateProps> = ({
         <div className="col-span-8">
           {/* Summary Section */}
           <div className="mb-6">
-            <h2 className="text-lg font-mono font-bold text-gray-800 dark:text-gray-200 mb-3 uppercase print:text-black">$ cat summary.txt</h2>
+            <h2 className="text-lg font-mono font-bold text-gray-800 dark:text-gray-200 mb-3 uppercase print:text-black">Summary</h2>
             {isEditable ? (
               <textarea
                 value={resumeData.summary}
@@ -294,7 +294,7 @@ const MinimalTechTemplate: React.FC<MinimalTechTemplateProps> = ({
 
           {/* Experience Section */}
           <div className="mb-6">
-            <h2 className="text-lg font-mono font-bold text-gray-800 dark:text-gray-200 mb-3 uppercase print:text-black">$ ls -l experience/</h2>
+            <h2 className="text-lg font-mono font-bold text-gray-800 dark:text-gray-200 mb-3 uppercase print:text-black">Experience</h2>
             <div className="space-y-5">
               {resumeData.experience && resumeData.experience.map((exp, index) => (
                 <div key={index} className="group">
@@ -384,7 +384,7 @@ const MinimalTechTemplate: React.FC<MinimalTechTemplateProps> = ({
 
           {/* Projects Section */}
           <div>
-            <h2 className="text-lg font-mono font-bold text-gray-800 dark:text-gray-200 mb-3 uppercase print:text-black">$ ls projects/</h2>
+            <h2 className="text-lg font-mono font-bold text-gray-800 dark:text-gray-200 mb-3 uppercase print:text-black">Projects</h2>
             <div className="space-y-4">
               {resumeData.projects && resumeData.projects.map((project, index) => (
                 <div key={index} className="group">
@@ -477,7 +477,7 @@ const MinimalTechTemplate: React.FC<MinimalTechTemplateProps> = ({
         <div className="col-span-4">
           {/* Skills Section */}
           <div className="mb-6">
-            <h2 className="text-lg font-mono font-bold text-gray-800 dark:text-gray-200 mb-3 uppercase print:text-black">$ cat skills.json</h2>
+            <h2 className="text-lg font-mono font-bold text-gray-800 dark:text-gray-200 mb-3 uppercase print:text-black">Skills</h2>
             <div className="space-y-2 font-mono">
               {resumeData.skills.map((skill, index) => (
                 <div key={index} className="flex items-center gap-2 group">
@@ -520,7 +520,7 @@ const MinimalTechTemplate: React.FC<MinimalTechTemplateProps> = ({
 
           {/* Education Section */}
           <div className="mb-6">
-            <h2 className="text-lg font-mono font-bold text-gray-800 dark:text-gray-200 mb-3 uppercase print:text-black">$ cat education.log</h2>
+            <h2 className="text-lg font-mono font-bold text-gray-800 dark:text-gray-200 mb-3 uppercase print:text-black">Education</h2>
             <div className="space-y-3 font-mono">
               {resumeData.education && resumeData.education.map((edu, index) => (
                 <div key={index} className="group">
@@ -575,7 +575,7 @@ const MinimalTechTemplate: React.FC<MinimalTechTemplateProps> = ({
 
           {/* Certifications Section */}
           <div>
-            <h2 className="text-lg font-mono font-bold text-gray-800 dark:text-gray-200 mb-3 uppercase print:text-black">$ ls certs/</h2>
+            <h2 className="text-lg font-mono font-bold text-gray-800 dark:text-gray-200 mb-3 uppercase print:text-black">Certifications</h2>
             <div className="space-y-2 font-mono">
               <input
                 type="text"
