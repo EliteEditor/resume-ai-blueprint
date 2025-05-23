@@ -88,7 +88,7 @@ const CreativeTemplate: React.FC<CreativeTemplateProps> = ({
 }) => {
   const [imageFile, setImageFile] = useState<File | null>(null);
 
-  // Handle field click for initial selection
+  // Handle field click for initial selection - updated for all fields
   const handleFieldFocus = (field: string) => {
     if (field === 'fullName' && resumeData.fullName === 'YOUR NAME') {
       onChangeData('fullName', '');
@@ -96,13 +96,75 @@ const CreativeTemplate: React.FC<CreativeTemplateProps> = ({
       onChangeData('jobTitle', '');
     } else if (field === 'summary' && resumeData.summary === 'Brief overview of your professional background and career objectives...') {
       onChangeData('summary', '');
+    } else if (field === 'phone' && (resumeData.phone === 'Phone' || resumeData.phone === '')) {
+      onChangeData('phone', '');
+    } else if (field === 'email' && (resumeData.email === 'Email' || resumeData.email === '')) {
+      onChangeData('email', '');
+    } else if (field === 'linkedin' && (resumeData.linkedin === 'LinkedIn/Portfolio' || resumeData.linkedin === '')) {
+      onChangeData('linkedin', '');
+    } else if (field === 'location' && (resumeData.location === 'Location' || resumeData.location === '')) {
+      onChangeData('location', '');
     }
   };
 
-  // Handle skill focus for initial value
+  // Handle skill focus for initial value - updated
   const handleSkillFocus = (index: number) => {
     if (resumeData.skills[index] === 'Your Skill' || resumeData.skills[index] === 'New Skill') {
       onChangeSkill(index, '');
+    }
+  };
+
+  // Add handlers for education fields
+  const handleEducationFieldFocus = (index: number, field: string) => {
+    const edu = resumeData.education[index];
+    if (field === 'degree' && (edu.degree === 'Degree and Field of Study' || edu.degree === '')) {
+      onUpdateEducation(index, 'degree', '');
+    } else if (field === 'school' && (edu.school === 'School or University' || edu.school === '')) {
+      onUpdateEducation(index, 'school', '');
+    } else if (field === 'period' && (edu.period === 'Date Period' || edu.period === '')) {
+      onUpdateEducation(index, 'period', '');
+    }
+  };
+
+  // Add handlers for experience fields
+  const handleExperienceFieldFocus = (index: number, field: string) => {
+    const exp = resumeData.experience[index];
+    if (field === 'title' && (exp.title === 'Job Title' || exp.title === '')) {
+      onUpdateExperience(index, 'title', '');
+    } else if (field === 'company' && (exp.company === 'Company Name' || exp.company === '')) {
+      onUpdateExperience(index, 'company', '');
+    } else if (field === 'location' && (exp.location === 'Location' || exp.location === '')) {
+      onUpdateExperience(index, 'location', '');
+    } else if (field === 'period' && (exp.period === 'Date Period' || exp.period === '')) {
+      onUpdateExperience(index, 'period', '');
+    }
+  };
+
+  // Add handlers for experience highlights
+  const handleExperienceHighlightFocus = (expIndex: number, highlightIndex: number) => {
+    const highlight = resumeData.experience[expIndex].highlights[highlightIndex];
+    if (highlight === 'Add your accomplishment...' || highlight === '') {
+      onUpdateExperienceHighlight(expIndex, highlightIndex, '');
+    }
+  };
+
+  // Add handlers for project fields
+  const handleProjectFieldFocus = (index: number, field: string) => {
+    const project = resumeData.projects[index];
+    if (field === 'name' && (project.name === 'Project Name' || project.name === '')) {
+      onUpdateProject(index, 'name', '');
+    } else if (field === 'description' && (project.description === 'Project description...' || project.description === '')) {
+      onUpdateProject(index, 'description', '');
+    } else if (field === 'period' && (project.period === 'Date Period' || project.period === '')) {
+      onUpdateProject(index, 'period', '');
+    }
+  };
+
+  // Add handlers for project highlights
+  const handleProjectHighlightFocus = (projectIndex: number, highlightIndex: number) => {
+    const highlight = resumeData.projects[projectIndex].highlights[highlightIndex];
+    if (highlight === 'Add project highlight...' || highlight === '') {
+      onUpdateProjectHighlight(projectIndex, highlightIndex, '');
     }
   };
 
@@ -196,6 +258,7 @@ const CreativeTemplate: React.FC<CreativeTemplateProps> = ({
                 type="text"
                 value={resumeData.phone}
                 onChange={(e) => onChangeData('phone', e.target.value)}
+                onFocus={() => handleFieldFocus('phone')}
                 className="border-b border-purple-400 dark:border-purple-500 focus:border-white dark:focus:border-white focus:ring-0 bg-transparent text-white print:text-white"
                 placeholder="Phone"
               />
@@ -210,6 +273,7 @@ const CreativeTemplate: React.FC<CreativeTemplateProps> = ({
                 type="text"
                 value={resumeData.email}
                 onChange={(e) => onChangeData('email', e.target.value)}
+                onFocus={() => handleFieldFocus('email')}
                 className="border-b border-purple-400 dark:border-purple-500 focus:border-white dark:focus:border-white focus:ring-0 bg-transparent text-white print:text-white"
                 placeholder="Email"
               />
@@ -224,6 +288,7 @@ const CreativeTemplate: React.FC<CreativeTemplateProps> = ({
                 type="text"
                 value={resumeData.linkedin}
                 onChange={(e) => onChangeData('linkedin', e.target.value)}
+                onFocus={() => handleFieldFocus('linkedin')}
                 className="border-b border-purple-400 dark:border-purple-500 focus:border-white dark:focus:border-white focus:ring-0 bg-transparent text-white print:text-white"
                 placeholder="LinkedIn/Portfolio"
               />
@@ -238,6 +303,7 @@ const CreativeTemplate: React.FC<CreativeTemplateProps> = ({
                 type="text"
                 value={resumeData.location}
                 onChange={(e) => onChangeData('location', e.target.value)}
+                onFocus={() => handleFieldFocus('location')}
                 className="border-b border-purple-400 dark:border-purple-500 focus:border-white dark:focus:border-white focus:ring-0 bg-transparent text-white print:text-white"
                 placeholder="Location"
               />
@@ -303,6 +369,7 @@ const CreativeTemplate: React.FC<CreativeTemplateProps> = ({
                     type="text"
                     value={edu.degree}
                     onChange={(e) => onUpdateEducation(index, 'degree', e.target.value)}
+                    onFocus={() => handleEducationFieldFocus(index, 'degree')}
                     className="text-base font-medium text-gray-800 dark:text-gray-100 w-full border-none focus:outline-none focus:ring-0 bg-transparent print:text-black"
                     placeholder="Degree and Field of Study"
                   />
@@ -310,6 +377,7 @@ const CreativeTemplate: React.FC<CreativeTemplateProps> = ({
                     type="text"
                     value={edu.school}
                     onChange={(e) => onUpdateEducation(index, 'school', e.target.value)}
+                    onFocus={() => handleEducationFieldFocus(index, 'school')}
                     className="text-purple-600 dark:text-purple-400 w-full border-none focus:outline-none focus:ring-0 mt-1 text-sm bg-transparent print:text-purple-700"
                     placeholder="School or University"
                   />
@@ -318,6 +386,7 @@ const CreativeTemplate: React.FC<CreativeTemplateProps> = ({
                       type="text"
                       value={edu.period}
                       onChange={(e) => onUpdateEducation(index, 'period', e.target.value)}
+                      onFocus={() => handleEducationFieldFocus(index, 'period')}
                       className="flex-1 text-sm text-gray-500 dark:text-gray-400 border-none focus:outline-none focus:ring-0 mt-1 bg-transparent print:text-gray-700"
                       placeholder="Date Period"
                     />
@@ -376,6 +445,7 @@ const CreativeTemplate: React.FC<CreativeTemplateProps> = ({
                         type="text"
                         value={exp.title}
                         onChange={(e) => onUpdateExperience(expIndex, 'title', e.target.value)}
+                        onFocus={() => handleExperienceFieldFocus(expIndex, 'title')}
                         className="text-base font-medium text-gray-800 dark:text-gray-100 w-full border-none focus:outline-none focus:ring-0 bg-transparent print:text-black"
                         placeholder="Job Title"
                       />
@@ -383,6 +453,7 @@ const CreativeTemplate: React.FC<CreativeTemplateProps> = ({
                         type="text"
                         value={exp.company}
                         onChange={(e) => onUpdateExperience(expIndex, 'company', e.target.value)}
+                        onFocus={() => handleExperienceFieldFocus(expIndex, 'company')}
                         className="text-purple-600 dark:text-purple-400 w-full border-none focus:outline-none focus:ring-0 mt-1 text-sm bg-transparent print:text-purple-700"
                         placeholder="Company Name"
                       />
@@ -390,6 +461,7 @@ const CreativeTemplate: React.FC<CreativeTemplateProps> = ({
                         type="text"
                         value={exp.location}
                         onChange={(e) => onUpdateExperience(expIndex, 'location', e.target.value)}
+                        onFocus={() => handleExperienceFieldFocus(expIndex, 'location')}
                         className="text-sm text-gray-500 dark:text-gray-400 w-full border-none focus:outline-none focus:ring-0 mt-1 bg-transparent print:text-gray-700"
                         placeholder="Location"
                       />
@@ -399,6 +471,7 @@ const CreativeTemplate: React.FC<CreativeTemplateProps> = ({
                         type="text"
                         value={exp.period}
                         onChange={(e) => onUpdateExperience(expIndex, 'period', e.target.value)}
+                        onFocus={() => handleExperienceFieldFocus(expIndex, 'period')}
                         className="text-sm text-gray-500 dark:text-gray-400 text-right border-none focus:outline-none focus:ring-0 bg-transparent print:text-gray-700"
                         placeholder="Date Period"
                       />
@@ -422,6 +495,7 @@ const CreativeTemplate: React.FC<CreativeTemplateProps> = ({
                             type="text"
                             value={highlight}
                             onChange={(e) => onUpdateExperienceHighlight(expIndex, highlightIndex, e.target.value)}
+                            onFocus={() => handleExperienceHighlightFocus(expIndex, highlightIndex)}
                             className="flex-1 border-b border-gray-200 dark:border-gray-700 focus:border-purple-500 dark:focus:border-purple-400 focus:ring-0 bg-transparent dark:text-gray-300 print:text-black print:border-gray-300"
                             placeholder="Add your accomplishment..."
                           />
@@ -472,6 +546,7 @@ const CreativeTemplate: React.FC<CreativeTemplateProps> = ({
                       type="text"
                       value={project.name}
                       onChange={(e) => onUpdateProject(projectIndex, 'name', e.target.value)}
+                      onFocus={() => handleProjectFieldFocus(projectIndex, 'name')}
                       className="text-base font-medium text-gray-800 dark:text-gray-100 w-full border-none focus:outline-none focus:ring-0 bg-transparent print:text-black"
                       placeholder="Project Name"
                     />
@@ -480,6 +555,7 @@ const CreativeTemplate: React.FC<CreativeTemplateProps> = ({
                         type="text"
                         value={project.period}
                         onChange={(e) => onUpdateProject(projectIndex, 'period', e.target.value)}
+                        onFocus={() => handleProjectFieldFocus(projectIndex, 'period')}
                         className="text-sm text-gray-500 dark:text-gray-400 text-right border-none focus:outline-none focus:ring-0 bg-transparent print:text-gray-700"
                         placeholder="Date Period"
                       />
@@ -498,6 +574,7 @@ const CreativeTemplate: React.FC<CreativeTemplateProps> = ({
                     type="text"
                     value={project.description}
                     onChange={(e) => onUpdateProject(projectIndex, 'description', e.target.value)}
+                    onFocus={() => handleProjectFieldFocus(projectIndex, 'description')}
                     className="text-sm text-gray-600 dark:text-gray-300 w-full border-none focus:outline-none focus:ring-0 mt-1 bg-transparent print:text-gray-700"
                     placeholder="Project description..."
                   />
@@ -510,6 +587,7 @@ const CreativeTemplate: React.FC<CreativeTemplateProps> = ({
                             type="text"
                             value={highlight}
                             onChange={(e) => onUpdateProjectHighlight(projectIndex, highlightIndex, e.target.value)}
+                            onFocus={() => handleProjectHighlightFocus(projectIndex, highlightIndex)}
                             className="flex-1 border-b border-gray-200 dark:border-gray-700 focus:border-purple-500 dark:focus:border-purple-400 focus:ring-0 bg-transparent dark:text-gray-300 print:text-black print:border-gray-300"
                             placeholder="Add project highlight..."
                           />

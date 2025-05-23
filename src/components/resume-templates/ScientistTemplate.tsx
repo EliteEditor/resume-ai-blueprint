@@ -4,9 +4,38 @@ import { ResumeData } from '../../types/resume';
 
 interface ScientistTemplateProps {
   resumeData: ResumeData;
+  isEditable?: boolean;
+  onChangeData?: (field: string, value: string) => void;
 }
 
-const ScientistTemplate: React.FC<ScientistTemplateProps> = ({ resumeData }) => {
+const ScientistTemplate: React.FC<ScientistTemplateProps> = ({ 
+  resumeData,
+  isEditable = false,
+  onChangeData = () => {}
+}) => {
+  // Handle field focus to clear placeholder text
+  const handleFieldFocus = (field: string) => {
+    if (isEditable) {
+      const personalInfo = resumeData.personalInfo;
+      
+      if (field === 'fullName' && (personalInfo.fullName === 'YOUR NAME' || personalInfo.fullName === '')) {
+        onChangeData('personalInfo.fullName', '');
+      } else if (field === 'jobTitle' && (personalInfo.jobTitle === 'Job Title' || personalInfo.jobTitle === '')) {
+        onChangeData('personalInfo.jobTitle', '');
+      } else if (field === 'phone' && (personalInfo.phone === 'Phone' || personalInfo.phone === '')) {
+        onChangeData('personalInfo.phone', '');
+      } else if (field === 'email' && (personalInfo.email === 'Email' || personalInfo.email === '')) {
+        onChangeData('personalInfo.email', '');
+      } else if (field === 'location' && (personalInfo.location === 'Location' || personalInfo.location === '')) {
+        onChangeData('personalInfo.location', '');
+      } else if (field === 'linkedin' && (personalInfo.linkedin === 'LinkedIn' || personalInfo.linkedin === '')) {
+        onChangeData('personalInfo.linkedin', '');
+      } else if (field === 'summary' && (resumeData.summary === 'Write a brief summary about yourself...' || resumeData.summary === '')) {
+        onChangeData('summary', '');
+      }
+    }
+  };
+
   return (
     <div className="p-8 max-w-[850px] mx-auto bg-white text-gray-800 font-['Roboto',sans-serif] resume-content">
       {/* Header with name and title */}

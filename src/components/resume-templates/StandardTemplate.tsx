@@ -4,9 +4,49 @@ import { ResumeData } from '../../types/resume';
 
 interface StandardTemplateProps {
   resumeData: ResumeData;
+  isEditable?: boolean;
+  onChangeData?: (field: string, value: string) => void;
+  onAddSkill?: () => void;
+  onChangeSkill?: (category: string, index: number, value: string) => void;
+  onRemoveSkill?: (category: string, index: number) => void;
+  onAddCategory?: (category: string) => void;
+  onRemoveCategory?: (category: string) => void;
 }
 
-const StandardTemplate: React.FC<StandardTemplateProps> = ({ resumeData }) => {
+const StandardTemplate: React.FC<StandardTemplateProps> = ({ 
+  resumeData,
+  isEditable = false,
+  onChangeData = () => {},
+  onAddSkill = () => {},
+  onChangeSkill = () => {},
+  onRemoveSkill = () => {},
+  onAddCategory = () => {},
+  onRemoveCategory = () => {}
+}) => {
+  // Handle field focus to clear placeholder text
+  const handleFieldFocus = (field: string) => {
+    // Clear placeholder text when field is focused
+    if (isEditable) {
+      const personalInfo = resumeData.personalInfo;
+      
+      if (field === 'fullName' && (personalInfo.fullName === 'YOUR NAME' || personalInfo.fullName === '')) {
+        onChangeData('personalInfo.fullName', '');
+      } else if (field === 'jobTitle' && (personalInfo.jobTitle === 'Job Title' || personalInfo.jobTitle === '')) {
+        onChangeData('personalInfo.jobTitle', '');
+      } else if (field === 'phone' && (personalInfo.phone === 'Phone' || personalInfo.phone === '')) {
+        onChangeData('personalInfo.phone', '');
+      } else if (field === 'email' && (personalInfo.email === 'Email' || personalInfo.email === '')) {
+        onChangeData('personalInfo.email', '');
+      } else if (field === 'location' && (personalInfo.location === 'Location' || personalInfo.location === '')) {
+        onChangeData('personalInfo.location', '');
+      } else if (field === 'website' && (personalInfo.website === 'Website' || personalInfo.website === '')) {
+        onChangeData('personalInfo.website', '');
+      } else if (field === 'summary' && (resumeData.summary === 'Write a brief summary about yourself...' || resumeData.summary === '')) {
+        onChangeData('summary', '');
+      }
+    }
+  };
+
   return (
     <div className="p-8 max-w-[850px] mx-auto bg-white text-gray-800 font-['Roboto',sans-serif] shadow-lg resume-content">
       {/* Header */}
