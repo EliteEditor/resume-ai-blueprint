@@ -91,13 +91,13 @@ const Header: React.FC = () => {
 
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button 
-                  onClick={handleSettingsClick}
-                  variant="ghost"
+                <Link 
+                  to="/app" 
+                  state={{ activeTab: 'settings' }}
                   className="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                 >
                   <Settings className="h-5 w-5" />
-                </Button>
+                </Link>
               </TooltipTrigger>
               <TooltipContent>Settings</TooltipContent>
             </Tooltip>

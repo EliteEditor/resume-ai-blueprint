@@ -101,6 +101,60 @@ const MinimalTechTemplate: React.FC<MinimalTechTemplateProps> = ({
     }
   };
 
+  // Handle experience field focus to clear placeholder text
+  const handleExperienceFieldFocus = (index: number, field: string) => {
+    const exp = resumeData.experience![index];
+    if (field === 'title' && exp.title === 'Job Title') {
+      onUpdateExperience(index, 'title', '');
+    } else if (field === 'company' && exp.company === 'Company Name') {
+      onUpdateExperience(index, 'company', '');
+    } else if (field === 'location' && exp.location === 'Location') {
+      onUpdateExperience(index, 'location', '');
+    } else if (field === 'period' && exp.period === 'Date Period') {
+      onUpdateExperience(index, 'period', '');
+    }
+  };
+
+  // Handle experience highlight focus to clear placeholder text
+  const handleExperienceHighlightFocus = (expIndex: number, highlightIndex: number) => {
+    const highlight = resumeData.experience![expIndex].highlights[highlightIndex];
+    if (highlight === 'Add your accomplishment...') {
+      onUpdateExperienceHighlight(expIndex, highlightIndex, '');
+    }
+  };
+
+  // Handle project field focus to clear placeholder text
+  const handleProjectFieldFocus = (index: number, field: string) => {
+    const project = resumeData.projects![index];
+    if (field === 'name' && project.name === 'Project Name') {
+      onUpdateProject(index, 'name', '');
+    } else if (field === 'period' && project.period === 'Date Period') {
+      onUpdateProject(index, 'period', '');
+    } else if (field === 'description' && project.description === 'Project description...') {
+      onUpdateProject(index, 'description', '');
+    }
+  };
+
+  // Handle project highlight focus to clear placeholder text
+  const handleProjectHighlightFocus = (projectIndex: number, highlightIndex: number) => {
+    const highlight = resumeData.projects![projectIndex].highlights[highlightIndex];
+    if (highlight === 'Add project highlight...') {
+      onUpdateProjectHighlight(projectIndex, highlightIndex, '');
+    }
+  };
+
+  // Handle education field focus to clear placeholder text
+  const handleEducationFieldFocus = (index: number, field: string) => {
+    const edu = resumeData.education![index];
+    if (field === 'degree' && edu.degree === 'Degree and Field of Study') {
+      onUpdateEducation(index, 'degree', '');
+    } else if (field === 'school' && edu.school === 'School or University') {
+      onUpdateEducation(index, 'school', '');
+    } else if (field === 'period' && edu.period === 'Date Period') {
+      onUpdateEducation(index, 'period', '');
+    }
+  };
+
   return (
     <div className="w-[210mm] min-h-[297mm] bg-white dark:bg-gray-900 mx-auto p-12 shadow-lg resume-content print:shadow-none print:border-0">
       {/* Header Section */}
@@ -220,6 +274,7 @@ const MinimalTechTemplate: React.FC<MinimalTechTemplateProps> = ({
                       type="text"
                       value={exp.title}
                       onChange={(e) => onUpdateExperience(index, 'title', e.target.value)}
+                      onFocus={() => handleExperienceFieldFocus(index, 'title')}
                       className="text-base font-bold text-gray-800 dark:text-gray-200 w-7/12 border-none focus:outline-none focus:ring-0 bg-transparent print:text-black"
                       placeholder="Job Title"
                     />
@@ -227,6 +282,7 @@ const MinimalTechTemplate: React.FC<MinimalTechTemplateProps> = ({
                       type="text"
                       value={exp.period}
                       onChange={(e) => onUpdateExperience(index, 'period', e.target.value)}
+                      onFocus={() => handleExperienceFieldFocus(index, 'period')}
                       className="text-sm text-gray-500 dark:text-gray-400 text-right w-4/12 border-none focus:outline-none focus:ring-0 bg-transparent print:text-gray-600"
                       placeholder="Date Period"
                     />
@@ -235,6 +291,7 @@ const MinimalTechTemplate: React.FC<MinimalTechTemplateProps> = ({
                     type="text"
                     value={exp.company}
                     onChange={(e) => onUpdateExperience(index, 'company', e.target.value)}
+                    onFocus={() => handleExperienceFieldFocus(index, 'company')}
                     className="text-sm text-green-600 dark:text-green-400 w-full border-none focus:outline-none focus:ring-0 mt-1 font-mono bg-transparent print:text-green-700"
                     placeholder="Company Name"
                   />
@@ -247,6 +304,7 @@ const MinimalTechTemplate: React.FC<MinimalTechTemplateProps> = ({
                             type="text"
                             value={highlight}
                             onChange={(e) => onUpdateExperienceHighlight(index, hIndex, e.target.value)}
+                            onFocus={() => handleExperienceHighlightFocus(index, hIndex)}
                             className="flex-1 border-b border-gray-200 dark:border-gray-700 focus:border-gray-400 dark:focus:border-gray-600 focus:ring-0 bg-transparent font-mono dark:text-gray-300 text-sm print:text-black print:border-gray-300"
                             placeholder="Add your accomplishment..."
                           />
@@ -306,6 +364,7 @@ const MinimalTechTemplate: React.FC<MinimalTechTemplateProps> = ({
                       type="text"
                       value={project.name}
                       onChange={(e) => onUpdateProject(index, 'name', e.target.value)}
+                      onFocus={() => handleProjectFieldFocus(index, 'name')}
                       className="text-base font-bold text-gray-800 dark:text-gray-200 border-none focus:outline-none focus:ring-0 bg-transparent print:text-black"
                       placeholder="Project Name"
                     />
@@ -313,6 +372,7 @@ const MinimalTechTemplate: React.FC<MinimalTechTemplateProps> = ({
                       type="text"
                       value={project.period}
                       onChange={(e) => onUpdateProject(index, 'period', e.target.value)}
+                      onFocus={() => handleProjectFieldFocus(index, 'period')}
                       className="text-sm text-gray-500 dark:text-gray-400 text-right border-none focus:outline-none focus:ring-0 bg-transparent print:text-gray-600"
                       placeholder="Date Period"
                     />
@@ -322,6 +382,7 @@ const MinimalTechTemplate: React.FC<MinimalTechTemplateProps> = ({
                       type="text" 
                       value={project.description}
                       onChange={(e) => onUpdateProject(index, 'description', e.target.value)}
+                      onFocus={() => handleProjectFieldFocus(index, 'description')}
                       className="flex-1 border-b border-gray-200 dark:border-gray-700 focus:border-gray-400 dark:focus:border-gray-600 focus:ring-0 bg-transparent font-mono dark:text-gray-300 text-sm w-full print:text-black print:border-gray-300"
                       placeholder="Tech stack: React, TypeScript, Node.js"
                     />
@@ -333,6 +394,7 @@ const MinimalTechTemplate: React.FC<MinimalTechTemplateProps> = ({
                             type="text"
                             value={highlight}
                             onChange={(e) => onUpdateProjectHighlight(index, hIndex, e.target.value)}
+                            onFocus={() => handleProjectHighlightFocus(index, hIndex)}
                             className="flex-1 border-b border-gray-200 dark:border-gray-700 focus:border-gray-400 dark:focus:border-gray-600 focus:ring-0 bg-transparent font-mono dark:text-gray-300 text-sm print:text-black print:border-gray-300"
                             placeholder="Describe what you accomplished..."
                           />
@@ -437,6 +499,7 @@ const MinimalTechTemplate: React.FC<MinimalTechTemplateProps> = ({
                     type="text"
                     value={edu.degree}
                     onChange={(e) => onUpdateEducation(index, 'degree', e.target.value)}
+                    onFocus={() => handleEducationFieldFocus(index, 'degree')}
                     className="text-base font-bold text-gray-800 dark:text-gray-200 w-full border-none focus:outline-none focus:ring-0 bg-transparent print:text-black"
                     placeholder="Degree and Field"
                   />
@@ -444,6 +507,7 @@ const MinimalTechTemplate: React.FC<MinimalTechTemplateProps> = ({
                     type="text"
                     value={edu.school}
                     onChange={(e) => onUpdateEducation(index, 'school', e.target.value)}
+                    onFocus={() => handleEducationFieldFocus(index, 'school')}
                     className="text-sm text-green-600 dark:text-green-400 w-full border-none focus:outline-none focus:ring-0 mt-1 bg-transparent print:text-green-700"
                     placeholder="School or University"
                   />
@@ -452,6 +516,7 @@ const MinimalTechTemplate: React.FC<MinimalTechTemplateProps> = ({
                       type="text"
                       value={edu.period}
                       onChange={(e) => onUpdateEducation(index, 'period', e.target.value)}
+                      onFocus={() => handleEducationFieldFocus(index, 'period')}
                       className="text-xs text-gray-500 dark:text-gray-400 w-full border-none focus:outline-none focus:ring-0 mt-1 bg-transparent print:text-gray-600"
                       placeholder="Date Period"
                     />
@@ -487,6 +552,8 @@ const MinimalTechTemplate: React.FC<MinimalTechTemplateProps> = ({
                 type="text"
                 className="text-base text-gray-700 dark:text-gray-300 w-full border-b border-gray-200 dark:border-gray-700 focus:border-gray-400 dark:focus:border-gray-600 focus:ring-0 bg-transparent print:text-black print:border-gray-300"
                 placeholder="Certification Name"
+                onFocus={(e) => e.target.placeholder = ""}
+                onBlur={(e) => e.target.placeholder = "Certification Name"}
               />
             </div>
             <button className="text-green-600 dark:text-green-400 text-sm hover:text-green-700 dark:hover:text-green-300 mt-3 print:hidden" type="button">
