@@ -29,9 +29,6 @@ const Settings: React.FC<SettingsProps> = ({
   onLanguageChange
 }) => {
   const handleSaveSettings = () => {
-    localStorage.setItem('fontSize', fontSize);
-    localStorage.setItem('language', language);
-    localStorage.setItem('darkMode', isDarkMode.toString());
     toast.success("Settings saved successfully!");
   };
 

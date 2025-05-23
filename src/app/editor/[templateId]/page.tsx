@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import DirectEditTemplate from '@/components/DirectEditTemplate';
@@ -287,7 +288,6 @@ const EditorPage: React.FC = () => {
     }
   };
   
-  // Add handler for downloading PDF with improved font sizes
   const handleDownload = async () => {
     try {
       const resumeElement = document.querySelector('.resume-content') as HTMLElement;
@@ -312,7 +312,7 @@ const EditorPage: React.FC = () => {
       // Set fixed dimensions for A4 paper
       const a4Width = 210; // mm
       const a4Height = 297; // mm
-      const scaleFactor = 2; // Higher scale factor for better quality
+      const scaleFactor = 1.5; // Higher scale factor for better quality
       
       // Create a clone for PDF export with enhanced styling
       const clone = resumeElement.cloneNode(true) as HTMLElement;
@@ -321,41 +321,18 @@ const EditorPage: React.FC = () => {
       const elementsToRemove = clone.querySelectorAll('button, .edit-control, [type="file"], label[for="profile-upload"]');
       elementsToRemove.forEach(el => el.remove());
       
-      // Enhance text sizes for PDF export
-      const headings = clone.querySelectorAll('h1, h2, h3, h4');
-      const paragraphs = clone.querySelectorAll('p, span, div, li');
-      const inputs = clone.querySelectorAll('input, textarea');
-      
-      // Increase font sizes for better readability in PDF
-      headings.forEach((heading) => {
-        const el = heading as HTMLElement;
-        const currentSize = parseInt(window.getComputedStyle(el).fontSize);
-        el.style.fontSize = `${currentSize * 1.3}px`;
-        el.style.fontWeight = 'bold';
-        el.style.color = '#000000';
-      });
-      
-      paragraphs.forEach((p) => {
-        const el = p as HTMLElement;
-        if (el.textContent && el.textContent.trim().length > 0) {
-          const currentSize = parseInt(window.getComputedStyle(el).fontSize);
-          el.style.fontSize = `${Math.max(currentSize * 1.2, 12)}px`;
-          el.style.lineHeight = '1.5';
-          el.style.color = '#000000';
-        }
-      });
-      
       // Replace input fields with properly styled spans
-      inputs.forEach(input => {
+      const inputsToReplace = clone.querySelectorAll('input, textarea');
+      inputsToReplace.forEach(input => {
         const span = document.createElement('span');
         span.textContent = (input as HTMLInputElement).value || (input as HTMLInputElement).placeholder;
-        span.style.color = '#000000';
+        span.style.color = window.getComputedStyle(input).color;
         span.style.fontFamily = window.getComputedStyle(input).fontFamily;
-        span.style.fontSize = `${Math.max(parseInt(window.getComputedStyle(input).fontSize) * 1.3, 14)}px`;
+        span.style.fontSize = window.getComputedStyle(input).fontSize;
         span.style.fontWeight = window.getComputedStyle(input).fontWeight;
-        span.style.lineHeight = "1.5"; 
+        span.style.lineHeight = "1.4"; 
         span.style.display = "block";
-        span.style.margin = "0 0 0.4rem 0";
+        span.style.margin = "0 0 0.2rem 0";
         span.style.wordBreak = "break-word";
         input.parentNode?.replaceChild(span, input);
       });
@@ -367,8 +344,8 @@ const EditorPage: React.FC = () => {
       clone.style.top = '-9999px';
       clone.style.left = '-9999px';
       clone.style.backgroundColor = '#ffffff';
-      clone.style.padding = '15mm 10mm'; // Add page margins
       clone.style.overflow = 'hidden';
+      clone.style.fontSize = '9pt'; // Smaller font size to fit more content
       
       document.body.appendChild(clone);
       
@@ -389,38 +366,37 @@ const EditorPage: React.FC = () => {
             * {
               box-sizing: border-box !important;
             }
-            h1 {
-              font-size: 28px !important;
-              margin-top: 0.5em !important;
-              margin-bottom: 0.5em !important;
+            h1, h2, h3, h4, h5, h6 {
+              margin-top: 0.4em !important;
+              margin-bottom: 0.4em !important;
               page-break-after: avoid !important;
-              color: #000000 !important;
-            }
-            h2 {
-              font-size: 22px !important;
-              margin-top: 0.5em !important;
-              margin-bottom: 0.5em !important;
-              page-break-after: avoid !important;
-              color: #000000 !important;
-            }
-            h3, h4, h5, h6 {
-              font-size: 18px !important;
-              margin-top: 0.5em !important;
-              margin-bottom: 0.5em !important;
-              page-break-after: avoid !important;
-              color: #000000 !important;
             }
             p, li, div, span {
-              font-size: 14px !important;
-              line-height: 1.5 !important;
-              margin-bottom: 0.3em !important;
-              color: #000000 !important;
+              line-height: 1.4 !important;
+              margin-bottom: 0.2em !important;
             }
             .col-span-1, .col-span-2, .col-span-3 {
               overflow: hidden !important;
             }
           `;
           clonedDoc.head.appendChild(style);
+          
+          // Enforce text color for all text elements
+          element.querySelectorAll('*').forEach((el) => {
+            if (el.textContent && el.textContent.trim()) {
+              const computedStyle = window.getComputedStyle(el as HTMLElement);
+              if (computedStyle.color === 'rgba(0, 0, 0, 0)' || computedStyle.color === 'transparent') {
+                (el as HTMLElement).style.color = '#000000';
+              }
+            }
+          });
+          
+          // Scale down if content is too large
+          const sections = element.querySelectorAll('section, div[class*="col-span"]');
+          if (sections.length > 8) {
+            element.style.transform = 'scale(0.95)';
+            element.style.transformOrigin = 'top left';
+          }
         }
       });
       
