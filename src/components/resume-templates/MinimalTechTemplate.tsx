@@ -10,6 +10,24 @@ interface ResumeData {
   location: string;
   skills: string[];
   summary: string;
+  education?: {
+    degree: string;
+    school: string;
+    period: string;
+  }[];
+  experience?: {
+    title: string;
+    company: string;
+    location: string;
+    period: string;
+    highlights: string[];
+  }[];
+  projects?: {
+    name: string;
+    period: string;
+    description: string;
+    highlights: string[];
+  }[];
 }
 
 interface MinimalTechTemplateProps {
@@ -19,6 +37,24 @@ interface MinimalTechTemplateProps {
   onChangeSkill?: (index: number, value: string) => void;
   onAddSkill?: () => void;
   onRemoveSkill?: (index: number) => void;
+  // Add education handlers
+  onAddEducation?: () => void;
+  onUpdateEducation?: (index: number, field: string, value: string) => void;
+  onRemoveEducation?: (index: number) => void;
+  // Add experience handlers
+  onAddExperience?: () => void;
+  onUpdateExperience?: (index: number, field: string, value: any) => void;
+  onUpdateExperienceHighlight?: (expIndex: number, highlightIndex: number, value: string) => void;
+  onAddExperienceHighlight?: (expIndex: number) => void;
+  onRemoveExperienceHighlight?: (expIndex: number, highlightIndex: number) => void;
+  onRemoveExperience?: (index: number) => void;
+  // Add project handlers
+  onAddProject?: () => void;
+  onUpdateProject?: (index: number, field: string, value: any) => void;
+  onUpdateProjectHighlight?: (projectIndex: number, highlightIndex: number, value: string) => void;
+  onAddProjectHighlight?: (projectIndex: number) => void;
+  onRemoveProjectHighlight?: (projectIndex: number, highlightIndex: number) => void;
+  onRemoveProject?: (index: number) => void;
 }
 
 const MinimalTechTemplate: React.FC<MinimalTechTemplateProps> = ({ 
@@ -27,7 +63,25 @@ const MinimalTechTemplate: React.FC<MinimalTechTemplateProps> = ({
   onChangeData = () => {},
   onChangeSkill = () => {},
   onAddSkill = () => {},
-  onRemoveSkill = () => {}
+  onRemoveSkill = () => {},
+  // Initialize education handlers
+  onAddEducation = () => {},
+  onUpdateEducation = () => {},
+  onRemoveEducation = () => {},
+  // Initialize experience handlers
+  onAddExperience = () => {},
+  onUpdateExperience = () => {},
+  onUpdateExperienceHighlight = () => {},
+  onAddExperienceHighlight = () => {},
+  onRemoveExperienceHighlight = () => {},
+  onRemoveExperience = () => {},
+  // Initialize project handlers
+  onAddProject = () => {},
+  onUpdateProject = () => {},
+  onUpdateProjectHighlight = () => {},
+  onAddProjectHighlight = () => {},
+  onRemoveProjectHighlight = () => {},
+  onRemoveProject = () => {}
 }) => {
   // Handle field click for initial selection
   const handleFieldFocus = (field: string) => {
@@ -159,78 +213,172 @@ const MinimalTechTemplate: React.FC<MinimalTechTemplateProps> = ({
           <div className="mb-6">
             <h2 className="text-lg font-mono font-bold text-gray-800 dark:text-gray-200 mb-3 uppercase print:text-black">$ ls -l experience/</h2>
             <div className="space-y-5">
-              <div>
-                <div className="flex justify-between font-mono">
-                  <input
-                    type="text"
-                    className="text-base font-bold text-gray-800 dark:text-gray-200 w-7/12 border-none focus:outline-none focus:ring-0 bg-transparent print:text-black"
-                    placeholder="Job Title"
-                  />
-                  <input
-                    type="text"
-                    className="text-sm text-gray-500 dark:text-gray-400 text-right w-4/12 border-none focus:outline-none focus:ring-0 bg-transparent print:text-gray-600"
-                    placeholder="Date Period"
-                  />
-                </div>
-                <input
-                  type="text"
-                  className="text-sm text-green-600 dark:text-green-400 w-full border-none focus:outline-none focus:ring-0 mt-1 font-mono bg-transparent print:text-green-700"
-                  placeholder="Company Name"
-                />
-                <div className="mt-1 space-y-1">
-                  <div className="flex items-start gap-2">
-                    <span className="text-gray-400 dark:text-gray-500 font-mono mt-1 print:text-gray-600">_</span>
+              {resumeData.experience && resumeData.experience.map((exp, index) => (
+                <div key={index} className="group">
+                  <div className="flex justify-between font-mono">
                     <input
                       type="text"
-                      className="flex-1 border-b border-gray-200 dark:border-gray-700 focus:border-gray-400 dark:focus:border-gray-600 focus:ring-0 bg-transparent font-mono dark:text-gray-300 text-sm print:text-black print:border-gray-300"
-                      placeholder="Add your accomplishment..."
+                      value={exp.title}
+                      onChange={(e) => onUpdateExperience(index, 'title', e.target.value)}
+                      className="text-base font-bold text-gray-800 dark:text-gray-200 w-7/12 border-none focus:outline-none focus:ring-0 bg-transparent print:text-black"
+                      placeholder="Job Title"
+                    />
+                    <input
+                      type="text"
+                      value={exp.period}
+                      onChange={(e) => onUpdateExperience(index, 'period', e.target.value)}
+                      className="text-sm text-gray-500 dark:text-gray-400 text-right w-4/12 border-none focus:outline-none focus:ring-0 bg-transparent print:text-gray-600"
+                      placeholder="Date Period"
                     />
                   </div>
+                  <input
+                    type="text"
+                    value={exp.company}
+                    onChange={(e) => onUpdateExperience(index, 'company', e.target.value)}
+                    className="text-sm text-green-600 dark:text-green-400 w-full border-none focus:outline-none focus:ring-0 mt-1 font-mono bg-transparent print:text-green-700"
+                    placeholder="Company Name"
+                  />
+                  <div className="mt-1 space-y-1">
+                    {exp.highlights.map((highlight, hIndex) => (
+                      <div key={hIndex} className="flex items-start gap-2 group">
+                        <span className="text-gray-400 dark:text-gray-500 font-mono mt-1 print:text-gray-600">_</span>
+                        <div className="flex flex-1 items-center gap-2">
+                          <input
+                            type="text"
+                            value={highlight}
+                            onChange={(e) => onUpdateExperienceHighlight(index, hIndex, e.target.value)}
+                            className="flex-1 border-b border-gray-200 dark:border-gray-700 focus:border-gray-400 dark:focus:border-gray-600 focus:ring-0 bg-transparent font-mono dark:text-gray-300 text-sm print:text-black print:border-gray-300"
+                            placeholder="Add your accomplishment..."
+                          />
+                          {isEditable && exp.highlights.length > 1 && (
+                            <button
+                              onClick={() => onRemoveExperienceHighlight(index, hIndex)}
+                              className="opacity-0 group-hover:opacity-100 text-gray-400 hover:text-red-500 dark:text-gray-500 dark:hover:text-red-400 transition-opacity print:hidden"
+                              type="button"
+                            >
+                              ×
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                    {isEditable && (
+                      <button
+                        onClick={() => onAddExperienceHighlight(index)}
+                        className="text-green-600 dark:text-green-400 text-sm hover:text-green-700 dark:hover:text-green-300 mt-1 ml-6 font-mono print:hidden"
+                        type="button"
+                      >
+                        + Add Point
+                      </button>
+                    )}
+                  </div>
+                  {isEditable && resumeData.experience && resumeData.experience.length > 1 && (
+                    <button
+                      onClick={() => onRemoveExperience(index)}
+                      className="text-red-500 dark:text-red-400 text-sm hover:text-red-700 dark:hover:text-red-300 mt-2 font-mono print:hidden"
+                      type="button"
+                    >
+                      Remove Experience
+                    </button>
+                  )}
                 </div>
-              </div>
+              ))}
             </div>
-            <button className="text-green-600 dark:text-green-400 text-sm hover:text-green-700 dark:hover:text-green-300 mt-3 font-mono print:hidden" type="button">
-              + Add Experience
-            </button>
+            {isEditable && (
+              <button 
+                onClick={onAddExperience}
+                className="text-green-600 dark:text-green-400 text-sm hover:text-green-700 dark:hover:text-green-300 mt-3 font-mono print:hidden" 
+                type="button"
+              >
+                + Add Experience
+              </button>
+            )}
           </div>
 
           {/* Projects Section */}
           <div>
             <h2 className="text-lg font-mono font-bold text-gray-800 dark:text-gray-200 mb-3 uppercase print:text-black">$ ls projects/</h2>
             <div className="space-y-4">
-              <div>
-                <div className="flex justify-between font-mono">
-                  <input
-                    type="text"
-                    className="text-base font-bold text-gray-800 dark:text-gray-200 border-none focus:outline-none focus:ring-0 bg-transparent print:text-black"
-                    placeholder="Project Name"
-                  />
-                  <input
-                    type="text"
-                    className="text-sm text-gray-500 dark:text-gray-400 text-right border-none focus:outline-none focus:ring-0 bg-transparent print:text-gray-600"
-                    placeholder="Date Period"
-                  />
-                </div>
-                <div className="mt-1 space-y-1">
-                  <input
-                    type="text" 
-                    className="flex-1 border-b border-gray-200 dark:border-gray-700 focus:border-gray-400 dark:focus:border-gray-600 focus:ring-0 bg-transparent font-mono dark:text-gray-300 text-sm w-full print:text-black print:border-gray-300"
-                    placeholder="Tech stack: React, TypeScript, Node.js"
-                  />
-                  <div className="flex items-start gap-2">
-                    <span className="text-gray-400 dark:text-gray-500 font-mono mt-1 print:text-gray-600">_</span>
+              {resumeData.projects && resumeData.projects.map((project, index) => (
+                <div key={index} className="group">
+                  <div className="flex justify-between font-mono">
                     <input
                       type="text"
-                      className="flex-1 border-b border-gray-200 dark:border-gray-700 focus:border-gray-400 dark:focus:border-gray-600 focus:ring-0 bg-transparent font-mono dark:text-gray-300 text-sm print:text-black print:border-gray-300"
-                      placeholder="Describe what you accomplished..."
+                      value={project.name}
+                      onChange={(e) => onUpdateProject(index, 'name', e.target.value)}
+                      className="text-base font-bold text-gray-800 dark:text-gray-200 border-none focus:outline-none focus:ring-0 bg-transparent print:text-black"
+                      placeholder="Project Name"
+                    />
+                    <input
+                      type="text"
+                      value={project.period}
+                      onChange={(e) => onUpdateProject(index, 'period', e.target.value)}
+                      className="text-sm text-gray-500 dark:text-gray-400 text-right border-none focus:outline-none focus:ring-0 bg-transparent print:text-gray-600"
+                      placeholder="Date Period"
                     />
                   </div>
+                  <div className="mt-1 space-y-1">
+                    <input
+                      type="text" 
+                      value={project.description}
+                      onChange={(e) => onUpdateProject(index, 'description', e.target.value)}
+                      className="flex-1 border-b border-gray-200 dark:border-gray-700 focus:border-gray-400 dark:focus:border-gray-600 focus:ring-0 bg-transparent font-mono dark:text-gray-300 text-sm w-full print:text-black print:border-gray-300"
+                      placeholder="Tech stack: React, TypeScript, Node.js"
+                    />
+                    {project.highlights.map((highlight, hIndex) => (
+                      <div key={hIndex} className="flex items-start gap-2 group">
+                        <span className="text-gray-400 dark:text-gray-500 font-mono mt-1 print:text-gray-600">_</span>
+                        <div className="flex flex-1 items-center gap-2">
+                          <input
+                            type="text"
+                            value={highlight}
+                            onChange={(e) => onUpdateProjectHighlight(index, hIndex, e.target.value)}
+                            className="flex-1 border-b border-gray-200 dark:border-gray-700 focus:border-gray-400 dark:focus:border-gray-600 focus:ring-0 bg-transparent font-mono dark:text-gray-300 text-sm print:text-black print:border-gray-300"
+                            placeholder="Describe what you accomplished..."
+                          />
+                          {isEditable && project.highlights.length > 1 && (
+                            <button
+                              onClick={() => onRemoveProjectHighlight(index, hIndex)}
+                              className="opacity-0 group-hover:opacity-100 text-gray-400 hover:text-red-500 dark:text-gray-500 dark:hover:text-red-400 transition-opacity print:hidden"
+                              type="button"
+                            >
+                              ×
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                    {isEditable && (
+                      <button
+                        onClick={() => onAddProjectHighlight(index)}
+                        className="text-green-600 dark:text-green-400 text-sm hover:text-green-700 dark:hover:text-green-300 mt-1 ml-6 font-mono print:hidden"
+                        type="button"
+                      >
+                        + Add Point
+                      </button>
+                    )}
+                  </div>
+                  {isEditable && resumeData.projects && resumeData.projects.length > 1 && (
+                    <button
+                      onClick={() => onRemoveProject(index)}
+                      className="text-red-500 dark:text-red-400 text-sm hover:text-red-700 dark:hover:text-red-300 mt-2 font-mono print:hidden"
+                      type="button"
+                    >
+                      Remove Project
+                    </button>
+                  )}
                 </div>
-              </div>
+              ))}
             </div>
-            <button className="text-green-600 dark:text-green-400 text-sm hover:text-green-700 dark:hover:text-green-300 mt-3 font-mono print:hidden" type="button">
-              + Add Project
-            </button>
+            {isEditable && (
+              <button 
+                onClick={onAddProject}
+                className="text-green-600 dark:text-green-400 text-sm hover:text-green-700 dark:hover:text-green-300 mt-3 font-mono print:hidden" 
+                type="button"
+              >
+                + Add Project
+              </button>
+            )}
           </div>
         </div>
 
@@ -283,27 +431,52 @@ const MinimalTechTemplate: React.FC<MinimalTechTemplateProps> = ({
           <div className="mb-6">
             <h2 className="text-lg font-mono font-bold text-gray-800 dark:text-gray-200 mb-3 uppercase print:text-black">$ cat education.log</h2>
             <div className="space-y-3 font-mono">
-              <div>
-                <input
-                  type="text"
-                  className="text-base font-bold text-gray-800 dark:text-gray-200 w-full border-none focus:outline-none focus:ring-0 bg-transparent print:text-black"
-                  placeholder="Degree and Field"
-                />
-                <input
-                  type="text"
-                  className="text-sm text-green-600 dark:text-green-400 w-full border-none focus:outline-none focus:ring-0 mt-1 bg-transparent print:text-green-700"
-                  placeholder="School or University"
-                />
-                <input
-                  type="text"
-                  className="text-xs text-gray-500 dark:text-gray-400 w-full border-none focus:outline-none focus:ring-0 mt-1 bg-transparent print:text-gray-600"
-                  placeholder="Date Period"
-                />
-              </div>
+              {resumeData.education && resumeData.education.map((edu, index) => (
+                <div key={index} className="group">
+                  <input
+                    type="text"
+                    value={edu.degree}
+                    onChange={(e) => onUpdateEducation(index, 'degree', e.target.value)}
+                    className="text-base font-bold text-gray-800 dark:text-gray-200 w-full border-none focus:outline-none focus:ring-0 bg-transparent print:text-black"
+                    placeholder="Degree and Field"
+                  />
+                  <input
+                    type="text"
+                    value={edu.school}
+                    onChange={(e) => onUpdateEducation(index, 'school', e.target.value)}
+                    className="text-sm text-green-600 dark:text-green-400 w-full border-none focus:outline-none focus:ring-0 mt-1 bg-transparent print:text-green-700"
+                    placeholder="School or University"
+                  />
+                  <div className="flex justify-between items-center">
+                    <input
+                      type="text"
+                      value={edu.period}
+                      onChange={(e) => onUpdateEducation(index, 'period', e.target.value)}
+                      className="text-xs text-gray-500 dark:text-gray-400 w-full border-none focus:outline-none focus:ring-0 mt-1 bg-transparent print:text-gray-600"
+                      placeholder="Date Period"
+                    />
+                    {isEditable && resumeData.education && resumeData.education.length > 1 && (
+                      <button
+                        onClick={() => onRemoveEducation(index)}
+                        className="text-red-500 dark:text-red-400 text-xs opacity-0 group-hover:opacity-100 hover:text-red-700 dark:hover:text-red-300 print:hidden"
+                        type="button"
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
             </div>
-            <button className="text-green-600 dark:text-green-400 text-sm hover:text-green-700 dark:hover:text-green-300 mt-3 print:hidden" type="button">
-              + Add Education
-            </button>
+            {isEditable && (
+              <button 
+                onClick={onAddEducation}
+                className="text-green-600 dark:text-green-400 text-sm hover:text-green-700 dark:hover:text-green-300 mt-3 print:hidden" 
+                type="button"
+              >
+                + Add Education
+              </button>
+            )}
           </div>
 
           {/* Certifications Section */}

@@ -10,6 +10,24 @@ interface ResumeData {
   location: string;
   skills: string[];
   summary: string;
+  education?: {
+    degree: string;
+    school: string;
+    period: string;
+  }[];
+  experience?: {
+    title: string;
+    company: string;
+    location: string;
+    period: string;
+    highlights: string[];
+  }[];
+  projects?: {
+    name: string;
+    period: string;
+    description: string;
+    highlights: string[];
+  }[];
 }
 
 interface ProfessionalTemplateProps {
@@ -19,6 +37,24 @@ interface ProfessionalTemplateProps {
   onChangeSkill?: (index: number, value: string) => void;
   onAddSkill?: () => void;
   onRemoveSkill?: (index: number) => void;
+  // Add education handlers
+  onAddEducation?: () => void;
+  onUpdateEducation?: (index: number, field: string, value: string) => void;
+  onRemoveEducation?: (index: number) => void;
+  // Add experience handlers
+  onAddExperience?: () => void;
+  onUpdateExperience?: (index: number, field: string, value: any) => void;
+  onUpdateExperienceHighlight?: (expIndex: number, highlightIndex: number, value: string) => void;
+  onAddExperienceHighlight?: (expIndex: number) => void;
+  onRemoveExperienceHighlight?: (expIndex: number, highlightIndex: number) => void;
+  onRemoveExperience?: (index: number) => void;
+  // Add project handlers
+  onAddProject?: () => void;
+  onUpdateProject?: (index: number, field: string, value: any) => void;
+  onUpdateProjectHighlight?: (projectIndex: number, highlightIndex: number, value: string) => void;
+  onAddProjectHighlight?: (projectIndex: number) => void;
+  onRemoveProjectHighlight?: (projectIndex: number, highlightIndex: number) => void;
+  onRemoveProject?: (index: number) => void;
 }
 
 const ProfessionalTemplate: React.FC<ProfessionalTemplateProps> = ({ 
@@ -27,7 +63,25 @@ const ProfessionalTemplate: React.FC<ProfessionalTemplateProps> = ({
   onChangeData = () => {},
   onChangeSkill = () => {},
   onAddSkill = () => {},
-  onRemoveSkill = () => {}
+  onRemoveSkill = () => {},
+  // Initialize education handlers
+  onAddEducation = () => {},
+  onUpdateEducation = () => {},
+  onRemoveEducation = () => {},
+  // Initialize experience handlers
+  onAddExperience = () => {},
+  onUpdateExperience = () => {},
+  onUpdateExperienceHighlight = () => {},
+  onAddExperienceHighlight = () => {},
+  onRemoveExperienceHighlight = () => {},
+  onRemoveExperience = () => {},
+  // Initialize project handlers
+  onAddProject = () => {},
+  onUpdateProject = () => {},
+  onUpdateProjectHighlight = () => {},
+  onAddProjectHighlight = () => {},
+  onRemoveProjectHighlight = () => {},
+  onRemoveProject = () => {}
 }) => {
   // Handle field click for initial selection
   const handleFieldFocus = (field: string) => {
@@ -205,71 +259,145 @@ const ProfessionalTemplate: React.FC<ProfessionalTemplateProps> = ({
           <div className="mb-8">
             <h2 className="text-lg font-semibold text-blue-700 dark:text-blue-300 mb-4 uppercase print:text-blue-700">EXPERIENCE</h2>
             <div className="border-l-2 border-blue-200 dark:border-blue-800 pl-4 space-y-6 print:border-blue-300">
-              <div className="relative">
-                <div className="absolute -left-[21px] top-1.5 w-4 h-4 bg-white dark:bg-gray-800 border-2 border-blue-400 dark:border-blue-500 rounded-full print:bg-white print:border-blue-500"></div>
-                <input
-                  type="text"
-                  className="text-lg font-medium text-gray-800 dark:text-gray-100 w-full border-none focus:outline-none focus:ring-0 bg-transparent print:text-black"
-                  placeholder="Job Title"
-                />
-                <input
-                  type="text"
-                  className="text-blue-600 dark:text-blue-300 w-full border-none focus:outline-none focus:ring-0 mt-1 bg-transparent print:text-blue-700"
-                  placeholder="Company Name"
-                />
-                <div className="flex justify-between text-sm text-gray-500 dark:text-gray-400 mt-1 print:text-gray-600">
+              {resumeData.experience && resumeData.experience.map((exp, index) => (
+                <div key={index} className="relative">
+                  <div className="absolute -left-[21px] top-1.5 w-4 h-4 bg-white dark:bg-gray-800 border-2 border-blue-400 dark:border-blue-500 rounded-full print:bg-white print:border-blue-500"></div>
                   <input
                     type="text"
-                    className="border-none focus:outline-none focus:ring-0 bg-transparent print:text-gray-700"
-                    placeholder="Location"
+                    value={exp.title}
+                    onChange={(e) => onUpdateExperience(index, 'title', e.target.value)}
+                    className="text-lg font-medium text-gray-800 dark:text-gray-100 w-full border-none focus:outline-none focus:ring-0 bg-transparent print:text-black"
+                    placeholder="Job Title"
                   />
                   <input
                     type="text"
-                    className="text-right border-none focus:outline-none focus:ring-0 bg-transparent print:text-gray-700"
-                    placeholder="Date Period"
+                    value={exp.company}
+                    onChange={(e) => onUpdateExperience(index, 'company', e.target.value)}
+                    className="text-blue-600 dark:text-blue-300 w-full border-none focus:outline-none focus:ring-0 mt-1 bg-transparent print:text-blue-700"
+                    placeholder="Company Name"
                   />
-                </div>
-                <div className="mt-2 space-y-2">
-                  <div className="flex items-start gap-2">
-                    <span className="text-blue-500 dark:text-blue-400 mt-1.5 print:text-blue-600">•</span>
+                  <div className="flex justify-between text-sm text-gray-500 dark:text-gray-400 mt-1 print:text-gray-600">
                     <input
                       type="text"
-                      className="flex-1 border-b border-gray-200 dark:border-gray-700 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-0 bg-transparent dark:text-gray-300 print:text-black print:border-gray-300"
-                      placeholder="Add your accomplishment..."
+                      value={exp.location}
+                      onChange={(e) => onUpdateExperience(index, 'location', e.target.value)}
+                      className="border-none focus:outline-none focus:ring-0 bg-transparent print:text-gray-700"
+                      placeholder="Location"
+                    />
+                    <input
+                      type="text"
+                      value={exp.period}
+                      onChange={(e) => onUpdateExperience(index, 'period', e.target.value)}
+                      className="text-right border-none focus:outline-none focus:ring-0 bg-transparent print:text-gray-700"
+                      placeholder="Date Period"
                     />
                   </div>
+                  <div className="mt-2 space-y-2">
+                    {exp.highlights.map((highlight, hIndex) => (
+                      <div key={hIndex} className="flex items-start gap-2 group">
+                        <span className="text-blue-500 dark:text-blue-400 mt-1.5 print:text-blue-600">•</span>
+                        <div className="flex flex-1 items-center gap-2">
+                          <input
+                            type="text"
+                            value={highlight}
+                            onChange={(e) => onUpdateExperienceHighlight(index, hIndex, e.target.value)}
+                            className="flex-1 border-b border-gray-200 dark:border-gray-700 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-0 bg-transparent dark:text-gray-300 print:text-black print:border-gray-300"
+                            placeholder="Add your accomplishment..."
+                          />
+                          {isEditable && exp.highlights.length > 1 && (
+                            <button
+                              onClick={() => onRemoveExperienceHighlight(index, hIndex)}
+                              className="opacity-0 group-hover:opacity-100 text-gray-400 hover:text-red-500 dark:text-gray-500 dark:hover:text-red-400 transition-opacity print:hidden"
+                              type="button"
+                            >
+                              ×
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                    {isEditable && (
+                      <button
+                        onClick={() => onAddExperienceHighlight(index)}
+                        className="text-blue-600 dark:text-blue-400 text-sm hover:text-blue-700 dark:hover:text-blue-300 mt-1 ml-6 print:hidden"
+                        type="button"
+                      >
+                        + Add Point
+                      </button>
+                    )}
+                  </div>
+                  {isEditable && resumeData.experience && resumeData.experience.length > 1 && (
+                    <button
+                      onClick={() => onRemoveExperience(index)}
+                      className="text-red-500 dark:text-red-400 text-sm hover:text-red-700 dark:hover:text-red-300 mt-2 print:hidden"
+                      type="button"
+                    >
+                      Remove Experience
+                    </button>
+                  )}
                 </div>
-              </div>
+              ))}
             </div>
-            <button className="text-blue-600 dark:text-blue-400 text-sm hover:text-blue-700 dark:hover:text-blue-300 mt-4 print:hidden" type="button">
-              + Add Experience
-            </button>
+            {isEditable && (
+              <button 
+                onClick={onAddExperience} 
+                className="text-blue-600 dark:text-blue-400 text-sm hover:text-blue-700 dark:hover:text-blue-300 mt-4 print:hidden" 
+                type="button"
+              >
+                + Add Experience
+              </button>
+            )}
           </div>
 
           <div>
             <h2 className="text-lg font-semibold text-blue-700 dark:text-blue-300 mb-4 uppercase print:text-blue-700">EDUCATION</h2>
             <div className="space-y-4">
-              <div>
-                <input
-                  type="text"
-                  className="text-lg font-medium text-gray-800 dark:text-gray-100 w-full border-none focus:outline-none focus:ring-0 bg-transparent print:text-black"
-                  placeholder="Degree and Field of Study"
-                />
-                <input
-                  type="text"
-                  className="text-blue-600 dark:text-blue-300 w-full border-none focus:outline-none focus:ring-0 mt-1 bg-transparent print:text-blue-700"
-                  placeholder="School or University"
-                />
-                <input
-                  type="text"
-                  className="text-sm text-gray-500 dark:text-gray-400 w-full border-none focus:outline-none focus:ring-0 mt-1 bg-transparent print:text-gray-700"
-                  placeholder="Date Period"
-                />
-              </div>
+              {resumeData.education && resumeData.education.map((edu, index) => (
+                <div key={index} className="group">
+                  <input
+                    type="text"
+                    value={edu.degree}
+                    onChange={(e) => onUpdateEducation(index, 'degree', e.target.value)}
+                    className="text-lg font-medium text-gray-800 dark:text-gray-100 w-full border-none focus:outline-none focus:ring-0 bg-transparent print:text-black"
+                    placeholder="Degree and Field of Study"
+                  />
+                  <input
+                    type="text"
+                    value={edu.school}
+                    onChange={(e) => onUpdateEducation(index, 'school', e.target.value)}
+                    className="text-blue-600 dark:text-blue-300 w-full border-none focus:outline-none focus:ring-0 mt-1 bg-transparent print:text-blue-700"
+                    placeholder="School or University"
+                  />
+                  <div className="flex items-center justify-between">
+                    <input
+                      type="text"
+                      value={edu.period}
+                      onChange={(e) => onUpdateEducation(index, 'period', e.target.value)}
+                      className="text-sm text-gray-500 dark:text-gray-400 w-full border-none focus:outline-none focus:ring-0 mt-1 bg-transparent print:text-gray-700"
+                      placeholder="Date Period"
+                    />
+                    {isEditable && resumeData.education && resumeData.education.length > 1 && (
+                      <button
+                        onClick={() => onRemoveEducation(index)}
+                        className="text-red-500 dark:text-red-400 text-sm opacity-0 group-hover:opacity-100 hover:text-red-700 dark:hover:text-red-300 print:hidden"
+                        type="button"
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
             </div>
-            <button className="text-blue-600 dark:text-blue-400 text-sm hover:text-blue-700 dark:hover:text-blue-300 mt-4 print:hidden" type="button">
-              + Add Education
-            </button>
+            {isEditable && (
+              <button 
+                onClick={onAddEducation} 
+                className="text-blue-600 dark:text-blue-400 text-sm hover:text-blue-700 dark:hover:text-blue-300 mt-4 print:hidden" 
+                type="button"
+              >
+                + Add Education
+              </button>
+            )}
           </div>
         </div>
       </div>
