@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface ResumeData {
@@ -159,11 +158,11 @@ const ProfessionalTemplate: React.FC<ProfessionalTemplateProps> = ({
             value={resumeData.fullName}
             onChange={(e) => onChangeData('fullName', e.target.value)}
             onFocus={() => handleFieldFocus('fullName')}
-            className="text-4xl font-bold text-blue-700 dark:text-blue-300 w-full border-none focus:outline-none focus:ring-0 mb-2 bg-transparent print:text-blue-700"
+            className="text-4xl font-bold text-blue-700 dark:text-blue-300 w-full border-none focus:outline-none focus:ring-0 mb-2 bg-transparent print:text-blue-700 print:text-5xl"
             placeholder="YOUR NAME"
           />
         ) : (
-          <h1 className="text-4xl font-bold text-blue-700 dark:text-blue-300 mb-2 print:text-blue-700">{resumeData.fullName}</h1>
+          <h1 className="text-4xl font-bold text-blue-700 dark:text-blue-300 mb-2 print:text-blue-700 print:text-5xl">{resumeData.fullName}</h1>
         )}
         
         {isEditable ? (
@@ -172,11 +171,11 @@ const ProfessionalTemplate: React.FC<ProfessionalTemplateProps> = ({
             value={resumeData.jobTitle}
             onChange={(e) => onChangeData('jobTitle', e.target.value)}
             onFocus={() => handleFieldFocus('jobTitle')}
-            className="text-xl text-gray-600 dark:text-gray-300 w-full border-none focus:outline-none focus:ring-0 bg-transparent print:text-gray-700"
+            className="text-xl text-gray-600 dark:text-gray-300 w-full border-none focus:outline-none focus:ring-0 bg-transparent print:text-gray-700 print:text-2xl"
             placeholder="The role you are applying for?"
           />
         ) : (
-          <p className="text-xl text-gray-600 dark:text-gray-300 print:text-gray-700">{resumeData.jobTitle}</p>
+          <p className="text-xl text-gray-600 dark:text-gray-300 print:text-gray-700 print:text-2xl">{resumeData.jobTitle}</p>
         )}
       </div>
 

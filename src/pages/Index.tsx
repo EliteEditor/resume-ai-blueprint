@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ResumeTemplates from '@/components/ResumeTemplates';
@@ -29,7 +28,7 @@ const Index: React.FC = () => {
             className="pb-8"
           >
             <div className="flex justify-between items-center mb-8">
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Resume Templates</h1>
+              <h1 className="font-bold text-gray-900 dark:text-white text-inherit">Resume Templates</h1>
               <Button 
                 variant="outline"
                 onClick={() => navigate('/templates')}
@@ -39,9 +38,7 @@ const Index: React.FC = () => {
                 View All Templates
               </Button>
             </div>
-            <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
-              Choose a template to create your professional resume
-            </p>
+            <p className="text-gray-600 dark:text-gray-300 mb-8 text-inherit">Choose a template to get started</p>
             
             <div className="glass-card p-6 bg-white dark:bg-gray-800 rounded-xl shadow-sm">
               <ResumeTemplates

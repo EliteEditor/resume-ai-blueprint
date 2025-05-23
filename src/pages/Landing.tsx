@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, FileText, Linkedin, CheckCircle, BarChart, Shield } from 'lucide-react';
@@ -121,14 +120,14 @@ const Landing: React.FC = () => {
                 </span>
               </div>
               
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+              <h1 className="font-bold leading-tight text-inherit md:text-5xl lg:text-6xl">
                 Elevate Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Career</span>
                 <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">Journey</span>
                 <br />
                 With AI-Driven Precision
               </h1>
-              <p className="mt-6 text-gray-400 text-lg max-w-lg">
+              <p className="mt-6 text-gray-400 max-w-lg text-inherit">
                 Craft standout resumes that beat ATS systems, impress hiring managers, and secure more interviews with our intelligent optimization engine.
               </p>
               <div className="mt-8 flex flex-col sm:flex-row gap-4">
@@ -167,10 +166,10 @@ const Landing: React.FC = () => {
           <div className="mt-16 md:mt-24 grid grid-cols-1 md:grid-cols-3 gap-8">
             {stats.map((stat, index) => (
               <div key={index} className="bg-gray-900/50 border border-gray-800 rounded-lg p-6 backdrop-blur-sm">
-                <div className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
+                <div className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 text-inherit">
                   {stat.value}
                 </div>
-                <div className="text-lg font-medium text-white mt-1">{stat.label}</div>
+                <div className="text-lg font-medium text-white mt-1 text-inherit">{stat.label}</div>
                 <div className="text-gray-400 mt-1">{stat.description}</div>
               </div>
             ))}
@@ -183,7 +182,7 @@ const Landing: React.FC = () => {
             className="flex flex-col items-center text-gray-400 hover:text-white transition-colors"
             onClick={scrollToFeatures}
           >
-            <span className="text-sm mb-2">Scroll to explore</span>
+            <span className="mb-2 text-inherit">Scroll to explore</span>
             <span className="w-6 h-10 border-2 border-gray-400 rounded-full flex items-start justify-center p-1">
               <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"></span>
             </span>
@@ -195,7 +194,7 @@ const Landing: React.FC = () => {
       <section id="features" ref={featuresRef} className="py-20 bg-gradient-to-b from-[#0A0B14] to-[#111226]">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold">
+            <h2 className="font-bold text-inherit md:text-4xl">
               Why <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-500">ResumeAI</span> Stands Apart
             </h2>
             <p className="mt-4 text-gray-400 max-w-2xl mx-auto">
@@ -209,7 +208,7 @@ const Landing: React.FC = () => {
                 <div className={`${feature.color} p-3 rounded-lg inline-flex w-12 h-12 items-center justify-center mb-5`}>
                   <feature.icon className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-3">{feature.title}</h3>
+                <h3 className="font-bold text-white mb-3 text-inherit">{feature.title}</h3>
                 <p className="text-gray-400">{feature.description}</p>
                 <Button 
                   variant="link" 
@@ -228,7 +227,7 @@ const Landing: React.FC = () => {
       <section className="py-20 bg-[#0D0E1B]">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold">How It Works</h2>
+            <h2 className="font-bold text-inherit md:text-4xl">How It Works</h2>
             <p className="mt-4 text-gray-400 max-w-2xl mx-auto">
               Our simple three-step process to transform your career documents
             </p>
@@ -254,10 +253,10 @@ const Landing: React.FC = () => {
             ].map((item, index) => (
               <div key={index} className="relative">
                 <div className="bg-gray-900/30 border border-gray-800 rounded-lg p-8">
-                  <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-500 mb-4">
+                  <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-500 mb-4 text-inherit">
                     {item.step}
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-3">{item.title}</h3>
+                  <h3 className="font-bold text-white mb-3 text-inherit">{item.title}</h3>
                   <p className="text-gray-400">{item.description}</p>
                 </div>
                 {index < 2 && (
@@ -275,7 +274,7 @@ const Landing: React.FC = () => {
       <section className="py-20 bg-gradient-to-b from-[#0D0E1B] to-[#111328]">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold">Success Stories</h2>
+            <h2 className="font-bold text-inherit md:text-4xl">Success Stories</h2>
             <p className="mt-4 text-gray-400 max-w-2xl mx-auto">
               See how ResumeAI has helped professionals land their dream jobs
             </p>
@@ -300,7 +299,7 @@ const Landing: React.FC = () => {
               }
             ].map((testimonial, index) => (
               <div key={index} className="bg-gray-900/30 border border-gray-800 rounded-lg p-6 relative">
-                <div className="absolute -top-3 left-6 text-4xl text-indigo-500">"</div>
+                <div className="absolute -top-3 left-6 text-4xl text-indigo-500 text-inherit">"</div>
                 <p className="text-gray-300 mt-4 mb-6">{testimonial.quote}</p>
                 <div className="flex items-center">
                   <div className="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold">
@@ -308,7 +307,7 @@ const Landing: React.FC = () => {
                   </div>
                   <div className="ml-3">
                     <div className="font-medium text-white">{testimonial.author}</div>
-                    <div className="text-gray-400 text-sm">{testimonial.role}</div>
+                    <div className="text-gray-400 text-inherit">{testimonial.role}</div>
                   </div>
                 </div>
               </div>
@@ -321,10 +320,10 @@ const Landing: React.FC = () => {
       <section className="py-20 bg-gradient-to-b from-[#111328] to-[#0A0B14]">
         <div className="container mx-auto px-6">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+            <h2 className="font-bold leading-tight text-inherit md:text-4xl lg:text-5xl">
               Ready to Transform Your Career?
             </h2>
-            <p className="mt-6 text-gray-400 text-lg">
+            <p className="mt-6 text-gray-400 max-w-lg text-inherit">
               Join thousands of professionals who have boosted their job search success with ResumeAI's advanced tools.
             </p>
             <div className="mt-10">
@@ -336,7 +335,7 @@ const Landing: React.FC = () => {
                 Get Started For Free
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-              <p className="mt-4 text-gray-500 text-sm">No credit card required</p>
+              <p className="mt-4 text-gray-500 text-inherit">No credit card required</p>
             </div>
           </div>
         </div>
@@ -347,10 +346,10 @@ const Landing: React.FC = () => {
         <div className="container mx-auto px-6 py-12">
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
             <div className="col-span-2">
-              <div className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-500 mb-4">
+              <div className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-500 mb-4 text-inherit">
                 ResumeAI
               </div>
-              <p className="text-gray-400 mb-4 max-w-xs">
+              <p className="text-gray-400 text-inherit mb-4 max-w-xs">
                 Using AI to help professionals create impressive resumes and LinkedIn profiles that get noticed.
               </p>
               <div className="flex space-x-4">
@@ -369,7 +368,7 @@ const Landing: React.FC = () => {
               </div>
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Product</h3>
+              <h3 className="font-semibold text-white uppercase tracking-wider text-inherit">Product</h3>
               <ul className="mt-4 space-y-2">
                 <li><a href="#" className="text-gray-400 hover:text-white">Features</a></li>
                 <li><a href="#" className="text-gray-400 hover:text-white">Templates</a></li>
@@ -377,7 +376,7 @@ const Landing: React.FC = () => {
               </ul>
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Resources</h3>
+              <h3 className="font-semibold text-white uppercase tracking-wider text-inherit">Resources</h3>
               <ul className="mt-4 space-y-2">
                 <li><a href="#" className="text-gray-400 hover:text-white">Blog</a></li>
                 <li><a href="#" className="text-gray-400 hover:text-white">Career Tips</a></li>
@@ -385,7 +384,7 @@ const Landing: React.FC = () => {
               </ul>
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Company</h3>
+              <h3 className="font-semibold text-white uppercase tracking-wider text-inherit">Company</h3>
               <ul className="mt-4 space-y-2">
                 <li><a href="#" className="text-gray-400 hover:text-white">About</a></li>
                 <li><a href="#" className="text-gray-400 hover:text-white">Contact</a></li>
@@ -396,17 +395,17 @@ const Landing: React.FC = () => {
           </div>
           <Separator className="my-8 bg-gray-800" />
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-400 text-sm">
+            <p className="text-gray-400 text-inherit">
               © {new Date().getFullYear()} ResumeAI. All rights reserved.
             </p>
             <div className="flex items-center space-x-4 mt-4 md:mt-0">
               <div className="flex items-center">
                 <Shield className="h-4 w-4 text-gray-400 mr-1" />
-                <span className="text-gray-400 text-sm">Privacy Protected</span>
+                <span className="text-gray-400 text-inherit">Privacy Protected</span>
               </div>
               <div className="flex items-center">
                 <CheckCircle className="h-4 w-4 text-gray-400 mr-1" />
-                <span className="text-gray-400 text-sm">SSL Secured</span>
+                <span className="text-gray-400 text-inherit">SSL Secured</span>
               </div>
             </div>
           </div>

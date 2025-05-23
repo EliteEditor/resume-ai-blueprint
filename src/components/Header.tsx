@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { Home, Settings, MessageCircle, User, Linkedin } from 'lucide-react';
+import { Home, Settings, MessageCircle, User, Linkedin, Sun, Moon, Menu } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
@@ -16,11 +15,20 @@ import {
 import { cn } from "@/lib/utils";
 import { useTheme } from 'next-themes';
 import { toast } from '@/hooks/use-toast';
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator
+} from './ui/dropdown-menu';
+import { useUser } from '@/contexts/UserContext';
 
 const Header: React.FC = () => {
-  const { theme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
   const isDarkTheme = theme === 'dark';
+  const { clearUserData } = useUser();
 
   const handleLinkedInOptimizerClick = () => {
     navigate('/linkedin-optimizer');
@@ -31,12 +39,22 @@ const Header: React.FC = () => {
   };
   
   const handleSettingsClick = () => {
-    // Navigate to the settings page
-    navigate('/app', { state: { activeTab: 'settings' } });
+    navigate('/settings');
     toast({
       title: "Settings",
       description: "Adjusting your application settings",
     });
+  };
+
+  const handleProfileClick = () => {
+    navigate('/profile');
+  };
+
+  const handleLogout = () => {
+    // TODO: Implement actual logout logic
+    clearUserData(); // Clear user data from context
+    navigate('/'); // Redirect to landing page
+    toast({ title: 'Logged out', description: 'You have been logged out.' });
   };
 
   return (
@@ -91,23 +109,24 @@ const Header: React.FC = () => {
 
             <Tooltip>
               <TooltipTrigger asChild>
-                <button 
-                  onClick={handleSettingsClick}
-                  className="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                >
-                  <Settings className="h-5 w-5" />
-                </button>
+                <Link to="/settings" className="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                  <MessageCircle className="h-5 w-5" />
+                </Link>
               </TooltipTrigger>
-              <TooltipContent>Settings</TooltipContent>
+              <TooltipContent>Contact Us</TooltipContent>
             </Tooltip>
 
             <Tooltip>
               <TooltipTrigger asChild>
-                <a href="#" className="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                  <MessageCircle className="h-5 w-5" />
-                </a>
+                <button
+                  onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                  className="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                  aria-label="Toggle dark mode"
+                >
+                  {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+                </button>
               </TooltipTrigger>
-              <TooltipContent>Get Help</TooltipContent>
+              <TooltipContent>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</TooltipContent>
             </Tooltip>
           </div>
 
@@ -115,11 +134,21 @@ const Header: React.FC = () => {
 
           <Tooltip>
             <TooltipTrigger asChild>
-              <motion.div whileHover={{ scale: 1.05 }} className="cursor-pointer">
-                <Button variant="ghost" size="icon" className="rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800/40">
-                  <User className="h-5 w-5" />
-                </Button>
-              </motion.div>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <motion.div whileHover={{ scale: 1.05 }} className="cursor-pointer">
+                    <Button variant="ghost" size="icon" className="rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800/40">
+                      <User className="h-5 w-5" />
+                    </Button>
+                  </motion.div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={handleProfileClick}>Profile</DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleSettingsClick}>Settings</DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </TooltipTrigger>
             <TooltipContent>User Profile</TooltipContent>
           </Tooltip>
