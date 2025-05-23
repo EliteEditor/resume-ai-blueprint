@@ -85,11 +85,11 @@ const MinimalTechTemplate: React.FC<MinimalTechTemplateProps> = ({
 }) => {
   // Handle field click for initial selection - updated for all fields
   const handleFieldFocus = (field: string) => {
-    if (field === 'fullName' && resumeData.fullName === 'YOUR NAME') {
+    if (field === 'fullName' && (resumeData.fullName === 'YOUR NAME' || resumeData.fullName === '')) {
       onChangeData('fullName', '');
-    } else if (field === 'jobTitle' && resumeData.jobTitle === 'The role you are applying for?') {
+    } else if (field === 'jobTitle' && (resumeData.jobTitle === 'The role you are applying for?' || resumeData.jobTitle === '')) {
       onChangeData('jobTitle', '');
-    } else if (field === 'summary' && resumeData.summary === 'Brief overview of your professional background and career objectives...') {
+    } else if (field === 'summary' && (resumeData.summary === 'Brief overview of your professional background and career objectives...' || resumeData.summary === '')) {
       onChangeData('summary', '');
     } else if (field === 'email' && (resumeData.email === 'Email' || resumeData.email === '')) {
       onChangeData('email', ''); 
@@ -104,14 +104,16 @@ const MinimalTechTemplate: React.FC<MinimalTechTemplateProps> = ({
 
   // Handle skill focus for initial value - updated to clear placeholder text
   const handleSkillFocus = (index: number) => {
-    if (resumeData.skills[index] === 'Your Skill' || resumeData.skills[index] === 'New Skill') {
+    if (resumeData.skills[index] === 'Your Skill' || resumeData.skills[index] === 'New Skill' || resumeData.skills[index] === '') {
       onChangeSkill(index, '');
     }
   };
 
   // Handle experience field focus to clear placeholder text - updated
   const handleExperienceFieldFocus = (index: number, field: string) => {
-    const exp = resumeData.experience![index];
+    if (!resumeData.experience) return;
+    const exp = resumeData.experience[index];
+    
     if (field === 'title' && (exp.title === 'Job Title' || exp.title === '')) {
       onUpdateExperience(index, 'title', '');
     } else if (field === 'company' && (exp.company === 'Company Name' || exp.company === '')) {
@@ -125,7 +127,9 @@ const MinimalTechTemplate: React.FC<MinimalTechTemplateProps> = ({
 
   // Handle experience highlight focus to clear placeholder text - updated
   const handleExperienceHighlightFocus = (expIndex: number, highlightIndex: number) => {
-    const highlight = resumeData.experience![expIndex].highlights[highlightIndex];
+    if (!resumeData.experience) return;
+    const highlight = resumeData.experience[expIndex].highlights[highlightIndex];
+    
     if (highlight === 'Add your accomplishment...' || highlight === '') {
       onUpdateExperienceHighlight(expIndex, highlightIndex, '');
     }
@@ -133,7 +137,9 @@ const MinimalTechTemplate: React.FC<MinimalTechTemplateProps> = ({
 
   // Handle project field focus to clear placeholder text - updated
   const handleProjectFieldFocus = (index: number, field: string) => {
-    const project = resumeData.projects![index];
+    if (!resumeData.projects) return;
+    const project = resumeData.projects[index];
+    
     if (field === 'name' && (project.name === 'Project Name' || project.name === '')) {
       onUpdateProject(index, 'name', '');
     } else if (field === 'period' && (project.period === 'Date Period' || project.period === '')) {
@@ -145,21 +151,32 @@ const MinimalTechTemplate: React.FC<MinimalTechTemplateProps> = ({
 
   // Handle project highlight focus to clear placeholder text - updated
   const handleProjectHighlightFocus = (projectIndex: number, highlightIndex: number) => {
-    const highlight = resumeData.projects![projectIndex].highlights[highlightIndex];
-    if (highlight === 'Add project highlight...' || highlight === '') {
+    if (!resumeData.projects) return;
+    const highlight = resumeData.projects[projectIndex].highlights[highlightIndex];
+    
+    if (highlight === 'Add project highlight...' || highlight === 'Describe what you accomplished...' || highlight === '') {
       onUpdateProjectHighlight(projectIndex, highlightIndex, '');
     }
   };
 
   // Handle education field focus to clear placeholder text - updated
   const handleEducationFieldFocus = (index: number, field: string) => {
-    const edu = resumeData.education![index];
-    if (field === 'degree' && (edu.degree === 'Degree and Field of Study' || edu.degree === '')) {
+    if (!resumeData.education) return;
+    const edu = resumeData.education[index];
+    
+    if (field === 'degree' && (edu.degree === 'Degree and Field of Study' || edu.degree === 'Degree and Field' || edu.degree === '')) {
       onUpdateEducation(index, 'degree', '');
     } else if (field === 'school' && (edu.school === 'School or University' || edu.school === '')) {
       onUpdateEducation(index, 'school', '');
     } else if (field === 'period' && (edu.period === 'Date Period' || edu.period === '')) {
       onUpdateEducation(index, 'period', '');
+    }
+  };
+
+  // Handle certification field focus to clear placeholder text
+  const handleCertificationFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (e.target.value === 'Certification Name' || e.target.value === '') {
+      e.target.value = '';
     }
   };
 
@@ -564,8 +581,7 @@ const MinimalTechTemplate: React.FC<MinimalTechTemplateProps> = ({
                 type="text"
                 className="text-base text-gray-700 dark:text-gray-300 w-full border-b border-gray-200 dark:border-gray-700 focus:border-gray-400 dark:focus:border-gray-600 focus:ring-0 bg-transparent print:text-black print:border-gray-300"
                 placeholder="Certification Name"
-                onFocus={(e) => e.target.value = ""}
-                onBlur={(e) => e.target.value === "" && (e.target.value = "Certification Name")}
+                onFocus={handleCertificationFocus}
               />
             </div>
             <button className="text-green-600 dark:text-green-400 text-sm hover:text-green-700 dark:hover:text-green-300 mt-3 print:hidden" type="button">

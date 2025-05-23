@@ -85,19 +85,67 @@ const ProfessionalTemplate: React.FC<ProfessionalTemplateProps> = ({
 }) => {
   // Handle field click for initial selection
   const handleFieldFocus = (field: string) => {
-    if (field === 'fullName' && resumeData.fullName === 'YOUR NAME') {
+    if (field === 'fullName' && (resumeData.fullName === 'YOUR NAME' || resumeData.fullName === '')) {
       onChangeData('fullName', '');
-    } else if (field === 'jobTitle' && resumeData.jobTitle === 'The role you are applying for?') {
+    } else if (field === 'jobTitle' && (resumeData.jobTitle === 'The role you are applying for?' || resumeData.jobTitle === '')) {
       onChangeData('jobTitle', '');
-    } else if (field === 'summary' && resumeData.summary === 'Brief overview of your professional background and career objectives...') {
+    } else if (field === 'summary' && (resumeData.summary === 'Brief overview of your professional background and career objectives...' || resumeData.summary === '')) {
       onChangeData('summary', '');
+    } else if (field === 'phone' && (resumeData.phone === 'Phone' || resumeData.phone === '')) {
+      onChangeData('phone', '');
+    } else if (field === 'email' && (resumeData.email === 'Email' || resumeData.email === '')) {
+      onChangeData('email', '');
+    } else if (field === 'linkedin' && (resumeData.linkedin === 'LinkedIn/Portfolio' || resumeData.linkedin === '')) {
+      onChangeData('linkedin', '');
+    } else if (field === 'location' && (resumeData.location === 'Location' || resumeData.location === '')) {
+      onChangeData('location', '');
     }
   };
 
   // Handle skill focus for initial value
   const handleSkillFocus = (index: number) => {
-    if (resumeData.skills[index] === 'Your Skill' || resumeData.skills[index] === 'New Skill') {
+    if (resumeData.skills[index] === 'Your Skill' || resumeData.skills[index] === 'New Skill' || resumeData.skills[index] === '') {
       onChangeSkill(index, '');
+    }
+  };
+
+  // Handle experience field focus
+  const handleExperienceFieldFocus = (index: number, field: string) => {
+    if (!resumeData.experience) return;
+    const exp = resumeData.experience[index];
+    
+    if (field === 'title' && (exp.title === 'Job Title' || exp.title === '')) {
+      onUpdateExperience(index, 'title', '');
+    } else if (field === 'company' && (exp.company === 'Company Name' || exp.company === '')) {
+      onUpdateExperience(index, 'company', '');
+    } else if (field === 'location' && (exp.location === 'Location' || exp.location === '')) {
+      onUpdateExperience(index, 'location', '');
+    } else if (field === 'period' && (exp.period === 'Date Period' || exp.period === '')) {
+      onUpdateExperience(index, 'period', '');
+    }
+  };
+  
+  // Handle experience highlight focus
+  const handleExperienceHighlightFocus = (expIndex: number, highlightIndex: number) => {
+    if (!resumeData.experience) return;
+    const highlight = resumeData.experience[expIndex].highlights[highlightIndex];
+    
+    if (highlight === 'Add your accomplishment...' || highlight === '') {
+      onUpdateExperienceHighlight(expIndex, highlightIndex, '');
+    }
+  };
+  
+  // Handle education field focus
+  const handleEducationFieldFocus = (index: number, field: string) => {
+    if (!resumeData.education) return;
+    const edu = resumeData.education[index];
+    
+    if (field === 'degree' && (edu.degree === 'Degree and Field of Study' || edu.degree === '')) {
+      onUpdateEducation(index, 'degree', '');
+    } else if (field === 'school' && (edu.school === 'School or University' || edu.school === '')) {
+      onUpdateEducation(index, 'school', '');
+    } else if (field === 'period' && (edu.period === 'Date Period' || edu.period === '')) {
+      onUpdateEducation(index, 'period', '');
     }
   };
 
@@ -141,6 +189,7 @@ const ProfessionalTemplate: React.FC<ProfessionalTemplateProps> = ({
               type="text"
               value={resumeData.phone}
               onChange={(e) => onChangeData('phone', e.target.value)}
+              onFocus={() => handleFieldFocus('phone')}
               className="border-b border-gray-200 dark:border-gray-700 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-0 bg-transparent print:border-gray-300 print:text-black"
               placeholder="Phone"
             />
@@ -155,6 +204,7 @@ const ProfessionalTemplate: React.FC<ProfessionalTemplateProps> = ({
               type="text"
               value={resumeData.email}
               onChange={(e) => onChangeData('email', e.target.value)}
+              onFocus={() => handleFieldFocus('email')}
               className="border-b border-gray-200 dark:border-gray-700 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-0 bg-transparent print:border-gray-300 print:text-black"
               placeholder="Email"
             />
@@ -169,6 +219,7 @@ const ProfessionalTemplate: React.FC<ProfessionalTemplateProps> = ({
               type="text"
               value={resumeData.linkedin}
               onChange={(e) => onChangeData('linkedin', e.target.value)}
+              onFocus={() => handleFieldFocus('linkedin')}
               className="border-b border-gray-200 dark:border-gray-700 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-0 bg-transparent print:border-gray-300 print:text-black"
               placeholder="LinkedIn/Portfolio"
             />
@@ -183,6 +234,7 @@ const ProfessionalTemplate: React.FC<ProfessionalTemplateProps> = ({
               type="text"
               value={resumeData.location}
               onChange={(e) => onChangeData('location', e.target.value)}
+              onFocus={() => handleFieldFocus('location')}
               className="border-b border-gray-200 dark:border-gray-700 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-0 bg-transparent print:border-gray-300 print:text-black"
               placeholder="Location"
             />
@@ -266,6 +318,7 @@ const ProfessionalTemplate: React.FC<ProfessionalTemplateProps> = ({
                     type="text"
                     value={exp.title}
                     onChange={(e) => onUpdateExperience(index, 'title', e.target.value)}
+                    onFocus={() => handleExperienceFieldFocus(index, 'title')}
                     className="text-lg font-medium text-gray-800 dark:text-gray-100 w-full border-none focus:outline-none focus:ring-0 bg-transparent print:text-black"
                     placeholder="Job Title"
                   />
@@ -273,6 +326,7 @@ const ProfessionalTemplate: React.FC<ProfessionalTemplateProps> = ({
                     type="text"
                     value={exp.company}
                     onChange={(e) => onUpdateExperience(index, 'company', e.target.value)}
+                    onFocus={() => handleExperienceFieldFocus(index, 'company')}
                     className="text-blue-600 dark:text-blue-300 w-full border-none focus:outline-none focus:ring-0 mt-1 bg-transparent print:text-blue-700"
                     placeholder="Company Name"
                   />
@@ -281,6 +335,7 @@ const ProfessionalTemplate: React.FC<ProfessionalTemplateProps> = ({
                       type="text"
                       value={exp.location}
                       onChange={(e) => onUpdateExperience(index, 'location', e.target.value)}
+                      onFocus={() => handleExperienceFieldFocus(index, 'location')}
                       className="border-none focus:outline-none focus:ring-0 bg-transparent print:text-gray-700"
                       placeholder="Location"
                     />
@@ -288,6 +343,7 @@ const ProfessionalTemplate: React.FC<ProfessionalTemplateProps> = ({
                       type="text"
                       value={exp.period}
                       onChange={(e) => onUpdateExperience(index, 'period', e.target.value)}
+                      onFocus={() => handleExperienceFieldFocus(index, 'period')}
                       className="text-right border-none focus:outline-none focus:ring-0 bg-transparent print:text-gray-700"
                       placeholder="Date Period"
                     />
@@ -301,6 +357,7 @@ const ProfessionalTemplate: React.FC<ProfessionalTemplateProps> = ({
                             type="text"
                             value={highlight}
                             onChange={(e) => onUpdateExperienceHighlight(index, hIndex, e.target.value)}
+                            onFocus={() => handleExperienceHighlightFocus(index, hIndex)}
                             className="flex-1 border-b border-gray-200 dark:border-gray-700 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-0 bg-transparent dark:text-gray-300 print:text-black print:border-gray-300"
                             placeholder="Add your accomplishment..."
                           />
@@ -358,6 +415,7 @@ const ProfessionalTemplate: React.FC<ProfessionalTemplateProps> = ({
                     type="text"
                     value={edu.degree}
                     onChange={(e) => onUpdateEducation(index, 'degree', e.target.value)}
+                    onFocus={() => handleEducationFieldFocus(index, 'degree')}
                     className="text-lg font-medium text-gray-800 dark:text-gray-100 w-full border-none focus:outline-none focus:ring-0 bg-transparent print:text-black"
                     placeholder="Degree and Field of Study"
                   />
@@ -365,6 +423,7 @@ const ProfessionalTemplate: React.FC<ProfessionalTemplateProps> = ({
                     type="text"
                     value={edu.school}
                     onChange={(e) => onUpdateEducation(index, 'school', e.target.value)}
+                    onFocus={() => handleEducationFieldFocus(index, 'school')}
                     className="text-blue-600 dark:text-blue-300 w-full border-none focus:outline-none focus:ring-0 mt-1 bg-transparent print:text-blue-700"
                     placeholder="School or University"
                   />
@@ -373,6 +432,7 @@ const ProfessionalTemplate: React.FC<ProfessionalTemplateProps> = ({
                       type="text"
                       value={edu.period}
                       onChange={(e) => onUpdateEducation(index, 'period', e.target.value)}
+                      onFocus={() => handleEducationFieldFocus(index, 'period')}
                       className="text-sm text-gray-500 dark:text-gray-400 w-full border-none focus:outline-none focus:ring-0 mt-1 bg-transparent print:text-gray-700"
                       placeholder="Date Period"
                     />

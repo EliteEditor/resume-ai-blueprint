@@ -31,7 +31,7 @@ const Header: React.FC = () => {
   };
   
   const handleSettingsClick = () => {
-    // Navigate to the app page with settings tab active
+    // Navigate to the settings page
     navigate('/app', { state: { activeTab: 'settings' } });
     toast({
       title: "Settings",
