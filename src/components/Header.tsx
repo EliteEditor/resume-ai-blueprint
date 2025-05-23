@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import { useTheme } from 'next-themes';
-import { toast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 
 const Header: React.FC = () => {
   const { theme } = useTheme();
@@ -31,8 +31,7 @@ const Header: React.FC = () => {
   };
   
   const handleSettingsClick = () => {
-    // Navigate to the settings page
-    navigate('/app', { state: { activeTab: 'settings' } });
+    navigate('/settings');
     toast({
       title: "Settings",
       description: "Adjusting your application settings",
